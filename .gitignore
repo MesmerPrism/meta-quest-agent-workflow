@@ -1,0 +1,31 @@
+# Generated evidence and captures
+artifacts/
+captures/
+logs/
+tmp/
+*.log
+*.png
+*.jpg
+*.jpeg
+*.mp4
+*.webm
+*.pftrace
+*.perfetto-trace
+*.zip
+
+# Android build outputs
+*.apk
+*.aab
+*.apks
+build/
+.gradle/
+
+# Local editor and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local MCP/agent config
+.mcp.local.json
+codex.local.toml
