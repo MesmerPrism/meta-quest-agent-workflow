@@ -309,19 +309,28 @@ submission, raw camera texture import, or controller action spaces.
 ## Termux And Linux Sidecars
 
 Termux can be a useful Quest lab sidecar for CLI diagnostics, local dashboards,
-Termux:X11 panels, Proot tools, and bounded localhost VNC evidence. Treat it as
-a normal Android app, not Android `shell`, not HOME, not a kiosk policy engine,
-not an XR runtime authority, and not a hidden watchdog.
+headless command/status services, Termux:X11 panels, Proot tools, and bounded
+localhost VNC evidence. Treat it as a normal Android app, not Android `shell`,
+not HOME, not a kiosk policy engine, not an XR runtime authority, and not a
+hidden watchdog.
 
 Start with small visible tests:
 
 ```text
 Termux CLI
+Headless localhost command/status service
 Termux:X11 with one small X11 client
 Proot CLI
 Proot GUI client only after X11 is visible and stoppable
 localhost dashboard or VNC only through an explicit forward
 ```
+
+For XR workflows that need Linux tools but not a visible desktop, prefer a
+headless localhost command/status sidecar. Initial validation showed a
+Termux-owned JSON service can keep answering allowlisted command requests while
+another headset app is foregrounded and no X11 desktop is visible. Before
+product use, add a local capability token or equivalent auth, argument schemas,
+timeouts, cancellation, structured stdout/stderr/status, and audit records.
 
 For VNC, bind to localhost when possible, use ADB forwarding, capture the
 needed evidence, stop the server, remove the forward, and verify cleanup. If a

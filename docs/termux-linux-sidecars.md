@@ -8,6 +8,7 @@ policy engine, not as an XR runtime authority, and not as a hidden watchdog.
 
 - CLI diagnostics and package experiments.
 - Local static dashboards bound to device localhost.
+- Headless localhost command/status services for foreground headset apps.
 - Termux:X11 foreground panels for small X11 clients.
 - Proot CLI tools and small GUI client experiments.
 - Host-visible evidence capture and direct stream-frame pulls through explicit
@@ -23,6 +24,27 @@ policy engine, not as an XR runtime authority, and not as a hidden watchdog.
 - Termux:Boot, wake locks, full desktop environments, audio servers, remote
   shell services, graphics acceleration, and LAN-visible VNC all require
   separate gates.
+
+## Headless Sidecar Notes
+
+For many XR workflows, a visible Linux desktop is unnecessary. A small
+Termux-owned command/status service bound to device localhost can let a
+foreground headset app request allowlisted Linux-side work and receive
+structured results.
+
+Initial Quest validation showed a Termux localhost JSON service can continue
+answering status and command requests while another headset app is foregrounded
+and no X11 desktop surface is visible.
+
+Keep this route constrained:
+
+- bind to localhost by default;
+- use allowlisted commands and argument schemas;
+- return structured stdout, stderr, exit code, timing, and status;
+- include timeouts, cancellation, and audit/event records;
+- add authentication or a local capability token before product use;
+- treat long-running survival across sleep, reboot, and battery policy as a
+  separate gate.
 
 ## Termux:X11 Notes
 
