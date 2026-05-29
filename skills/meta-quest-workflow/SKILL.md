@@ -303,6 +303,33 @@ A broker can report metadata, streams, clocks, launch state, and diagnostic
 probes. It does not own another foreground XR app's OpenXR frame loop, layer
 submission, raw camera texture import, or controller action spaces.
 
+## Termux And Linux Sidecars
+
+Termux can be a useful Quest lab sidecar for CLI diagnostics, local dashboards,
+Termux:X11 panels, Proot tools, and bounded localhost VNC evidence. Treat it as
+a normal Android app, not Android `shell`, not HOME, not a kiosk policy engine,
+not an XR runtime authority, and not a hidden watchdog.
+
+Start with small visible tests:
+
+```text
+Termux CLI
+Termux:X11 with one small X11 client
+Proot CLI
+Proot GUI client only after X11 is visible and stoppable
+localhost dashboard or VNC only through an explicit forward
+```
+
+For VNC, bind to localhost when possible, use ADB forwarding, capture the
+needed evidence, stop the server, remove the forward, and verify cleanup. If a
+VNC server fails on Android shared-memory permissions, retry with an explicit
+no-shared-memory mode and record the exact flags.
+
+Reduce large desktop or Droid-style setup ideas to data-first session recipes:
+preflight, start, status, stop, cleanup, evidence, risk, and authority
+boundary. Do not copy third-party setup source without checking license and
+attribution obligations.
+
 ## Side Effects And Gates
 
 Use these default gates:
@@ -343,6 +370,7 @@ See the repository `docs/` folder for focused playbooks:
 - `docs/camera-metadata-collection.md`
 - `docs/capture-source-taxonomy.md`
 - `docs/long-running-watchdogs.md`
+- `docs/termux-linux-sidecars.md`
 - `docs/meta-horizon-mcp-and-hzdb.md`
 - `docs/openxr-tracking-boundary.md`
 - `docs/permissions-and-distribution-boundary.md`

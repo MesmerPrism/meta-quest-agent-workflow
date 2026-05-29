@@ -18,6 +18,9 @@ are split from read-only inspection.
   localhost probes.
 - Long-running watchdog guidance for ADB-launched device-side helpers that keep
   a development headset awake without pretending to be an APK permission.
+- Termux, Termux:X11, Proot, local dashboard, and localhost-only VNC guidance
+  for lab sidecars that stay separate from HOME, ADB shell authority, and XR
+  runtime ownership.
 - Quest readiness and signal-pattern notes for deciding when screenshots,
   logcat windows, and evidence captures are meaningful.
 - Capture-source taxonomy for passthrough, raw camera, environment depth,
@@ -119,6 +122,7 @@ docs/broker-style-localhost-probes.md
 docs/camera-metadata-collection.md
 docs/capture-source-taxonomy.md
 docs/long-running-watchdogs.md
+docs/termux-linux-sidecars.md
 docs/meta-horizon-mcp-and-hzdb.md
 docs/permissions-and-distribution-boundary.md
 docs/openxr-tracking-boundary.md
