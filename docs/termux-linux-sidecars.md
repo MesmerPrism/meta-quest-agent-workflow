@@ -36,9 +36,18 @@ until the panel size, input focus, keyboard behavior, and cleanup path are
 repeatable.
 
 Native phone-like Termux:X11 geometry can present more reliably in the headset
-2D panel than resized landscape roots. If a landscape X root is visible through
-VNC but black or incomplete in the headset panel, classify that as an evidence
-route or geometry distinction, not automatically as a Linux process failure.
+2D panel than resized landscape roots. Exact landscape Termux:X11 display
+preferences can fix X-root/VNC left-slice output, but the Termux Android
+activity may still stay constrained or letterboxed. If a landscape X root is
+visible through VNC but black, cropped, or incomplete in the headset panel,
+classify that as an evidence route or geometry distinction, not automatically
+as a Linux process failure.
+
+Do not rely on shell-level Android task resize as a panel correction workflow.
+It can mismatch task/root bounds and crop the desktop. For headset-visible
+full-desktop observation, prefer a separate landscape viewer panel that
+consumes a localhost-only VNC/MJPEG bridge. Initial validation shows this route
+can present a full 1280x720 desktop stream in a Quest 2D panel.
 
 ## Proot Notes
 
@@ -73,6 +82,8 @@ Keep these witnesses separate:
   `/status.json`.
 - Headset-panel evidence: ADB or headset-provider screenshots of the Quest
   display.
+- Viewer-panel evidence: a separate landscape Android panel showing the
+  localhost MJPEG bridge.
 - Human-observer evidence: browser-window or cast-window captures.
 
 ## Session Recipe Shape

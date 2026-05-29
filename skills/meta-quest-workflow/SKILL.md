@@ -333,10 +333,15 @@ such as `/status.json` and `/frame.jpg` over screenshots of a visible browser
 window. Browser and cast windows are useful human-visible witnesses, but window
 capture depends on host foreground and should be secondary evidence.
 
-Keep X-root visibility and headset-panel visibility separate. Native
-phone-like Termux:X11 geometry can render in the Quest 2D panel, while resized
-landscape roots can be valid through VNC and still appear black or incomplete
-in the panel.
+Keep X-root visibility, Termux headset-panel visibility, and separate
+viewer-panel visibility distinct. Native phone-like Termux:X11 geometry can
+render in the Quest 2D panel. Exact landscape preferences can fix X-root/VNC
+left-slice output, but Termux's Android activity can still stay constrained or
+letterboxed. Do not rely on shell-level task resize for correction; it can
+mismatch bounds and crop the desktop. For headset-visible full-desktop
+observation, use a separate landscape viewer panel over a localhost-only
+VNC/MJPEG bridge. Initial validation shows this route can present a full
+1280x720 desktop stream in a Quest 2D panel.
 
 Reduce large desktop or Droid-style setup ideas to data-first session recipes:
 preflight, start, status, stop, cleanup, evidence, risk, and authority
