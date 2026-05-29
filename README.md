@@ -24,7 +24,7 @@ are split from read-only inspection.
 - Quest readiness and signal-pattern notes for deciding when screenshots,
   logcat windows, and evidence captures are meaningful.
 - Capture-source taxonomy for passthrough, raw camera, environment depth,
-  MediaProjection, screenshots, and casting.
+  MediaProjection, screenshots, casting, and direct stream-frame witnesses.
 - Meta Horizon MCP / `hzdb` setup notes and safety boundaries.
 - OpenXR tracking and ADB shell-helper boundaries.
 - Reusable PowerShell scripts under `examples/`.

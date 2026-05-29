@@ -225,6 +225,9 @@ Keep these sources separate:
   policy.
 - Casting or screenrecord: operator inspection of the presented display, not
   raw camera data.
+- Direct stream frame/status endpoints: app, broker, VNC, or MJPEG evidence
+  pulled without relying on host foreground. This proves that the stream route
+  produced content, not that the Quest panel presented it.
 
 ## Tracking Boundary
 
@@ -324,6 +327,16 @@ For VNC, bind to localhost when possible, use ADB forwarding, capture the
 needed evidence, stop the server, remove the forward, and verify cleanup. If a
 VNC server fails on Android shared-memory permissions, retry with an explicit
 no-shared-memory mode and record the exact flags.
+
+For live VNC or MJPEG observation, prefer direct pulls from stream endpoints
+such as `/status.json` and `/frame.jpg` over screenshots of a visible browser
+window. Browser and cast windows are useful human-visible witnesses, but window
+capture depends on host foreground and should be secondary evidence.
+
+Keep X-root visibility and headset-panel visibility separate. Native
+phone-like Termux:X11 geometry can render in the Quest 2D panel, while resized
+landscape roots can be valid through VNC and still appear black or incomplete
+in the panel.
 
 Reduce large desktop or Droid-style setup ideas to data-first session recipes:
 preflight, start, status, stop, cleanup, evidence, risk, and authority

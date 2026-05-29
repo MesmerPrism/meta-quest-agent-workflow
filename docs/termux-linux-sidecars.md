@@ -10,7 +10,8 @@ policy engine, not as an XR runtime authority, and not as a hidden watchdog.
 - Local static dashboards bound to device localhost.
 - Termux:X11 foreground panels for small X11 clients.
 - Proot CLI tools and small GUI client experiments.
-- Host-visible evidence capture through explicit ADB forwarding.
+- Host-visible evidence capture and direct stream-frame pulls through explicit
+  ADB forwarding.
 
 ## Boundaries
 
@@ -34,6 +35,11 @@ need their own validation. Do not promote a text editor or full desktop recipe
 until the panel size, input focus, keyboard behavior, and cleanup path are
 repeatable.
 
+Native phone-like Termux:X11 geometry can present more reliably in the headset
+2D panel than resized landscape roots. If a landscape X root is visible through
+VNC but black or incomplete in the headset panel, classify that as an evidence
+route or geometry distinction, not automatically as a Linux process failure.
+
 ## Proot Notes
 
 Proot is useful for Linux userland packages, but GUI compatibility is
@@ -52,7 +58,7 @@ Safe defaults:
 
 - bind the VNC server to localhost when possible;
 - use ADB forwarding for host access;
-- capture the evidence needed;
+- capture the evidence needed, preferably from a direct frame/status endpoint;
 - stop the VNC server;
 - remove the ADB forward;
 - verify that no listener remains.
@@ -60,6 +66,14 @@ Safe defaults:
 If a VNC server fails on Android shared-memory permissions, retry with an
 explicit no-shared-memory mode and record the exact flags. VNC mirrors the X
 display; it does not fix headset-side panel geometry.
+
+Keep these witnesses separate:
+
+- X-root evidence: VNC screenshots, MJPEG `/frame.jpg`, or stream
+  `/status.json`.
+- Headset-panel evidence: ADB or headset-provider screenshots of the Quest
+  display.
+- Human-observer evidence: browser-window or cast-window captures.
 
 ## Session Recipe Shape
 
@@ -92,4 +106,3 @@ For each sidecar test, record:
 - process and listener snapshots;
 - whether any headset prompt was intentional;
 - cleanup verification.
-
