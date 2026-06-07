@@ -26,6 +26,12 @@ repository, headset serial, app package, broker implementation, or MCP client.
 5. Record evidence: command goal, provider, fallback, serial/model, package,
    foreground before/after, important status endpoints, artifact paths, and
    whether any headset prompt or Meta system panel was intentional.
+6. For cross-package foreground handoffs such as an XR app opening a reusable
+   2D questionnaire panel and returning to the same XR app, treat ADB as
+   development fallback only. Prefer a cooperating app contract where the
+   foreground XR app starts the exported 2D panel activity and passes a
+   caller-created return route such as a `PendingIntent`. See
+   `docs/xr-questionnaire-panel-handoff.md`.
 
 ## Provider Order
 
@@ -248,6 +254,32 @@ OpenXR frame loop
 ADB synthetic keys can test Android input routing. They do not prove Meta Touch
 controller action bindings.
 
+## XR Questionnaire Panel Handoff
+
+A reusable questionnaire panel does not need to be packaged inside every XR
+app. The preferred product shape is a cross-package contract:
+
+```text
+foreground XR app
+  -> launch exported 2D questionnaire panel with session id and return route
+  -> questionnaire receives normal Quest panel input
+  -> questionnaire sends the return route and finishes only its panel activity
+  -> same XR app instance returns to foreground/focus
+```
+
+Use a caller-provided `PendingIntent` as the primary return route when
+possible. A configured package/activity name can be a fallback, but it needs
+package visibility handling and wrong-target error reporting.
+
+While the questionnaire panel is focused, expect the XR app to lose OpenXR
+`FOCUSED` state and possibly remain only `VISIBLE`. Validate that the XR app
+stays alive and returns to `FOCUSED` after the panel closes. Do not use
+`force-stop`, package killing, ADB relaunch, or Meta menu navigation as the
+product-path return.
+
+For the full manifest sketch, launch pattern, validation matrix, and Termux or
+WiFi ADB boundary, read `docs/xr-questionnaire-panel-handoff.md`.
+
 ## Meta Horizon MCP And hzdb
 
 Meta's Horizon Debug Bridge (`hzdb`) can be used as a CLI and MCP server when
@@ -403,4 +435,5 @@ See the repository `docs/` folder for focused playbooks:
 - `docs/permissions-and-distribution-boundary.md`
 - `docs/quest-signal-patterns.md`
 - `docs/shell-helper-boundary.md`
+- `docs/xr-questionnaire-panel-handoff.md`
 - `docs/troubleshooting.md`

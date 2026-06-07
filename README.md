@@ -21,6 +21,10 @@ are split from read-only inspection.
 - Termux, Termux:X11, Proot, local dashboard, and localhost-only VNC guidance
   for lab sidecars that stay separate from HOME, ADB shell authority, and XR
   runtime ownership.
+- Cross-package XR questionnaire panel handoff guidance for validating a
+  foreground XR app launching a reusable 2D panel app and returning to the same
+  XR app without ADB, force-stop, package killing, or Meta menu navigation in
+  the product path.
 - Quest readiness and signal-pattern notes for deciding when screenshots,
   logcat windows, and evidence captures are meaningful.
 - Capture-source taxonomy for passthrough, raw camera, environment depth,
@@ -123,6 +127,7 @@ docs/camera-metadata-collection.md
 docs/capture-source-taxonomy.md
 docs/long-running-watchdogs.md
 docs/termux-linux-sidecars.md
+docs/xr-questionnaire-panel-handoff.md
 docs/meta-horizon-mcp-and-hzdb.md
 docs/permissions-and-distribution-boundary.md
 docs/openxr-tracking-boundary.md
