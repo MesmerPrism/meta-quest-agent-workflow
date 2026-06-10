@@ -23,8 +23,13 @@ are split from read-only inspection.
   runtime ownership.
 - Cross-package XR questionnaire panel handoff guidance for validating a
   foreground XR app launching a reusable 2D panel app and returning to the same
-  XR app without ADB, force-stop, package killing, or Meta menu navigation in
+  XR app, with a caller-owned `content://` result URI for answers and no ADB,
+  force-stop, package killing, public shared storage, or Meta menu navigation in
   the product path.
+- A generic cross-app content-URI IPC hardening checklist covering
+  `FileProvider` scope, package visibility, PendingIntent identity and
+  background-launch behavior, Quest permission constraints, lifecycle recovery,
+  backup policy, and result-channel validation.
 - Quest readiness and signal-pattern notes for deciding when screenshots,
   logcat windows, and evidence captures are meaningful.
 - Capture-source taxonomy for passthrough, raw camera, environment depth,
@@ -125,6 +130,7 @@ docs/artifact-and-evidence-discipline.md
 docs/broker-style-localhost-probes.md
 docs/camera-metadata-collection.md
 docs/capture-source-taxonomy.md
+docs/cross-app-content-uri-ipc.md
 docs/long-running-watchdogs.md
 docs/termux-linux-sidecars.md
 docs/xr-questionnaire-panel-handoff.md

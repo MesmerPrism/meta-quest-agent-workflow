@@ -31,7 +31,8 @@ repository, headset serial, app package, broker implementation, or MCP client.
    development fallback only. Prefer a cooperating app contract where the
    foreground XR app starts the exported 2D panel activity and passes a
    caller-created return route such as a `PendingIntent`. See
-   `docs/xr-questionnaire-panel-handoff.md`.
+   `docs/xr-questionnaire-panel-handoff.md` and the generic hardening checklist
+   in `docs/cross-app-content-uri-ipc.md`.
 
 ## Provider Order
 
@@ -261,24 +262,60 @@ app. The preferred product shape is a cross-package contract:
 
 ```text
 foreground XR app
-  -> launch exported 2D questionnaire panel with session id and return route
+  -> launch exported 2D questionnaire panel with session id, result URI, and return route
   -> questionnaire receives normal Quest panel input
+  -> questionnaire writes result JSON to the caller-owned content URI
   -> questionnaire sends the return route and finishes only its panel activity
   -> same XR app instance returns to foreground/focus
 ```
 
-Use a caller-provided `PendingIntent` as the primary return route when
-possible. A configured package/activity name can be a fallback, but it needs
-package visibility handling and wrong-target error reporting.
+Use a caller-owned `content://` result URI as the default answer transport.
+For small requests, keep request metadata or JSON in launch extras, grant only
+write access to the result URI, and use an immutable caller-provided
+`PendingIntent` as a completion signal. Store status and answers in the JSON
+result envelope, not in PendingIntent extras.
+
+Prefer a broadcast `PendingIntent` to a private caller receiver as the
+completion callback. Use an activity-return `PendingIntent` only when the
+callee must actively bring the XR activity forward; that path needs Android
+14/15 background-activity-launch validation and Logcat checks for blocked
+launches. PendingIntents should use explicit base intents, a unique request
+code or intent `data` URI, `FLAG_ONE_SHOT`, and `FLAG_IMMUTABLE` unless the
+contract truly requires mutation.
+
+Use an XR-owned `FileProvider` for the simple case: app-private backing file,
+narrow path whitelist, explicit questionnaire package/component, a per-session
+request id and nonce, schema version/hash, and cleanup after ingestion. Use a
+custom provider or manual per-URI grants when large request/result payloads need
+different read/write modes. Intent URI grant flags apply to Intent data and
+`ClipData`, so do not place several URIs in one launch Intent with broad read
+and write flags unless the provider enforces mode per path.
+
+A configured package/activity name can be a foreground-return fallback when a
+`PendingIntent` is unavailable, but it needs package visibility handling and
+wrong-target error reporting.
+
+Modern Android/Horizon gates are part of the product contract: declare narrow
+Android 11+ `<queries>` entries for any package, intent, signing, version, or
+provider checks; declare `android:exported` for Android 12+ intent-filter
+components; avoid `QUERY_ALL_PACKAGES`, broad storage permissions,
+`SYSTEM_ALERT_WINDOW`, and overlay-style return flows on Quest; and exclude
+transient sensitive result directories from backup/data extraction unless
+retention is intentional.
 
 While the questionnaire panel is focused, expect the XR app to lose OpenXR
 `FOCUSED` state and possibly remain only `VISIBLE`. Validate that the XR app
-stays alive and returns to `FOCUSED` after the panel closes. Do not use
-`force-stop`, package killing, ADB relaunch, or Meta menu navigation as the
-product-path return.
+stays alive and returns to `FOCUSED` after the panel closes. Persist pending
+session state before launch, write result JSON on explicit submit rather than
+`onDestroy()`, and check pending results on callback, resume, and cold start.
+Do not use `force-stop`, package killing, ADB relaunch, Termux file drops,
+shared public storage, or Meta menu navigation as the product-path return or
+result channel.
 
-For the full manifest sketch, launch pattern, validation matrix, and Termux or
-WiFi ADB boundary, read `docs/xr-questionnaire-panel-handoff.md`.
+For the full manifest sketch, launch pattern, validation matrix, security
+checks, and Termux or WiFi ADB boundary, read
+`docs/xr-questionnaire-panel-handoff.md` and
+`docs/cross-app-content-uri-ipc.md`.
 
 ## Meta Horizon MCP And hzdb
 
@@ -428,6 +465,7 @@ See the repository `docs/` folder for focused playbooks:
 - `docs/broker-style-localhost-probes.md`
 - `docs/camera-metadata-collection.md`
 - `docs/capture-source-taxonomy.md`
+- `docs/cross-app-content-uri-ipc.md`
 - `docs/long-running-watchdogs.md`
 - `docs/termux-linux-sidecars.md`
 - `docs/meta-horizon-mcp-and-hzdb.md`
