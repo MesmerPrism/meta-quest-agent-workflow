@@ -93,3 +93,26 @@ pre-granted permissions not declared in the manifest
 If a workflow requires ADB, label it as a developer workflow. If it requires a
 sidecar service or broker, name that dependency explicitly.
 
+## App Updates
+
+Normal installed apps should not be described as silently self-updating on
+unmanaged Quest devices. An app can download and verify an APK and hand it to
+Android's installer, but the user should expect installer trust and
+confirmation gates unless the installer has device/profile-owner authority or
+another supported management channel.
+
+Termux plus loopback WiFi ADB is different: if Termux is using an active,
+user-authorized ADB shell lease and `adb shell id` reports `uid=2000(shell)`,
+then `adb install -r` is a developer/fleet-operations action that can update a
+verified APK without the normal app installer UI. Keep that authority boundary
+explicit and do not describe it as Termux or the APK having silent install
+privileges.
+
+A normal helper APK can be part of that lab recovery lane only when its scope
+is narrow and visible. A live Quest probe showed that a launched, pre-granted
+helper Activity can call Termux's `RunCommandService` with
+`startForegroundService()` and restart one fixed fleet-agent command after
+Termux was stopped. The proof condition is a fresh fleet-agent heartbeat plus
+the same loopback ADB `uid=2000(shell)` gate before any install. This is not
+WiFi ADB setup, reboot-durable management, arbitrary shell authority, or an app
+permission that allows silent update.

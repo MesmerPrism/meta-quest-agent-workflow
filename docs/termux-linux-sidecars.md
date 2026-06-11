@@ -21,9 +21,80 @@ policy engine, not as an XR runtime authority, and not as a hidden watchdog.
   for queries while still being blocked for privileged or cross-package actions.
 - ADB from inside Termux still depends on normal user authorization and should
   be treated as externally leased developer access.
+- If Termux runs an ADB client against `127.0.0.1:5555`, require
+  `adb shell id` to report `uid=2000(shell)` before install, launch, logcat,
+  wake, or package-management commands.
+- Termux ADB subprocesses need a writable temporary directory. Use `TMPDIR`
+  when already set, or create `$PREFIX/tmp` before starting ADB.
+- APKs for Termux-mediated installs should live in a path the Termux process
+  can read. Prefer Termux-private storage or an explicitly staged readable
+  path; do not assume public shared storage is readable from every
+  non-interactive Termux execution context.
 - Termux:Boot, wake locks, full desktop environments, audio servers, remote
   shell services, graphics acceleration, and LAN-visible VNC all require
   separate gates.
+
+## Loopback ADB Install/Update
+
+After an operator or external workflow enables WiFi ADB, Termux can run:
+
+```sh
+export TMPDIR="${TMPDIR:-$PREFIX/tmp}"
+mkdir -p "$TMPDIR"
+adb connect 127.0.0.1:5555
+adb -s 127.0.0.1:5555 shell id
+```
+
+The pass condition is Android shell UID:
+
+```text
+uid=2000(shell)
+```
+
+When that gate passes, Termux may use the leased ADB shell for bounded
+developer operations such as `adb install -r`, allowlisted `am start`, focused
+`dumpsys`, or bounded logcat. This can avoid Android's normal installer
+confirmation because the install authority is ADB shell, not the Termux app
+UID. It still does not prove reboot durability, device-owner management, MDM,
+or app-side silent updates.
+
+Keep artifact staging explicit. A Termux-owned updater should download into a
+Termux workspace or another readable path. A host-staged `/data/local/tmp` APK
+is acceptable lab plumbing when recorded as external ADB workflow state, but it
+should not become the default app communication or update channel.
+
+When the headset has internet but is not on the same WiFi as the operator
+machine, trigger updates through outbound control. The operator or CI publishes
+a verified APK manifest to an HTTPS controller; the Termux agent polls outbound,
+downloads the APK, checks the loopback ADB shell gate, and installs locally.
+Do not require inbound ADB, a public headset listener, or shared LAN reachability
+for the normal trigger path. Use direct external ADB only for local setup and
+recovery.
+
+## Visible Helper Restart
+
+A normal Android helper can restart a stopped Termux fleet agent when all of
+these conditions are true:
+
+- the helper is installed and operator-visible;
+- the helper has been granted `com.termux.permission.RUN_COMMAND`;
+- Termux is configured to allow external commands, for example
+  `allow-external-apps=true`;
+- the helper calls Termux's `RunCommandService` with `startForegroundService()`
+  on Android 8+;
+- the command is a fixed reviewed starter for the fleet agent, not a generic
+  remote shell.
+
+A live Quest run force-stopped `com.termux`, launched the helper Activity with
+an auto-start extra, and observed Termux plus
+`python termux_fleet_agent.py --config config.json` running again. The
+controller received fresh heartbeats, and the latest heartbeat reported
+`central_reachable=true`, `local_adb.available=true`, and
+`local_adb.shell_uid=2000`.
+
+Use this as operator-visible stopped-process recovery only. It does not restore
+WiFi ADB after reboot, make Termux or the helper Android `shell`, bypass user
+debugging authorization, or provide a managed-device update channel.
 
 ## Headless Sidecar Notes
 

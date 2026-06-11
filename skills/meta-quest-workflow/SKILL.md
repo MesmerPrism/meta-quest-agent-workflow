@@ -401,6 +401,45 @@ another headset app is foregrounded and no X11 desktop is visible. Before
 product use, add a local capability token or equivalent auth, argument schemas,
 timeouts, cancellation, structured stdout/stderr/status, and audit records.
 
+For Termux-local ADB, require the same authority gate every time:
+
+```sh
+export TMPDIR="${TMPDIR:-$PREFIX/tmp}"
+mkdir -p "$TMPDIR"
+adb connect 127.0.0.1:5555
+adb -s 127.0.0.1:5555 shell id
+```
+
+Only treat the path as shell-capable when the `id` output contains
+`uid=2000(shell)`. If that gate passes, Termux may run bounded developer
+operations such as `adb install -r`, allowlisted app launch, focused dumpsys,
+or bounded logcat through the leased ADB shell. This can avoid Android's
+normal installer confirmation because ADB shell owns the install operation; it
+does not make Termux a device owner, ADB bootstrapper, MDM replacement, or
+reboot-durable updater.
+
+Keep APK staging readable by Termux. Prefer Termux-private storage for
+downloads. Treat `/data/local/tmp` as external ADB lab staging when used, and
+do not assume public shared storage is readable from every non-interactive
+Termux execution context.
+
+For off-LAN updates, use outbound control as the trigger: publish the APK and
+manifest to HTTPS, queue a bounded command on an internet-reachable controller,
+and let the headset's Termux agent poll outbound. The operator machine does
+not need to share WiFi with the headset. Direct external ADB is setup/recovery
+only in this model.
+
+A normal helper APK can restart a stopped Termux fleet agent when it is
+operator-visible, granted `com.termux.permission.RUN_COMMAND`, Termux has
+`allow-external-apps=true`, and the helper starts Termux's
+`RunCommandService` with `startForegroundService()` on Android 8+. A live Quest
+probe force-stopped `com.termux`, launched the helper Activity, observed
+`python termux_fleet_agent.py --config config.json` running again, and saw
+fresh controller heartbeats with `local_adb.available=true` and
+`local_adb.shell_uid=2000`. Treat this as visible stopped-process recovery
+only. It is not WiFi ADB setup, reboot recovery, arbitrary shell, hidden
+watchdog behavior, or app-owned silent install authority.
+
 For VNC, bind to localhost when possible, use ADB forwarding, capture the
 needed evidence, stop the server, remove the forward, and verify cleanup. If a
 VNC server fails on Android shared-memory permissions, retry with an explicit

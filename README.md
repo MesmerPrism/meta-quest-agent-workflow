@@ -20,7 +20,9 @@ are split from read-only inspection.
   a development headset awake without pretending to be an APK permission.
 - Termux, Termux:X11, Proot, local dashboard, and localhost-only VNC guidance
   for lab sidecars that stay separate from HOME, ADB shell authority, and XR
-  runtime ownership.
+  runtime ownership, including the bounded loopback WiFi ADB case after normal
+  user authorization and the visible helper restart case for a stopped Termux
+  fleet agent.
 - Cross-package XR questionnaire panel handoff guidance for validating a
   foreground XR app launching a reusable 2D panel app and returning to the same
   XR app, with a caller-owned `content://` result URI for answers and no ADB,
