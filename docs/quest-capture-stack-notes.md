@@ -315,6 +315,14 @@ button and warning text that the app can capture the headset view, including
 physical surroundings. ADB input could tap that system dialog on the tested
 build, but this only proves that specific Android system UI path, not OpenXR
 controller or app interaction.
+The current prompt is a two-step surface when app-window selection is enabled:
+the approval button is visible but disabled until a target is chosen. A
+2026-06-14 UIAutomator probe saw one full-view target and multiple generic
+app-window targets, tapped the full-view target, then tapped the now-enabled
+approval button. The probe Activity received `RESULT_OK` with result data. A
+cancel-only run returned `RESULT_CANCELED` with no result data. Because this
+probe only mapped the prompt and did not call `getMediaProjection()` or
+`createVirtualDisplay()`, `dumpsys media_projection` stayed `null`.
 
 For Quest Settings mapping, the questionnaire panel repo's
 `examples/quest-ui-automation/tools/summarize_report.py` can turn
