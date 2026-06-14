@@ -148,6 +148,14 @@ python examples\quest-ui-automation\tools\summarize_report.py .\artifacts\quest-
   Privacy & safety exposed sensitive `child_page` routes, and Help exposed
   external-surface `child_page` routes. Use the exporter output as the public
   evidence shape; keep raw row labels local.
+- Meta Quest Scriptable Testing services are exposed through
+  `content://com.oculus.rc` on the tested headset, implemented by
+  `oculus.platform/oculus.internal.rc.RemoteControlProvider`.
+  `GET_PROPERTY` is the safe read-only probe and returned keys for
+  boundary/Guardian, proximity-close, blocking dialogs, and auto-sleep state.
+  Treat `SET_PROPERTY`, `WIPE_DEVICE`, and `SETUP_FOR_TEST` as mutating
+  commands requiring explicit approval, credentials/PIN where applicable, and
+  a rollback/reset plan.
 
 Treat this as UI-driven automation, not a stable recorder CLI. Prefer
 resource-id based UIAutomator dumps and taps; do not rely on fixed
