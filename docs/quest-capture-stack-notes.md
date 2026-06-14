@@ -302,6 +302,9 @@ public-safe `child_page` routes in the `open_dump_only` bucket and excludes
 default-blocked rows such as Software update and Cloud backup. A 2026-06-14
 focused General-section run used that route to open Quick controls, Storage,
 and Ongoing activities with compact child-page dumps and Back return.
+The same route-plan flow also opened low-risk Environment setup,
+Accessibility, and Audio child pages: Boundary, Travel mode, Vision, Mobility,
+Hearing, and Spatial audio for windows.
 
 For lab automation, ADB can set the `PROJECT_MEDIA` app-op:
 
