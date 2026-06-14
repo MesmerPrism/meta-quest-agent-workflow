@@ -113,6 +113,16 @@ redacted command summary. Keep raw XML, screenshots, recordings, logcat
 bundles, device serials, local paths, installed app names, and private package
 IDs in local evidence only.
 
+The useful public scenario split is now:
+
+- `settingsRecoveryProbe` for zero-node/invisible Quest Settings relaunch
+  diagnostics without force-stop or package killing;
+- `systemSurfaceReachability` for passive structural comparison of current
+  window, quick settings, notifications, Android settings, and Metacam entry
+  points;
+- focused settings crawlers or child-page probes only after the corresponding
+  surface is visible and the route is scoped.
+
 For visual feedback, use two lanes. The low-risk witness lane is foreground
 readback, focused-window lines, bounded UIAutomator summaries, and explicitly
 allowed screenshots. The interactive lane is an app-owned MediaProjection flow

@@ -447,6 +447,12 @@ and allowlisted extras, and defaults to a redacted command summary rather than
 raw XML, screenshots, recordings, logcat bundles, device serials, local paths,
 installed app names, or private package IDs.
 
+Use `systemSurfaceReachability` as the passive first pass when the question is
+which Android-backed Quest system surface is currently visible or reachable.
+Use `settingsRecoveryProbe` for zero-node Quest Settings recovery diagnostics,
+then move to focused settings crawlers or child-page probes only after the
+surface is visible and scoped.
+
 A normal helper APK can restart a stopped Termux fleet agent when it is
 operator-visible, granted `com.termux.permission.RUN_COMMAND`, Termux has
 `allow-external-apps=true`, and the helper starts Termux's

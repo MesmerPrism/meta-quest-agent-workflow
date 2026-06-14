@@ -164,6 +164,14 @@ python examples\quest-ui-automation\tools\summarize_report.py .\artifacts\quest-
   2026-06-14 baseline run also confirmed host-side
   `uiautomator dump --compressed` writes parseable XML, but node coverage
   differs from the instrumentation hierarchy.
+- The questionnaire panel automation APK now includes a passive
+  `systemSurfaceReachability` scenario for comparing known Android-backed
+  Quest system entry points such as the current window, quick settings,
+  notifications, Android settings, and the Metacam sharing panel. The public
+  exporter summarizes only structural counts, display IDs, changed/empty
+  status, and error presence. Use this before claiming a surface is reachable
+  or unreachable on a given Horizon OS build, and keep deeper Metacam settings
+  passes scoped to capture-settings mapping.
 - `scrollProbe` reports also have a redacted summary path. A focused
   `metacamDeepSettings` key-scroll sweep found `KEYCODE_DPAD_DOWN` and
   `KEYCODE_SPACE` can change visible state, while `KEYCODE_PAGE_DOWN` and
