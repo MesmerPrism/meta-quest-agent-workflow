@@ -142,6 +142,13 @@ paths remain blocked:
 python examples\quest-ui-automation\tools\summarize_report.py .\artifacts\quest-uiautomator\report.jsonl --format markdown
 ```
 
+- Section crawler pages can emit `settings_section_route_inventory` events.
+  A 2026-06-14 focused sweep verified the cleaned classifier: General exposed
+  `child_page` routes, Camera exposed `dropdown` routes across three pages,
+  Privacy & safety exposed sensitive `child_page` routes, and Help exposed
+  external-surface `child_page` routes. Use the exporter output as the public
+  evidence shape; keep raw row labels local.
+
 Treat this as UI-driven automation, not a stable recorder CLI. Prefer
 resource-id based UIAutomator dumps and taps; do not rely on fixed
 coordinates, and do not pull generated MP4 media into public repos.
