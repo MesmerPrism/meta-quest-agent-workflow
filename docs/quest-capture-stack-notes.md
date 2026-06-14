@@ -120,6 +120,18 @@ paths remain blocked:
   dropdown opens. Each option row records the `item_title` text, bounds,
   `selected`, `checked`, and `hasDefaultMarker`, which is the preferred compact
   evidence shape for capture-setting selector popovers.
+- A guarded option-target dry-run was added to the automation APK. Passing
+  `optionTarget` or `optionTargets` with `allowOptionSelect=false` finds and
+  records a specific dropdown option row without selecting it. A 2026-06-14
+  sweep matched bit rate `9 mbps`, frame rate `60 fps`, image stabilization
+  `High`, and eye perspective `Right eye`; all returned the dry-run refusal
+  reason and none changed settings.
+- A full non-mutating Quest Settings section crawl reached all known top-level
+  side-nav entries with object scrolling. Most sections fit on one page.
+  Multi-page sections observed were Camera, Movement, Experimental, and
+  Notifications. Notifications reached a true endpoint after five successful
+  content scrolls and six pages; raw per-app notification names should stay in
+  local reports, not public docs.
 
 Treat this as UI-driven automation, not a stable recorder CLI. Prefer
 resource-id based UIAutomator dumps and taps; do not rely on fixed
