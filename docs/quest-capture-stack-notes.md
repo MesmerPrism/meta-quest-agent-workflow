@@ -164,6 +164,12 @@ python examples\quest-ui-automation\tools\summarize_report.py .\artifacts\quest-
   2026-06-14 baseline run also confirmed host-side
   `uiautomator dump --compressed` writes parseable XML, but node coverage
   differs from the instrumentation hierarchy.
+- `scrollProbe` reports also have a redacted summary path. A focused
+  `metacamDeepSettings` key-scroll sweep found `KEYCODE_DPAD_DOWN` and
+  `KEYCODE_SPACE` can change visible state, while `KEYCODE_PAGE_DOWN` and
+  `KEYCODE_TAB` did not. Treat key events as focus/search/navigation signals,
+  not reliable settings-list scrolling; prefer `uiObject2` or accessibility
+  scroll actions for content movement.
 
 Treat this as UI-driven automation, not a stable recorder CLI. Prefer
 resource-id based UIAutomator dumps and taps; do not rely on fixed
