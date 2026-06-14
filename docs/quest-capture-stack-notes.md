@@ -156,6 +156,14 @@ python examples\quest-ui-automation\tools\summarize_report.py .\artifacts\quest-
   Treat `SET_PROPERTY`, `WIPE_DEVICE`, and `SETUP_FOR_TEST` as mutating
   commands requiring explicit approval, credentials/PIN where applicable, and
   a rollback/reset plan.
+- `currentWindow` and `surfaceMap` reports now have a redacted exporter path.
+  Use it for baseline/window/action-map notes instead of copying raw reports.
+  It emits structural counts such as XML node counts, display IDs,
+  accessibility-window counts, and action-node counts, while omitting package
+  names, raw UI text, XML paths, window titles, and shell command output. A
+  2026-06-14 baseline run also confirmed host-side
+  `uiautomator dump --compressed` writes parseable XML, but node coverage
+  differs from the instrumentation hierarchy.
 
 Treat this as UI-driven automation, not a stable recorder CLI. Prefer
 resource-id based UIAutomator dumps and taps; do not rely on fixed
