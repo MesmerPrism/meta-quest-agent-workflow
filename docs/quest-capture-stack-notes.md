@@ -132,6 +132,15 @@ paths remain blocked:
   Notifications. Notifications reached a true endpoint after five successful
   content scrolls and six pages; raw per-app notification names should stay in
   local reports, not public docs.
+- Before copying sweep results into public docs, run the host-side report
+  exporter. It emits page counts, scroll endpoint status, allowlisted setting
+  labels, dropdown option evidence, and redaction counts while omitting raw XML
+  paths, local paths, package/resource IDs, and unknown labels such as
+  installed app names.
+
+```powershell
+python examples\quest-ui-automation\tools\summarize_report.py .\artifacts\quest-uiautomator\report.jsonl --format markdown
+```
 
 Treat this as UI-driven automation, not a stable recorder CLI. Prefer
 resource-id based UIAutomator dumps and taps; do not rely on fixed
