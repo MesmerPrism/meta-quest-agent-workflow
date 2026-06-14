@@ -106,11 +106,12 @@ operator consent and still fail because `adb shell id` does not report
 
 For UIAutomator-backed Quest Settings or recorder mapping, bridge through a
 command like `uiautomator.run_allowlisted_scenario`, not through a free-form
-ADB command. The command should name an allowlisted instrumentation scenario,
-pass small typed extras, default to non-mutating behavior, and return exporter
-summaries. Keep raw XML, screenshots, recordings, logcat bundles, device
-serials, local paths, installed app names, and private package IDs in local
-evidence only.
+ADB command. `quest-termux-lab` now implements this as a named-scenario bridge:
+it checks the remote-session lease, checks the loopback ADB shell gate,
+accepts only configured scenarios and allowlisted extras, and defaults to a
+redacted command summary. Keep raw XML, screenshots, recordings, logcat
+bundles, device serials, local paths, installed app names, and private package
+IDs in local evidence only.
 
 For visual feedback, use two lanes. The low-risk witness lane is foreground
 readback, focused-window lines, bounded UIAutomator summaries, and explicitly
@@ -118,7 +119,10 @@ allowed screenshots. The interactive lane is an app-owned MediaProjection flow
 with user consent, a visible active-session indicator, and a transport such as
 WebRTC or a simpler authenticated preview stream. MediaProjection can provide
 immediate display-composite frames to an app or receiver, but it is not raw
-camera access and does not bypass user consent.
+camera access and does not bypass user consent. The Termux lab's
+`media_projection.preview_request` and `media_projection.preview_stop` command
+kinds should remain rejected placeholders until a separate app-owned helper
+owns the Android/Meta consent token and visible active-session indicator.
 
 ## Visible Helper Restart
 

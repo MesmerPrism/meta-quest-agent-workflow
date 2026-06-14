@@ -440,10 +440,11 @@ UIAutomator allowlisted scenario, MediaProjection preview request/stop, helper
 restart status, and ADB lease check/disconnect.
 
 For UIAutomator-backed Quest Settings or recorder mapping, bridge through a
-command such as `uiautomator.run_allowlisted_scenario`. It should name an
-allowlisted instrumentation scenario, pass small typed extras, default to
-non-mutating behavior, and return exporter summaries rather than raw XML,
-screenshots, recordings, logcat bundles, device serials, local paths,
+command such as `uiautomator.run_allowlisted_scenario`. `quest-termux-lab`
+implements this as a named-scenario bridge: it verifies the remote-session
+lease, checks the loopback ADB shell gate, accepts only configured scenarios
+and allowlisted extras, and defaults to a redacted command summary rather than
+raw XML, screenshots, recordings, logcat bundles, device serials, local paths,
 installed app names, or private package IDs.
 
 A normal helper APK can restart a stopped Termux fleet agent when it is
