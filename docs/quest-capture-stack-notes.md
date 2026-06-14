@@ -294,6 +294,15 @@ physical surroundings. ADB input could tap that system dialog on the tested
 build, but this only proves that specific Android system UI path, not OpenXR
 controller or app interaction.
 
+For Quest Settings mapping, the questionnaire panel repo's
+`examples/quest-ui-automation/tools/summarize_report.py` can turn
+`settings_section_route_inventory` events into a follow-up child-page probe
+plan with `--format child-targets`. Its default planner includes only
+public-safe `child_page` routes in the `open_dump_only` bucket and excludes
+default-blocked rows such as Software update and Cloud backup. A 2026-06-14
+focused General-section run used that route to open Quick controls, Storage,
+and Ongoing activities with compact child-page dumps and Back return.
+
 For lab automation, ADB can set the `PROJECT_MEDIA` app-op:
 
 ```powershell
