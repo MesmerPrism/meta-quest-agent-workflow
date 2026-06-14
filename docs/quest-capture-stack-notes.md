@@ -172,6 +172,14 @@ python examples\quest-ui-automation\tools\summarize_report.py .\artifacts\quest-
   status, and error presence. Use this before claiming a surface is reachable
   or unreachable on a given Horizon OS build, and keep deeper Metacam settings
   passes scoped to capture-settings mapping.
+- The 2026-06-14 live default reachability pass did not expose distinct Quest
+  quick-settings or notification surfaces through `UiDevice.openQuickSettings`
+  or `UiDevice.openNotification`; `android.settings.SETTINGS` did reach Quest
+  Settings. A scoped Metacam pass showed why accessibility-window evidence
+  matters: shallow Metacam surfaces kept the same merged XML counts as the
+  surrounding panel stack, while `metacamDeepSettings` and
+  `metacamAdvancedSettings` changed the active accessibility root as the camera
+  settings panel opened and scrolled.
 - `scrollProbe` reports also have a redacted summary path. A focused
   `metacamDeepSettings` key-scroll sweep found `KEYCODE_DPAD_DOWN` and
   `KEYCODE_SPACE` can change visible state, while `KEYCODE_PAGE_DOWN` and
