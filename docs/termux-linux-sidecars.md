@@ -71,6 +71,55 @@ Do not require inbound ADB, a public headset listener, or shared LAN reachabilit
 for the normal trigger path. Use direct external ADB only for local setup and
 recovery.
 
+## Outbound Remote Operations
+
+Use `quest-termux-lab` for public-safe remote-operations schemas, the
+controller simulator, the Termux fleet agent, and synthetic fixtures. The safe
+shape is:
+
+```text
+operator web console
+  -> authenticated controller with typed command queue
+  -> command with TTL, idempotency key, operator reason, and lease id
+Quest Termux agent
+  -> outbound poll, long poll, or WebSocket
+  -> active remote-session lease and local allowlist checks
+  -> optional loopback ADB shell gate
+  -> bounded result plus redacted evidence
+```
+
+The browser UI should never become a raw device proxy. Do not expose ADB,
+Termux listeners, VNC, or headset-local HTTP services to the internet. Do not
+tunnel the Quest ADB port. Do not add raw shell, raw input, or terminal-text
+commands. Prefer purpose-specific command kinds such as verified update,
+allowlisted launch, foreground snapshot, bounded logcat, UIAutomator scenario,
+MediaProjection preview request/stop, helper restart status, and ADB lease
+check/disconnect.
+
+Any command beyond passive `agent.status` and `agent.capabilities` should be
+under a human-visible remote-session lease. Record lease id, operator, purpose,
+expiry, scopes, consent mode, visual-confirmation requirement, local ADB shell
+requirement, active-session indicator, and emergency-stop/revocation behavior.
+This lease is separate from the loopback ADB shell lease: a command can have
+operator consent and still fail because `adb shell id` does not report
+`uid=2000(shell)`.
+
+For UIAutomator-backed Quest Settings or recorder mapping, bridge through a
+command like `uiautomator.run_allowlisted_scenario`, not through a free-form
+ADB command. The command should name an allowlisted instrumentation scenario,
+pass small typed extras, default to non-mutating behavior, and return exporter
+summaries. Keep raw XML, screenshots, recordings, logcat bundles, device
+serials, local paths, installed app names, and private package IDs in local
+evidence only.
+
+For visual feedback, use two lanes. The low-risk witness lane is foreground
+readback, focused-window lines, bounded UIAutomator summaries, and explicitly
+allowed screenshots. The interactive lane is an app-owned MediaProjection flow
+with user consent, a visible active-session indicator, and a transport such as
+WebRTC or a simpler authenticated preview stream. MediaProjection can provide
+immediate display-composite frames to an app or receiver, but it is not raw
+camera access and does not bypass user consent.
+
 ## Visible Helper Restart
 
 A normal Android helper can restart a stopped Termux fleet agent when all of

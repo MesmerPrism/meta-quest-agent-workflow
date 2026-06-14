@@ -29,6 +29,11 @@ npx -y @meta-quest/hzdb app --help
 The exact subcommands can change. Prefer `--help` output from the installed
 version over copied commands from old notes.
 
+On the `hzdb` surface checked on 2026-06-14, `capture` documented only
+`screenshot`; it did not expose a video recording command. Use
+`quest-capture-stack-notes.md` before assuming the built-in Quest recorder is
+ADB-controllable.
+
 ## MCP Server Shape
 
 A typical MCP registration uses `npx`:

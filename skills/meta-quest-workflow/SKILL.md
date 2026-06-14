@@ -429,6 +429,23 @@ and let the headset's Termux agent poll outbound. The operator machine does
 not need to share WiFi with the headset. Direct external ADB is setup/recovery
 only in this model.
 
+For off-LAN remote operations beyond passive status, require a human-visible
+remote-session lease. The controller should queue typed commands with TTL,
+idempotency key, operator reason, and lease id. The Termux agent should verify
+the active lease, command allowlist, and local consent state before running a
+bounded action. Keep the browser as a controller UI, not a terminal, raw ADB
+proxy, raw input proxy, or generic Termux shell. Useful command kinds are
+verified update, allowlisted launch, foreground snapshot, bounded logcat,
+UIAutomator allowlisted scenario, MediaProjection preview request/stop, helper
+restart status, and ADB lease check/disconnect.
+
+For UIAutomator-backed Quest Settings or recorder mapping, bridge through a
+command such as `uiautomator.run_allowlisted_scenario`. It should name an
+allowlisted instrumentation scenario, pass small typed extras, default to
+non-mutating behavior, and return exporter summaries rather than raw XML,
+screenshots, recordings, logcat bundles, device serials, local paths,
+installed app names, or private package IDs.
+
 A normal helper APK can restart a stopped Termux fleet agent when it is
 operator-visible, granted `com.termux.permission.RUN_COMMAND`, Termux has
 `allow-external-apps=true`, and the helper starts Termux's
@@ -504,6 +521,7 @@ See the repository `docs/` folder for focused playbooks:
 - `docs/broker-style-localhost-probes.md`
 - `docs/camera-metadata-collection.md`
 - `docs/capture-source-taxonomy.md`
+- `docs/quest-capture-stack-notes.md`
 - `docs/cross-app-content-uri-ipc.md`
 - `docs/long-running-watchdogs.md`
 - `docs/termux-linux-sidecars.md`

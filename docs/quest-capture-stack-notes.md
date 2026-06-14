@@ -175,6 +175,12 @@ Treat this as UI-driven automation, not a stable recorder CLI. Prefer
 resource-id based UIAutomator dumps and taps; do not rely on fixed
 coordinates, and do not pull generated MP4 media into public repos.
 
+If this route is triggered through an off-LAN Termux agent, wrap it as a typed
+`uiautomator.run_allowlisted_scenario` command under an active remote-session
+lease. Return redacted exporter summaries by default. Keep built-in-recorder
+MP4s, raw UI XML, screenshots, logcat, local paths, device serials, installed
+app names, and private package IDs in local evidence only.
+
 Useful inspection commands:
 
 ```powershell

@@ -122,6 +122,11 @@ Use the narrowest provider that answers the question:
 | App-private diagnostics | Camera/source metadata, renderer counters, probe payloads | Pull with `run-as` only when the app is debuggable. |
 | Manual headset action | Permissions, MediaProjection consent, protected prompts, real controllers | Record the user action in the evidence. |
 
+For off-LAN Termux agents, remote-session leases, UIAutomator scenario
+bridges, and MediaProjection preview boundaries, start with
+`docs/termux-linux-sidecars.md`. That lane is a typed, outbound
+remote-operations console pattern, not a browser shell or raw ADB proxy.
+
 ## Repository Layout
 
 ```text
@@ -132,6 +137,7 @@ docs/artifact-and-evidence-discipline.md
 docs/broker-style-localhost-probes.md
 docs/camera-metadata-collection.md
 docs/capture-source-taxonomy.md
+docs/quest-capture-stack-notes.md
 docs/cross-app-content-uri-ipc.md
 docs/long-running-watchdogs.md
 docs/termux-linux-sidecars.md

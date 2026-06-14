@@ -14,6 +14,7 @@ artifact name and report.
 | MediaProjection | Flattened app/display pixels after user consent | Raw camera or protected compositor content |
 | ADB screencap | Still image of what Android exposes to screenshot capture | Full fidelity of protected compositor layers |
 | `hzdb` screenshot | Quest-specific capture route when available | It still has provider-specific timing and policy |
+| Built-in Sharing/MQDH recorder | Operator-visible MP4 capture owned by Meta UI/tools | A documented generic ADB video-recording API |
 | Casting/screenrecord | Operator-visible presentation over a transport | Raw camera texture data |
 | Direct stream frame/status | Frame or metadata pulled from an app, VNC, MJPEG, or broker endpoint | Proof that the headset display or compositor presented the same content |
 | App-private diagnostics | Internal renderer/camera counters and metadata | User-visible proof unless paired with capture |
@@ -55,9 +56,19 @@ over screenshotting a visible browser or cast window. Window captures are useful
 human-observer evidence, but they depend on host foreground, window geometry,
 and desktop capture policy.
 
+For app-owned MediaProjection streams, record whether the stream was encoded
+video, raw RGBA/BGRA frames, or another payload format. A raw `ImageReader`
+route can make frames available immediately for validation or visual feedback
+loops, but it still represents the consented display/app-window composite.
+
 ## Screen Pixels Are Not A Global Ruler
 
 Headset mirror screenshots can be curved, cropped, warped, or compositor
 specific. Use screenshot-pixel measurements as evidence, not as the only source
 of projection truth. If a test needs screen-space coordinate evidence, render
 fiducials and estimate a local display-eye-UV-to-screenshot mapping.
+
+## Focused Notes
+
+See `quest-capture-stack-notes.md` for the current built-in recorder,
+Metacam App Function, `hzdb capture`, and MediaProjection frame-stream notes.
