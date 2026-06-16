@@ -6,7 +6,7 @@ recording path without rediscovering system boundaries.
 ## Built-In Sharing Recorder
 
 Meta documents headset video capture through the Sharing menu and MQDH UI. In
-the current `hzdb` command surface checked on 2026-06-14, `capture` exposes
+the Meta CLI / `hzdb` command surface checked in June 2026, `capture` exposes
 `screenshot` only; it does not expose a public video recording subcommand.
 
 The headset package `com.oculus.metacam` exposes capture metadata, but that is
@@ -380,5 +380,5 @@ run, and do not ship or document it as an in-app permission request.
 Use the built-in Sharing recorder or MQDH when a human can operate the UI and
 the target is a polished MP4. Use MediaProjection when an app or companion
 needs immediate frames for validation, feedback loops, or receiver-side
-analysis. Use `hzdb` or ADB screenshots when one still image is enough. Label
+analysis. Use Meta CLI / `hzdb` or ADB screenshots when one still image is enough. Label
 each artifact by route.

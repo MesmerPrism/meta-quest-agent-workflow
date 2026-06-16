@@ -3,6 +3,9 @@
 Portable agent workflow notes for Meta Quest development, ADB validation,
 Quest APK install/launch loops, Camera2 metadata collection, capture-source
 taxonomy, and Meta Horizon MCP / `hzdb` usage.
+Current public Meta docs name this tool family Meta VR CLI and use `metavr`
+for new manual `npx` setup; `hzdb` remains a compatibility name for older
+MQDH/editor bundles and historical traces.
 
 This repository packages a public-safe version of the local workflow patterns
 used while building Rusty XR. It is intentionally generic: commands use
@@ -36,7 +39,8 @@ are split from read-only inspection.
   logcat windows, and evidence captures are meaningful.
 - Capture-source taxonomy for passthrough, raw camera, environment depth,
   MediaProjection, screenshots, casting, and direct stream-frame witnesses.
-- Meta Horizon MCP / `hzdb` setup notes and safety boundaries.
+- Meta Horizon MCP / Meta VR CLI setup notes and `hzdb` compatibility
+  boundaries.
 - OpenXR tracking and ADB shell-helper boundaries.
 - Reusable PowerShell scripts under `examples/`.
 
@@ -44,8 +48,8 @@ are split from read-only inspection.
 
 - Local machine paths, private repo names, private package identities, signing
   material, device serials, generated screenshots, APKs, or log bundles.
-- A bundled copy of `hzdb`, ADB, Meta SDKs, OpenXR loaders, codec libraries, or
-  any generated tool cache.
+- A bundled copy of Meta VR CLI, `hzdb`, ADB, Meta SDKs, OpenXR loaders, codec
+  libraries, or any generated tool cache.
 - A promise that shell helpers, ADB, or MCP can bypass headset permissions or
   platform policy.
 
@@ -117,10 +121,20 @@ Use the narrowest provider that answers the question:
 | Provider | Good for | Notes |
 | --- | --- | --- |
 | App/broker status endpoint | App-owned health, clock, stream state | Requires the app or service to be running. |
-| Meta Horizon MCP / `hzdb` | Quest-specific docs, device status, logcat, screenshots, Perfetto, assets | Optional provider; verify availability first. |
+| Meta Horizon MCP / Meta VR CLI / `hzdb` | Quest-specific docs, device status, logcat, screenshots, Perfetto, assets | Optional provider; prefer `npx -y metavr` for new manual setup and record the selected route. |
 | ADB | Install, launch, logcat, screenshot, dumpsys, file push/pull, port forward | Developer Mode and user ADB authorization required. |
 | App-private diagnostics | Camera/source metadata, renderer counters, probe payloads | Pull with `run-as` only when the app is debuggable. |
 | Manual headset action | Permissions, MediaProjection consent, protected prompts, real controllers | Record the user action in the evidence. |
+
+## Current Quest/Unity Notes
+
+As of the 2026-06 public-source check, Horizon OS 2.x changes validation
+context: record exact OS and PTC state, Navigator/Home surface, restored or
+snapped panels, privacy indicators, and any Meta system UI that appears during
+a run. Unity projects should verify their pinned Meta XR SDK against the
+current 203.0 release line; several packages now require Unity 6000.0.66f2 or
+newer, Core SDK adds `XR_META_temporal_pixel_synthesis`, and Spatial SDK 0.13.1
+adds `EntityPath` and `VisibilityState`.
 
 For off-LAN Termux agents, remote-session leases, UIAutomator scenario
 bridges, and MediaProjection preview boundaries, start with

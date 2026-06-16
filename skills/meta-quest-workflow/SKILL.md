@@ -1,6 +1,6 @@
 ---
 name: meta-quest-workflow
-description: Use when working with Meta Quest headsets, ADB, Quest APK install/launch/validation, screenshots, logcat, Perfetto, Camera2 metadata, broker-style localhost probes, or Meta Horizon MCP/hzdb workflows.
+description: Use when working with Meta Quest headsets, ADB, Quest APK install/launch/validation, screenshots, logcat, Perfetto, Camera2 metadata, broker-style localhost probes, or Meta Horizon MCP / Meta VR CLI / hzdb workflows.
 ---
 
 # Meta Quest Workflow
@@ -40,8 +40,8 @@ Use the narrowest provider that can answer the question:
 
 1. App-owned or broker-style HTTP/WebSocket status endpoint for app health,
    clock, streams, and command acknowledgements.
-2. Meta Horizon MCP / `hzdb` for Quest-specific docs, device status, logs,
-   screenshots, Perfetto, and asset search when configured.
+2. Meta Horizon MCP / Meta VR CLI / `hzdb` for Quest-specific docs, device
+   status, logs, screenshots, Perfetto, and asset search when configured.
 3. ADB for install, launch, logcat, screenshot, dumpsys, port forwarding, and
    file push/pull.
 4. App-private diagnostics, usually pulled through `run-as` on debuggable
@@ -51,6 +51,35 @@ Use the narrowest provider that can answer the question:
 
 Do not substitute one source for another without labeling it. ADB screenshot,
 MediaProjection, casting, and headset camera frames are different witnesses.
+
+## Current Meta Baseline
+
+As of the 2026-06-16 public-source check:
+
+- Meta's MCP documentation now names the current public tool **Meta VR CLI** and
+  documents `npx -y metavr` for manual CLI/MCP setup. Older MQDH or editor
+  bundles may still expose `hzdb`; keep `hzdb` as a compatibility name for
+  those bundles and historical traces.
+- Choose exactly one MCP route per agent or IDE: MQDH AI Tools, the Meta
+  Horizon editor extension, `agentic-tools`, or manual `npx -y metavr`.
+  Duplicate MCP servers make device logs, screenshots, and Perfetto artifacts
+  harder to attribute.
+- For headset runs, record the CLI/MCP route and version. If device discovery
+  is inconsistent, check whether the selected MQDH/editor bundle is older than
+  Meta's current release notes before blaming ADB or the app.
+- Quest OS validation notes should include the exact Horizon OS version and
+  PTC/non-PTC state. Horizon OS 2.x changes Navigator/Home behavior, app/window
+  restore, window snapping/rescale, virtual hands in Home, and privacy
+  indicators; those can affect foreground and screenshot interpretation.
+- Android panel apps should keep narrow Quest-compatible permissions, use
+  caller-owned `content://` result URIs for private data, and avoid broad
+  storage, overlays, `QUERY_ALL_PACKAGES`, public shared storage, and
+  Termux/ADB as production result channels.
+- Unity Quest work should treat Unity 6 and Meta XR SDK 203.0 as the current
+  public line unless a project pins an older SDK. Current release notes raise
+  minimum Unity support to 6000.0.66f2 for several SDK packages, add
+  `XR_META_temporal_pixel_synthesis`, and include Meta's AI Runtime Optimizer.
+  Spatial SDK 0.13.1 adds `EntityPath` and `VisibilityState`.
 
 ## Safe ADB Baseline
 
@@ -213,8 +242,9 @@ adb -s <serial> shell input keyevent KEYCODE_WAKEUP
 adb -s <serial> shell svc power stayon true
 ```
 
-Use `hzdb device proximity --help` before relying on `hzdb` proximity commands,
-because the exact command shape depends on the installed version.
+Use the installed Meta VR CLI / `hzdb` help before relying on proximity
+commands, because the exact command shape depends on the selected route and
+version.
 
 ## Capture Source Taxonomy
 
@@ -228,8 +258,8 @@ Keep these sources separate:
   camera and not final-display capture.
 - MediaProjection: flattened display or app-window pixels after user consent.
   Use it to inspect what was displayed, not to obtain raw camera frames.
-- ADB or hzdb screenshot: still image witness with its own timing and capture
-  policy.
+- ADB or Meta CLI screenshot: still image witness with its own timing and
+  capture policy.
 - Casting or screenrecord: operator inspection of the presented display, not
   raw camera data.
 - Direct stream frame/status endpoints: app, broker, VNC, or MJPEG evidence
@@ -317,18 +347,19 @@ checks, and Termux or WiFi ADB boundary, read
 `docs/xr-questionnaire-panel-handoff.md` and
 `docs/cross-app-content-uri-ipc.md`.
 
-## Meta Horizon MCP And hzdb
+## Meta Horizon MCP And Meta VR CLI
 
-Meta's Horizon Debug Bridge (`hzdb`) can be used as a CLI and MCP server when
-available. Treat it as an optional Quest-specific provider beside ADB, not as a
-required dependency.
+Meta VR CLI can be used as a CLI and MCP server when available. Older MQDH or
+editor bundles may still expose the same family of tools as `hzdb`. Treat it
+as an optional Quest-specific provider beside ADB, not as a required
+dependency.
 
 Read-only setup checks:
 
 ```powershell
 node --version
 npx --version
-npx -y @meta-quest/hzdb --version
+npx -y metavr --version
 ```
 
 Manual MCP server shape:
@@ -338,7 +369,7 @@ Manual MCP server shape:
   "servers": {
     "meta-horizon-mcp": {
       "command": "npx",
-      "args": ["-y", "@meta-quest/hzdb", "mcp", "server"]
+      "args": ["-y", "metavr", "mcp", "server"]
     }
   }
 }

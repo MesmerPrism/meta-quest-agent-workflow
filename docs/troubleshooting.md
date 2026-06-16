@@ -117,7 +117,18 @@ MediaProjection may require headset approval and can show a protected prompt or
 view selector. Record the prompt as part of the test. ADB cannot turn that into
 a normal app permission.
 
-## hzdb Unavailable
+## Meta VR CLI / hzdb Unavailable
+
+For new manual setup, check Meta VR CLI first:
+
+```powershell
+node --version
+npx --version
+npx -y metavr --version
+```
+
+If a local workflow uses MQDH or an editor extension, the bundled compatibility
+binary may still be named `hzdb`; record that route and version separately.
 
 Fallback to ADB:
 
@@ -128,5 +139,5 @@ adb -s <serial> exec-out screencap -p
 adb -s <serial> shell dumpsys package <package>
 ```
 
-Record that `hzdb` was unavailable and which ADB substitute was used.
-
+Record that Meta VR CLI / `hzdb` was unavailable and which ADB substitute was
+used.

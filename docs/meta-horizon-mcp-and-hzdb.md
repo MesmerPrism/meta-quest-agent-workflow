@@ -1,36 +1,52 @@
-# Meta Horizon MCP And hzdb
+# Meta Horizon MCP And Meta VR CLI
 
-Meta Horizon Debug Bridge (`hzdb`) can be used as a CLI and as an MCP server.
-Treat it as an optional Quest-specific provider beside ADB.
+Meta VR CLI can be used as a CLI and as an MCP server. Treat it as an optional
+Quest-specific provider beside ADB.
 
-Some local notes or messages may shorten this to "hdb"; in this repository the
-command name is written as `hzdb` unless a future Meta release documents a
-different binary name.
+Older Meta Quest Developer Hub or editor-extension bundles may still expose the
+same tool family as Horizon Debug Bridge (`hzdb`), and some local notes may
+shorten that to "hdb". Use `metavr` for new manual setup examples; keep `hzdb`
+as a compatibility name for installed bundles and historical traces.
+
+## Current Baseline
+
+Public Meta docs checked on 2026-06-16 describe:
+
+- manual CLI/MCP route: `npx -y metavr`;
+- MCP server route: `npx -y metavr mcp server`;
+- agentic skills through `meta-quest/agentic-tools`;
+- MQDH/editor-extension routes that may bundle a specific build;
+- one MCP registration route per agent or IDE.
+
+Also check Meta release notes when debugging tool behavior. A stale MQDH or
+editor bundle can lag behind the `npx` package and produce different device
+discovery or command surfaces.
 
 ## Read-Only Discovery
 
-Check whether Node, npm/npx, and `hzdb` are available:
+Check whether Node, npm/npx, and Meta VR CLI are available:
 
 ```powershell
 node --version
 npx --version
-npx -y @meta-quest/hzdb --version
-npx -y @meta-quest/hzdb --help
+npx -y metavr --version
+npx -y metavr --help
 ```
 
 Then inspect the relevant command group:
 
 ```powershell
-npx -y @meta-quest/hzdb device --help
-npx -y @meta-quest/hzdb capture --help
-npx -y @meta-quest/hzdb app --help
+npx -y metavr device --help
+npx -y metavr capture --help
+npx -y metavr app --help
 ```
 
 The exact subcommands can change. Prefer `--help` output from the installed
 version over copied commands from old notes.
 
-On the `hzdb` surface checked on 2026-06-14, `capture` documented only
-`screenshot`; it did not expose a video recording command. Use
+On the Meta CLI surface checked in June 2026, `capture` documented only a
+still screenshot route in the tested bundle; it did not expose a generic video
+recording command. Use
 `quest-capture-stack-notes.md` before assuming the built-in Quest recorder is
 ADB-controllable.
 
@@ -43,7 +59,7 @@ A typical MCP registration uses `npx`:
   "servers": {
     "meta-horizon-mcp": {
       "command": "npx",
-      "args": ["-y", "@meta-quest/hzdb", "mcp", "server"]
+      "args": ["-y", "metavr", "mcp", "server"]
     }
   }
 }
@@ -54,7 +70,7 @@ for the same device can make logs and captures harder to attribute.
 
 ## Provider Selection
 
-Use `hzdb`/MCP when it gives a Quest-specific capability:
+Use Meta VR CLI / MCP when it gives a Quest-specific capability:
 
 ```text
 Quest docs/API search
@@ -83,8 +99,9 @@ If both providers are used, record which one produced each artifact.
 
 ## Permission Grants
 
-Some `hzdb` builds expose app or permission helpers. If available, prefer the
-documented command from `hzdb app --help` and record the `hzdb` version.
+Some Meta CLI builds expose app or permission helpers. If available, prefer
+the documented command from `metavr app --help` or the installed bundle's
+equivalent help output and record the CLI version.
 
 ADB fallback:
 
@@ -101,15 +118,15 @@ also need manifest declarations or headset UI approval.
 
 ## Proximity Holds
 
-`hzdb` can be used as a bounded proximity/stay-awake helper when the installed
-version supports it. A public-safe example shape is:
+Meta VR CLI / `hzdb` can be used as a bounded proximity/stay-awake helper when
+the installed version supports it. A public-safe example shape is:
 
 ```powershell
-npx -y @meta-quest/hzdb device proximity --device <serial> --disable --duration-ms <ms>
+npx -y metavr device proximity --device <serial> --disable --duration-ms <ms>
 ```
 
-Always verify this against `hzdb device proximity --help` on the machine that
-will run it.
+Always verify this against the selected CLI's `device proximity --help` on the
+machine that will run it.
 
 Do not leave a headset in altered proximity or stay-awake state by accident.
 Record the requested duration, final power/proximity readback, and restore

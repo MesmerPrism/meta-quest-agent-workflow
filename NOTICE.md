@@ -3,7 +3,8 @@
 This repository packages public-safe Meta Quest workflow notes and scripts.
 
 Several sections are adapted from public Rusty XR documentation, especially
-the Quest, ADB, camera, capture, broker, and MCP/hzdb workflow notes.
+the Quest, ADB, camera, capture, broker, and Meta VR CLI / MCP / hzdb
+compatibility workflow notes.
 
 Upstream project:
 

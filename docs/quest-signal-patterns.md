@@ -191,20 +191,22 @@ the app build. If `pm grant` reports "not a changeable permission type", do not
 keep retrying; capture the line and use the correct manifest/headset/provider
 route.
 
-## hzdb / HDB Permission Notes
+## Meta VR CLI / hzdb Permission Notes
 
-Some teams refer to Meta Horizon Debug Bridge as `hzdb`, and some shorthand it
-as "hdb". Treat it as an optional provider. Command groups can change, so the
-safe pattern is:
+Meta's current public docs call the tool family Meta VR CLI and use `metavr`
+for new manual setup. Some teams and installed MQDH/editor bundles still refer
+to Meta Horizon Debug Bridge as `hzdb`, and some shorthand it as "hdb". Treat
+it as an optional provider. Command groups can change, so the safe pattern is:
 
 ```powershell
-npx -y @meta-quest/hzdb --version
-npx -y @meta-quest/hzdb --help
-npx -y @meta-quest/hzdb app --help
+npx -y metavr --version
+npx -y metavr --help
+npx -y metavr app --help
 ```
 
-If the installed `hzdb` build exposes an app-permission or app-op command, use
-that and save the exact command plus version. Otherwise use the ADB fallback:
+If the installed Meta CLI / `hzdb` build exposes an app-permission or app-op
+command, use that and save the exact command plus version. Otherwise use the
+ADB fallback:
 
 ```powershell
 adb -s <serial> shell pm grant <package> <permission>
