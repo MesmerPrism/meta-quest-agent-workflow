@@ -70,6 +70,23 @@ open it with shared read/write access. Otherwise the harness can miss real
 markers until timeout and make the run look slower or less deterministic than
 it is.
 
+Verbose Spatial or multi-panel relaunches can also roll early service markers
+out of Quest's log buffer. Preserve stage snapshots or a streaming harness-owned
+window; do not require an early arm/connect token to remain in one final dump.
+
+## Accessibility Window Signals
+
+`TYPE_WINDOW_STATE_CHANGED` and `TYPE_WINDOWS_CHANGED` can provide immediate
+top-level package/class transitions without retrieving UI nodes. They are
+useful for foreground-watchdog diagnostics, including Meta panels that usage
+history may miss.
+
+One physical or synthetic Home action can emit several exact Navigator/shell
+events plus a late generic Meta package tail. Group those events into one Home
+invocation. The late tail may still require another refocus if Horizon finishes
+opening Home after the first launch, but it must not increment an escape
+counter again. See `accessibility-foreground-watchdogs.md`.
+
 ## Critical Signals
 
 Reject or bracket a run when logs contain signals like:

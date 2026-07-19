@@ -21,6 +21,10 @@ are split from read-only inspection.
   localhost probes.
 - Long-running watchdog guidance for ADB-launched device-side helpers that keep
   a development headset awake without pretending to be an APK permission.
+- Privacy-minimized Accessibility foreground-watchdog guidance for observing
+  top-level window transitions, grouping Meta Home event bursts, restoring an
+  exported target activity, and preserving a deliberate escape route without
+  claiming HOME interception or kiosk authority.
 - Termux, Termux:X11, Proot, local dashboard, and localhost-only VNC guidance
   for lab sidecars that stay separate from HOME, ADB shell authority, and XR
   runtime ownership, including the bounded loopback WiFi ADB case after normal
@@ -113,6 +117,9 @@ powershell -NoProfile -ExecutionPolicy Bypass `
    forwarding, and Perfetto capture with an explicit operator decision.
 10. Record provider, command goal, fallback, foreground before/after, and
     artifact paths for every device-facing run.
+11. Treat Accessibility foreground monitoring as special user-enabled
+    capability: disable UI-tree retrieval, separate recovery from escape
+    counting, and revalidate Meta-shell signals after Horizon updates.
 
 ## Provider Model
 
@@ -146,6 +153,7 @@ remote-operations console pattern, not a browser shell or raw ADB proxy.
 ```text
 skills/meta-quest-workflow/SKILL.md
 docs/adb-basics.md
+docs/accessibility-foreground-watchdogs.md
 docs/apk-install-launch.md
 docs/artifact-and-evidence-discipline.md
 docs/broker-style-localhost-probes.md

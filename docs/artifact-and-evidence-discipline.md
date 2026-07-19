@@ -51,6 +51,10 @@ Record at least:
 If using a broker-style endpoint, include status and clock snapshots. If using
 MCP or `hzdb`, include provider version and MCP server route.
 
+For multi-stage watchdog or lifecycle tests, preserve a log snapshot at each
+accepted gate or own a streaming logcat window. Small device buffers can drop
+early connect/arm markers before the final activity and panel logs arrive.
+
 ## Evidence Is Route-Specific
 
 Label artifacts by owner:

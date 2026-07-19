@@ -33,6 +33,11 @@ repository, headset serial, app package, broker implementation, or MCP client.
    caller-created return route such as a `PendingIntent`. See
    `docs/xr-questionnaire-panel-handoff.md` and the generic hardening checklist
    in `docs/cross-app-content-uri-ipc.md`.
+7. For an attended foreground watchdog, use only top-level Accessibility
+   window/package events with UI-content retrieval disabled. Separate refocus
+   requests from distinct Home-invocation counting, retain a deliberate escape,
+   and validate Horizon-specific event bursts and background launch behavior.
+   See `docs/accessibility-foreground-watchdogs.md`.
 
 ## Provider Order
 
@@ -554,6 +559,7 @@ For any headset-facing run, capture:
 See the repository `docs/` folder for focused playbooks:
 
 - `docs/adb-basics.md`
+- `docs/accessibility-foreground-watchdogs.md`
 - `docs/apk-install-launch.md`
 - `docs/artifact-and-evidence-discipline.md`
 - `docs/broker-style-localhost-probes.md`
