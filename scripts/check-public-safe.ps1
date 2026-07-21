@@ -40,7 +40,7 @@ $warnAllowlist = @{
 
 $files = Get-ChildItem -LiteralPath $resolvedRoot -Recurse -File -Force |
     Where-Object {
-        $_.FullName -notmatch "[\\/]\.git[\\/]" -and
+        $_.FullName -notmatch "[\\/]\.git(?:[\\/]|$)" -and
         $_.FullName -notmatch "[\\/]artifacts[\\/]" -and
         $_.FullName -ine $selfPath
     }

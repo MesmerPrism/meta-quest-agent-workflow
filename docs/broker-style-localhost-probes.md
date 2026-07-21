@@ -1,4 +1,10 @@
-# Broker-Style Localhost Probes
+# Manifold And App-Owned Localhost Probes
+
+The filename is retained for compatibility with existing links. For current
+Rusty Morphospace work, Manifold owns accepted command, session, stream, and
+control-transport state. A Quest app or sidecar endpoint is an adapter or
+diagnostic surface; it is not a parallel broker authority. See
+[Rusty Morphospace Repo Routing](rusty-morphospace-repo-routing.md).
 
 Quest apps and sidecar services are easier to validate when they expose a
 small local diagnostic surface. This pattern is useful for agents because it
@@ -39,7 +45,7 @@ watchdog/helper state
 last command acknowledgement
 ```
 
-## Broker Readiness Is Not Render Readiness
+## Control-Service Readiness Is Not Render Readiness
 
 A local status endpoint can prove that a sidecar service is alive. It cannot by
 itself prove that a foreground XR app has:
@@ -52,9 +58,11 @@ submitted a layer
 rendered the expected projection
 ```
 
-Keep these as separate readiness layers. A broker can provide metadata and
-media, while the foreground XR app owns the frame loop, camera texture import,
-source sampling, projection math, controller actions, and layer submission.
+Keep these as separate readiness layers. An app or Manifold adapter can expose
+metadata and accepted session/stream references, while the foreground XR app
+owns the frame loop, camera texture import, source sampling, projection math,
+controller actions, and layer submission. High-rate media uses its dedicated
+route; Manifold control/status payloads do not become the media plane.
 
 ## Useful Status Fields
 
@@ -123,7 +131,7 @@ imports.
 
 ## Evidence Checklist
 
-For every broker probe, save:
+For every local endpoint probe, save:
 
 ```text
 ADB forward command
@@ -133,4 +141,3 @@ app/package foreground before and after if relevant
 clock/timebase response when available
 logcat window around the command
 ```
-

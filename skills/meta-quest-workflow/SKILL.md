@@ -1,623 +1,203 @@
 ---
 name: meta-quest-workflow
-description: Use when working with Meta Quest headsets, ADB, Quest APK install/launch/validation, screenshots, logcat, Perfetto, Camera2 metadata, broker-style localhost probes, or Meta Horizon MCP / Meta VR CLI / hzdb workflows.
+description: 'Use for Meta Quest device work: serial-scoped ADB, APK install/launch/validation, screenshots, screenrecord, logcat, Perfetto, Camera2 metadata, MediaProjection, Termux sidecars, Manifold/app-owned localhost probes, or Meta Horizon MCP / Meta VR CLI / hzdb workflows.'
 ---
 
 # Meta Quest Workflow
 
-Use this skill before an agent touches a Meta Quest headset, ADB transport,
-APK install/launch, screenshots, logcat, Perfetto, camera metadata, or
-Quest-specific MCP tooling.
+Use this skill before touching a Meta Quest headset, ADB transport, APK
+install/launch, screenshots, screenrecord, logcat, Perfetto, camera metadata,
+MediaProjection, Wi-Fi ADB, or Quest-specific MCP tooling.
 
-This is a public, portable skill. It does not assume a particular machine,
-repository, headset serial, app package, broker implementation, or MCP client.
+This is a public, portable device-operation skill. It does not own application
+composition, runtime features, command/session/stream authority, or a specific
+headset, package, repository layout, resource-lock service, or MCP client.
 
-## First Decisions
+## Rusty Morphospace Routing
 
-1. Identify whether the task is planning-only, read-only device inspection,
-   bounded capture, app lifecycle, file mutation, device setting, shell command,
-   network forwarding, or destructive cleanup.
-2. If the task touches a shared headset, long APK build, local port, or capture
-   session, use the team's local resource-locking process before running
-   commands. Keep the default ADB daemon shared for normal
-   `adb -s <serial> ...` clients; lock its lifecycle only before disruptive
-   daemon or transport changes.
-3. Prefer read-only probes before side effects.
-4. Preserve headset power, stay-awake, and proximity state unless the task
-   explicitly asks to test or change those states.
-5. Record evidence: command goal, provider, fallback, serial/model, package,
-   foreground before/after, important status endpoints, artifact paths, and
-   whether any headset prompt or Meta system panel was intentional.
-6. For cross-package foreground handoffs such as an XR app opening a reusable
-   2D questionnaire panel and returning to the same XR app, treat ADB as
-   development fallback only. Prefer a cooperating app contract where the
-   foreground XR app starts the exported 2D panel activity and passes a
-   caller-created return route such as a `PendingIntent`. See
-   `docs/xr-questionnaire-panel-handoff.md` and the generic hardening checklist
-   in `docs/cross-app-content-uri-ipc.md`.
-7. For organization-managed Store apps, identify Individual versus Shared Mode
-   and the active Android user/profile before making availability claims.
-   Treat every paid purchase, Store PIN, payment entry, and terms acceptance as
-   attended account-holder action. See `docs/managed-device-store-apps.md`.
-8. For every PC command that can change headset state, create a receipt before
-   dispatch and advance it through `sent`, `pending`, and `confirmed` only after
-   fresh route-specific device readback. A wearer prompt remains pending until
-   effective state changes. See `docs/host-headset-mutation-confirmation.md`.
+For Rusty Morphospace work, read the repository's
+`docs/rusty-morphospace-repo-routing.md`:
+
+- this repository owns reusable device-operation procedure;
+- `rusty-morphospace-work-environment` owns project composition, closed feature
+  locks, workspace isolation, and workflow contracts;
+- `rusty-quest` owns Quest/Android/OpenXR/Spatial SDK adapters, packaging,
+  permissions, lifecycle, and effective-runtime receipts;
+- `rusty-hostess` owns Windows CLI/API and WPF install, launch, capture,
+  validation, cleanup, and evidence projection;
+- `rusty-manifold` owns accepted command, session, stream, admission, and
+  control-transport state;
+- `rusty-lattice` owns tracked-space relations and poses; Matter and Optics own
+  computational and renderer-neutral visual contracts.
+
+Public Rusty XR is historical/compatibility provenance only. Do not introduce
+new `rusty.xr.*`, `/rustyxr/...`, `RustyXr.*`, or Makepad-specific authority for
+current work.
+
+## First Read
+
+Read only the playbooks needed for the task:
+
+1. `README.md`
+2. `docs/adb-basics.md`
+3. `docs/apk-install-launch.md`
+4. `docs/artifact-and-evidence-discipline.md`
+5. `docs/quest-signal-patterns.md`
+6. `docs/accessibility-foreground-watchdogs.md` for attended foreground
+   monitoring, Meta Home transitions, or special Accessibility enablement
+7. `docs/host-headset-mutation-confirmation.md` for state changes
+8. `docs/managed-device-store-apps.md` for managed modes or Store apps
+9. `docs/quest-capture-stack-notes.md` and
+   `docs/capture-source-taxonomy.md` for capture or streaming
+10. `docs/termux-linux-sidecars.md` when Termux or Wi-Fi ADB is involved
+11. `docs/meta-horizon-mcp-and-hzdb.md` for Meta VR CLI/MCP
+
+When this skill is installed without the repo docs, use the public
+`MesmerPrism/meta-quest-agent-workflow` repository as the playbook source.
+
+## Core Rules
+
+- Identify the exact headset and use `adb -s <serial> ...` for every device
+  command when more than one Android target may exist.
+- Treat the default ADB daemon as shared infrastructure. Coordinate exclusive
+  work per headset; reserve daemon lifecycle only before disruptive
+  kill/start/reconnect, transport, key, binary, or server-port changes.
+- Prefer read-only probes before install, launch, grants, file mutation,
+  settings changes, forwarding, or capture.
+- Preserve power, stay-awake, proximity, settings, app tasks, packages, files,
+  and forwards unless the task explicitly changes them.
+- Gate state-changing operations with explicit operator intent. Record a
+  receipt before dispatch and advance `sent -> pending -> confirmed` only after
+  fresh route-specific headset readback matches.
+- Treat command exit zero, request admission, and a visible permission prompt
+  as dispatch evidence, not confirmation.
+- Keep generated APKs, screenshots, captures, traces, logs, serials, package
+  identities, signing material, and raw device evidence out of public commits.
+- Do not treat ADB synthetic input as Meta Touch/OpenXR controller parity.
+- Do not treat screenshots, casting, screenrecord, or MediaProjection as raw
+  camera access.
+- Keep fused HMD/controller tracking inside the active app's OpenXR session.
+- Keep high-rate camera, depth, mesh, pose, and video bytes out of JSON
+  settings, Android properties, and generic command/status channels.
+- Treat an Accessibility foreground watchdog as a user-enabled diagnostic
+  capability, not HOME interception or kiosk authority. Disable UI-content
+  retrieval, group one Meta Home event burst into one invocation, allow late
+  shell tails to request refocus without double-counting escape gestures, and
+  revalidate exact signals and background launch behavior after Horizon
+  updates.
 
 ## Provider Order
 
-Use the narrowest provider that can answer the question:
+Use the narrowest provider that answers the question:
 
-1. App-owned or broker-style HTTP/WebSocket status endpoint for app health,
-   clock, streams, and command acknowledgements.
+1. App-owned or Manifold-adapter status for app health, clocks, streams, and
+   command acknowledgements.
 2. Meta Horizon MCP / Meta VR CLI / `hzdb` for Quest-specific docs, device
-   status, logs, screenshots, Perfetto, and asset search when configured.
-3. ADB for install, launch, logcat, screenshot, dumpsys, port forwarding, and
-   file push/pull.
-4. App-private diagnostics, usually pulled through `run-as` on debuggable
-   builds.
-5. Manual headset action for runtime permission prompts, MediaProjection
-   consent, protected prompts, and real controller input.
+   status, screenshots, logcat, Perfetto, and assets when configured.
+3. ADB for install, launch, dumpsys, logcat, screencap/screenrecord, forwarding,
+   and file transfer.
+4. App-private diagnostics, normally via `run-as` for debuggable builds.
+5. Manual headset action for runtime permissions, MediaProjection consent,
+   protected prompts, paid Store steps, and real controller input.
 
-Do not substitute one source for another without labeling it. ADB screenshot,
-MediaProjection, casting, and headset camera frames are different witnesses.
+Label the selected provider and version. Do not substitute one capture or
+authority source for another without saying so.
 
-## Current Meta Baseline
+## Safe Device Shape
 
-As of the 2026-06-16 public-source check:
-
-- Meta's MCP documentation now names the current public tool **Meta VR CLI** and
-  documents `npx -y metavr` for manual CLI/MCP setup. Older MQDH or editor
-  bundles may still expose `hzdb`; keep `hzdb` as a compatibility name for
-  those bundles and historical traces.
-- Choose exactly one MCP route per agent or IDE: MQDH AI Tools, the Meta
-  Horizon editor extension, `agentic-tools`, or manual `npx -y metavr`.
-  Duplicate MCP servers make device logs, screenshots, and Perfetto artifacts
-  harder to attribute.
-- For headset runs, record the CLI/MCP route and version. If device discovery
-  is inconsistent, check whether the selected MQDH/editor bundle is older than
-  Meta's current release notes before blaming ADB or the app.
-- Quest OS validation notes should include the exact Horizon OS version and
-  PTC/non-PTC state. Horizon OS 2.x changes Navigator/Home behavior, app/window
-  restore, window snapping/rescale, virtual hands in Home, and privacy
-  indicators; those can affect foreground and screenshot interpretation.
-- Android panel apps should keep narrow Quest-compatible permissions, use
-  caller-owned `content://` result URIs for private data, and avoid broad
-  storage, overlays, `QUERY_ALL_PACKAGES`, public shared storage, and
-  Termux/ADB as production result channels.
-- Individual Mode can expose the consumer Horizon Store when administrator
-  policy permits it; Shared Mode uses a separate managed catalog. Paid
-  entitlements and personal/managed libraries are account-scoped. Automation
-  may inspect or open the Store but must never buy or enter payment/PIN data.
-- A fresh Android task is not necessarily a fresh process. Treat background
-  tasks as normal OS-managed state, and do not add arbitrary app force-stop
-  authority merely for launcher cleanup.
-- For modern TLS Wireless Debugging on the tested Horizon OS build, use an
-  infrastructure Wi-Fi association as the baseline. A router, phone hotspot,
-  PC hotspot, or travel router is sufficient and does not need internet
-  service after setup. Quest-owned Wi-Fi Direct and `LocalOnlyHotspot` can keep
-  local interfaces active without ordinary WLAN, but neither satisfied the
-  platform's Wireless Debugging network gate in the live probe.
-- Unity Quest work should treat Unity 6 and Meta XR SDK 203.0 as the current
-  public line unless a project pins an older SDK. Current release notes raise
-  minimum Unity support to 6000.0.66f2 for several SDK packages, add
-  `XR_META_temporal_pixel_synthesis`, and include Meta's AI Runtime Optimizer.
-  Spatial SDK 0.13.1 adds `EntityPath` and `VisibilityState`.
-
-## Safe ADB Baseline
-
-Use an explicit serial when more than one Android device may be connected:
+Start with serial-scoped readback:
 
 ```powershell
 adb devices -l
 adb -s <serial> shell getprop ro.product.model
 adb -s <serial> shell getprop ro.build.version.release
-adb -s <serial> shell wm size
-adb -s <serial> shell wm density
-```
-
-Focused foreground readback:
-
-```powershell
 adb -s <serial> shell dumpsys window | findstr /i "mCurrentFocus mFocusedApp"
 ```
 
-Avoid broad, repeated `dumpsys activity activities` polling in tight loops
-unless the extra detail is needed.
-
-## APK Install, Grant, Launch
-
-Install a development APK:
+Install and launch only after confirming the target and package:
 
 ```powershell
 adb -s <serial> install -r -d -g <path-to.apk>
+adb -s <serial> shell am start -W -n <package>/<activity>
 ```
 
-Grant declared runtime permissions for unattended development runs:
+Grant only permissions declared by the APK and required by the selected
+profile. Some permissions require manifest declaration or headset UI approval
+and cannot be made effective with `pm grant`.
 
-```powershell
-adb -s <serial> shell pm grant <package> android.permission.CAMERA
-adb -s <serial> shell pm grant <package> horizonos.permission.HEADSET_CAMERA
-adb -s <serial> shell pm grant <package> android.permission.POST_NOTIFICATIONS
-```
-
-Only grant permissions that the APK declares and the profile needs. Some
-permissions are not changeable with `pm grant`; for those, manifest declaration
-or headset UI approval is the relevant gate.
-
-Optional app-specific grants, only when declared and needed:
-
-```powershell
-adb -s <serial> shell pm grant <package> com.oculus.permission.USE_SCENE
-adb -s <serial> shell pm grant <package> horizonos.permission.USE_SCENE
-adb -s <serial> shell pm grant <package> horizonos.permission.AVATAR_CAMERA
-adb -s <serial> shell appops set <package> PROJECT_MEDIA allow
-```
-
-Launch:
-
-```powershell
-adb -s <serial> shell am start -n <package>/<activity>
-```
-
-Watch for failures:
+For a bounded log/capture window:
 
 ```powershell
 adb -s <serial> logcat -c
-adb -s <serial> shell am start -n <package>/<activity>
-Start-Sleep -Seconds 10
+adb -s <serial> shell am start -W -n <package>/<activity>
 adb -s <serial> logcat -d -v threadtime > <out-dir>\logcat.txt
-```
-
-## Logcat And Screenshots
-
-Clear logs immediately before a controlled launch if you need a bounded window:
-
-```powershell
-adb -s <serial> logcat -c
-adb -s <serial> logcat -d -v threadtime > <out-dir>\logcat.txt
-```
-
-Take a simple screenshot:
-
-```powershell
 adb -s <serial> exec-out screencap -p > <out-dir>\screenshot.png
 ```
 
-Treat screenshot timing and capture route as part of the evidence. ADB
-screencap, Meta/hzdb capture, MediaProjection, casting, and screenrecord can
-look similar but answer different questions.
-
-## Capture Readiness Signals
-
-For renderer or camera validation, capture after an app-owned readiness marker,
-not immediately after `am start`.
-
-Useful marker classes:
-
-```text
-source-sampling contract
-projection-coordinate contract
-OpenXR frame submitted
-nonzero XR cadence
-visible camera projection ready
-first camera frame timestamp/source metadata
-```
-
-Recommended sequence:
-
-```text
-clear or start a bounded logcat window
-launch app
-wait for readiness marker or fixed warmup
-settle briefly
-capture screenshot or sequence
-save logcat window and readiness summary
-```
-
-Reject or bracket captures if logs show sleep, standby, display power-off,
-OpenXR session exit, fatal exception, or a protected system prompt that was not
-part of the test.
-
-## Camera Metadata
-
-Start with pure ADB:
-
-```powershell
-adb -s <serial> shell dumpsys media.camera > <out-dir>\dumpsys-media-camera.txt
-adb -s <serial> shell cmd media.camera dump > <out-dir>\cmd-media-camera-dump.txt 2>&1
-```
-
-If an app or broker can run a Camera2 probe, collect app-context metadata too.
-Important fields are camera id, lens facing, physical/logical camera
-relationship, output sizes, FPS ranges, active array, pixel array, crop region,
-sensor orientation, intrinsic calibration, distortion when exposed, lens pose
-translation/rotation/reference, and whether a short open/capture probe
-succeeded.
-
-Model names and camera ids are diagnostics from one runtime, not portable
-constants. Treat per-device homography as runtime metadata or calibration, not
-as a hard-coded value from another headset model.
-
-## Long-Running Watchdogs
-
-For long device workflows, a team may use either a host-side watchdog or an
-ADB-launched device-side shell helper. The device-side helper is usually pushed
-to `/data/local/tmp` and started with `app_process`; it is developer tooling,
-not an installed app capability.
-
-The watchdog should be idempotent:
-
-```text
-observe virtual proximity and wakefulness
-reapply only after drift
-report reapply counts through status
-stop through an explicit operator action
-keep restore of normal proximity as a separate action
-```
-
-Useful readbacks:
-
-```powershell
-adb -s <serial> shell dumpsys vrpowermanager
-adb -s <serial> shell dumpsys power
-adb -s <serial> shell input keyevent KEYCODE_WAKEUP
-adb -s <serial> shell svc power stayon true
-```
-
-Use the installed Meta VR CLI / `hzdb` help before relying on proximity
-commands, because the exact command shape depends on the selected route and
-version.
-
-## Capture Source Taxonomy
-
-Keep these sources separate:
-
-- Native passthrough compositor: user-facing MR background controlled by the
-  runtime. It is not an app-sampleable texture in normal public app code.
-- Raw camera / Passthrough Camera API / Camera2: app-visible frames and camera
-  metadata. Use this for custom CV and camera projection.
-- Environment depth: runtime depth texture and metadata. It is not raw RGB
-  camera and not final-display capture.
-- MediaProjection: flattened display or app-window pixels after user consent.
-  Use it to inspect what was displayed, not to obtain raw camera frames.
-- ADB or Meta CLI screenshot: still image witness with its own timing and
-  capture policy.
-- Casting or screenrecord: operator inspection of the presented display, not
-  raw camera data.
-- Direct stream frame/status endpoints: app, broker, VNC, or MJPEG evidence
-  pulled without relying on host foreground. This proves that the stream route
-  produced content, not that the Quest panel presented it.
-
-## Tracking Boundary
-
-Fused HMD and controller pose belongs in the active XR app's OpenXR session.
-ADB, shell helpers, a 2D broker, and background services are useful for launch,
-logs, status, and transport, but they are not a supported public backdoor to
-another app's fused tracking stream.
-
-If another process needs tracking, add a thin adapter to the foreground XR app:
-
-```text
-OpenXR frame loop
-  -> locate views and action spaces at the selected XrTime
-  -> record validity/tracked flags and timestamps
-  -> publish sanitized snapshots to an app-owned UDP/TCP/WebSocket/broker route
-```
-
-ADB synthetic keys can test Android input routing. They do not prove Meta Touch
-controller action bindings.
-
-## XR Questionnaire Panel Handoff
-
-A reusable questionnaire panel does not need to be packaged inside every XR
-app. The preferred product shape is a cross-package contract:
-
-```text
-foreground XR app
-  -> launch exported 2D questionnaire panel with session id, result URI, and return route
-  -> questionnaire receives normal Quest panel input
-  -> questionnaire writes result JSON to the caller-owned content URI
-  -> questionnaire sends the return route and finishes only its panel activity
-  -> same XR app instance returns to foreground/focus
-```
-
-Use a caller-owned `content://` result URI as the default answer transport.
-For small requests, keep request metadata or JSON in launch extras, grant only
-write access to the result URI, and use an immutable caller-provided
-`PendingIntent` as a completion signal. Store status and answers in the JSON
-result envelope, not in PendingIntent extras.
-
-Prefer a broadcast `PendingIntent` to a private caller receiver as the
-completion callback. Use an activity-return `PendingIntent` only when the
-callee must actively bring the XR activity forward; that path needs Android
-14/15 background-activity-launch validation and Logcat checks for blocked
-launches. PendingIntents should use explicit base intents, a unique request
-code or intent `data` URI, `FLAG_ONE_SHOT`, and `FLAG_IMMUTABLE` unless the
-contract truly requires mutation.
-
-Use an XR-owned `FileProvider` for the simple case: app-private backing file,
-narrow path whitelist, explicit questionnaire package/component, a per-session
-request id and nonce, schema version/hash, and cleanup after ingestion. Use a
-custom provider or manual per-URI grants when large request/result payloads need
-different read/write modes. Intent URI grant flags apply to Intent data and
-`ClipData`, so do not place several URIs in one launch Intent with broad read
-and write flags unless the provider enforces mode per path.
-
-A configured package/activity name can be a foreground-return fallback when a
-`PendingIntent` is unavailable, but it needs package visibility handling and
-wrong-target error reporting.
-
-Modern Android/Horizon gates are part of the product contract: declare narrow
-Android 11+ `<queries>` entries for any package, intent, signing, version, or
-provider checks; declare `android:exported` for Android 12+ intent-filter
-components; avoid `QUERY_ALL_PACKAGES`, broad storage permissions,
-`SYSTEM_ALERT_WINDOW`, and overlay-style return flows on Quest; and exclude
-transient sensitive result directories from backup/data extraction unless
-retention is intentional.
-
-While the questionnaire panel is focused, expect the XR app to lose OpenXR
-`FOCUSED` state and possibly remain only `VISIBLE`. Validate that the XR app
-stays alive and returns to `FOCUSED` after the panel closes. Persist pending
-session state before launch, write result JSON on explicit submit rather than
-`onDestroy()`, and check pending results on callback, resume, and cold start.
-Do not use `force-stop`, package killing, ADB relaunch, Termux file drops,
-shared public storage, or Meta menu navigation as the product-path return or
-result channel.
-
-For the full manifest sketch, launch pattern, validation matrix, security
-checks, and Termux or WiFi ADB boundary, read
-`docs/xr-questionnaire-panel-handoff.md` and
-`docs/cross-app-content-uri-ipc.md`.
-
-## Meta Horizon MCP And Meta VR CLI
-
-Meta VR CLI can be used as a CLI and MCP server when available. Older MQDH or
-editor bundles may still expose the same family of tools as `hzdb`. Treat it
-as an optional Quest-specific provider beside ADB, not as a required
-dependency.
-
-Read-only setup checks:
-
-```powershell
-node --version
-npx --version
-npx -y metavr --version
-```
-
-Manual MCP server shape:
-
-```json
-{
-  "servers": {
-    "meta-horizon-mcp": {
-      "command": "npx",
-      "args": ["-y", "metavr", "mcp", "server"]
-    }
-  }
-}
-```
-
-Choose one MCP registration route per agent or IDE. Do not register multiple
-Meta Horizon MCP servers for the same agent unless the tool explicitly
-supports that.
-
-Use MCP/docs search to verify Quest-specific assumptions before editing
-passthrough, camera, environment depth, input, performance capture, or Horizon
-OS behavior. Gate device-changing MCP tools the same way you would gate the
-equivalent ADB command.
-
-## Broker-Style Localhost Pattern
-
-A Quest app or sidecar broker can expose local status and command endpoints,
-for example:
-
-```text
-http://127.0.0.1:<port>/status
-http://127.0.0.1:<port>/clock/now
-ws://127.0.0.1:<port>/<events-path>
-```
-
-Use ADB forwarding from the host:
-
-```powershell
-adb -s <serial> forward tcp:<host-port> tcp:<device-port>
-curl.exe http://127.0.0.1:<host-port>/status
-```
-
-A broker can report metadata, streams, clocks, launch state, and diagnostic
-probes. It does not own another foreground XR app's OpenXR frame loop, layer
-submission, raw camera texture import, or controller action spaces.
-
-## Termux And Linux Sidecars
-
-Termux can be a useful Quest lab sidecar for CLI diagnostics, local dashboards,
-headless command/status services, Termux:X11 panels, Proot tools, and bounded
-localhost VNC evidence. Treat it as a normal Android app, not Android `shell`,
-not HOME, not a kiosk policy engine, not an XR runtime authority, and not a
-hidden watchdog.
-
-Start with small visible tests:
-
-```text
-Termux CLI
-Headless localhost command/status service
-Termux:X11 with one small X11 client
-Proot CLI
-Proot GUI client only after X11 is visible and stoppable
-localhost dashboard or VNC only through an explicit forward
-```
-
-For XR workflows that need Linux tools but not a visible desktop, prefer a
-headless localhost command/status sidecar. Initial validation showed a
-Termux-owned JSON service can keep answering allowlisted command requests while
-another headset app is foregrounded and no X11 desktop is visible. Before
-product use, add a local capability token or equivalent auth, argument schemas,
-timeouts, cancellation, structured stdout/stderr/status, and audit records.
-
-For Termux-local ADB, require the same authority gate every time:
-
-```sh
-export TMPDIR="${TMPDIR:-$PREFIX/tmp}"
-mkdir -p "$TMPDIR"
-adb connect 127.0.0.1:5555
-adb -s 127.0.0.1:5555 shell id
-```
-
-Only treat the path as shell-capable when the `id` output contains
-`uid=2000(shell)`. If that gate passes, Termux may run bounded developer
-operations such as `adb install -r`, allowlisted app launch, focused dumpsys,
-or bounded logcat through the leased ADB shell. This can avoid Android's
-normal installer confirmation because ADB shell owns the install operation; it
-does not make Termux a device owner, ADB bootstrapper, MDM replacement, or
-reboot-durable updater.
-
-For Android 11+ TLS Wireless Debugging, use the currently discovered dynamic
-connect port rather than assuming classic port `5555`. Do not count Android
-NSD discovery by itself: a network transition can leave a cached
-`_adb-tls-connect._tcp` result after the listener has stopped. Require all of:
-
-```text
-adb_wifi_enabled=1
-current live TLS listener/port
-adb shell id contains uid=2000(shell)
-```
-
-A live Quest probe kept both a peerless Wi-Fi Direct group-owner interface and
-a Quest-owned `LocalOnlyHotspot` interface active after infrastructure Wi-Fi
-was disconnected. In both cases the setting remained or returned to `0`, no
-live TLS listener appeared, and Termux did not receive shell UID `2000`.
-Classify those routes as self-hosted networking evidence, not Wireless ADB
-recovery. The validated TLS route still needs an infrastructure access point,
-but not internet service or a connected PC once installation, grants, and
-pairing are complete.
-
-Keep APK staging readable by Termux. Prefer Termux-private storage for
-downloads. Treat `/data/local/tmp` as external ADB lab staging when used, and
-do not assume public shared storage is readable from every non-interactive
-Termux execution context.
-
-For off-LAN updates, use outbound control as the trigger: publish the APK and
-manifest to HTTPS, queue a bounded command on an internet-reachable controller,
-and let the headset's Termux agent poll outbound. The operator machine does
-not need to share WiFi with the headset. Direct external ADB is setup/recovery
-only in this model.
-
-For off-LAN remote operations beyond passive status, require a human-visible
-remote-session lease. The controller should queue typed commands with TTL,
-idempotency key, operator reason, and lease id. The Termux agent should verify
-the active lease, command allowlist, and local consent state before running a
-bounded action. Keep the browser as a controller UI, not a terminal, raw ADB
-proxy, raw input proxy, or generic Termux shell. Useful command kinds are
-verified update, allowlisted launch, foreground snapshot, bounded logcat,
-UIAutomator allowlisted scenario, MediaProjection preview request/stop, helper
-restart status, and ADB lease check/disconnect.
-
-For UIAutomator-backed Quest Settings or recorder mapping, bridge through a
-command such as `uiautomator.run_allowlisted_scenario`. `quest-termux-lab`
-implements this as a named-scenario bridge: it verifies the remote-session
-lease, checks the loopback ADB shell gate, accepts only configured scenarios
-and allowlisted extras, and defaults to a redacted command summary rather than
-raw XML, screenshots, recordings, logcat bundles, device serials, local paths,
-installed app names, or private package IDs.
-
-Use `systemSurfaceReachability` as the passive first pass when the question is
-which Android-backed Quest system surface is currently visible or reachable.
-Use `settingsRecoveryProbe` for zero-node Quest Settings recovery diagnostics,
-then move to focused settings crawlers or child-page probes only after the
-surface is visible and scoped.
-
-A normal helper APK can restart a stopped Termux fleet agent when it is
-operator-visible, granted `com.termux.permission.RUN_COMMAND`, Termux has
-`allow-external-apps=true`, and the helper starts Termux's
-`RunCommandService` with `startForegroundService()` on Android 8+. A live Quest
-probe force-stopped `com.termux`, launched the helper Activity, observed
-`python termux_fleet_agent.py --config config.json` running again, and saw
-fresh controller heartbeats with `local_adb.available=true` and
-`local_adb.shell_uid=2000`. Treat this as visible stopped-process recovery
-only. It is not WiFi ADB setup, reboot recovery, arbitrary shell, hidden
-watchdog behavior, or app-owned silent install authority.
-
-For VNC, bind to localhost when possible, use ADB forwarding, capture the
-needed evidence, stop the server, remove the forward, and verify cleanup. If a
-VNC server fails on Android shared-memory permissions, retry with an explicit
-no-shared-memory mode and record the exact flags.
-
-For live VNC or MJPEG observation, prefer direct pulls from stream endpoints
-such as `/status.json` and `/frame.jpg` over screenshots of a visible browser
-window. Browser and cast windows are useful human-visible witnesses, but window
-capture depends on host foreground and should be secondary evidence.
-
-Keep X-root visibility, Termux headset-panel visibility, and separate
-viewer-panel visibility distinct. Native phone-like Termux:X11 geometry can
-render in the Quest 2D panel. Exact landscape preferences can fix X-root/VNC
-left-slice output, but Termux's Android activity can still stay constrained or
-letterboxed. Do not rely on shell-level task resize for correction; it can
-mismatch bounds and crop the desktop. For headset-visible full-desktop
-observation, use a separate landscape viewer panel over a localhost-only
-VNC/MJPEG bridge. Initial validation shows this route can present a full
-1280x720 desktop stream in a Quest 2D panel.
-
-Reduce large desktop or Droid-style setup ideas to data-first session recipes:
-preflight, start, status, stop, cleanup, evidence, risk, and authority
-boundary. Do not copy third-party setup source without checking license and
-attribution obligations.
-
-## Side Effects And Gates
-
-Use these default gates:
-
-| Operation class | Default handling |
-| --- | --- |
-| Read-only status, docs, health, package info | Allowed after identifying target. |
-| Bounded capture, screenshots, logcat, Perfetto | Allowed with artifact path and run label. |
-| App lifecycle: install, launch, force-stop, clear | Explicit operator intent. |
-| File read or pull | Explicit source and destination. |
-| File write, push, delete | Explicit operator intent and dry-run when possible. |
-| Device settings: stay-awake, proximity, sensor-lock, testing modes | Explicit intent, bounded duration, restore notes. |
-| Shell helper, network forward, root-like commands | Explicit intent and audit trail. |
-
-For every state-changing row, command exit zero means only that dispatch was
-accepted. Keep the desktop receipt pending until Package Manager, app-owned
-state, settings, power-manager output, properties, hashes, or the refreshed ADB
-inventory confirms the requested effect. Preserve mismatches and timeouts for
-later reconciliation rather than reporting success.
-
-## Evidence Checklist
-
-For any headset-facing run, capture:
-
-- ADB or provider path and version.
-- Serial and model.
-- Command goal.
-- Package/activity or endpoint.
-- Foreground before/after if relevant.
-- Permission grants or prompts.
-- Status endpoint snapshots when available.
-- Logcat file and screenshot path when captured.
-- Whether a Meta system panel or headset permission prompt was intentional.
-- Result and remaining uncertainty.
-
-## References
-
-See the repository `docs/` folder for focused playbooks:
-
-- `docs/adb-basics.md`
-- `docs/apk-install-launch.md`
-- `docs/artifact-and-evidence-discipline.md`
-- `docs/broker-style-localhost-probes.md`
-- `docs/camera-metadata-collection.md`
-- `docs/capture-source-taxonomy.md`
-- `docs/quest-capture-stack-notes.md`
-- `docs/cross-app-content-uri-ipc.md`
-- `docs/long-running-watchdogs.md`
-- `docs/termux-linux-sidecars.md`
-- `docs/meta-horizon-mcp-and-hzdb.md`
-- `docs/managed-device-store-apps.md`
-- `docs/host-headset-mutation-confirmation.md`
-- `docs/openxr-tracking-boundary.md`
-- `docs/permissions-and-distribution-boundary.md`
-- `docs/quest-signal-patterns.md`
-- `docs/shell-helper-boundary.md`
-- `docs/xr-questionnaire-panel-handoff.md`
-- `docs/troubleshooting.md`
+Capture after an app-owned readiness marker or proven warmup. Reject or bracket
+runs contaminated by sleep, display-off, OpenXR exit, fatal exceptions, or an
+unexpected protected system prompt.
+
+## Capture And Streaming Boundaries
+
+- Native passthrough is compositor output, not an app-sampleable texture.
+- Camera2/Passthrough Camera API is app-visible camera data, not final display.
+- Environment depth is neither RGB camera nor final display.
+- MediaProjection is a user-consented app/display composite; each session needs
+  its own token and lifecycle/cleanup evidence.
+- ADB screencap is a still witness with provider-specific policy and timing.
+- ADB `exec-out screenrecord --output-format=h264 ... -` can provide raw
+  Annex-B physical-display H.264 without an APK or device file on validated
+  builds. It may be stereo and lacks useful container timestamps; use an owning
+  wrapper, host-arrival clocking, bounded/explicit stop, decode/readiness
+  evidence, and `pidof screenrecord` cleanup readback.
+- Casting and scrcpy are operator presentation transports, not camera access.
+- Direct frame/status endpoints prove their route produced content, not that
+  the Quest compositor presented the same pixels.
+
+Manifold owns accepted session/stream references. Rusty Quest owns platform
+capture lifecycle; Rusty Hostess owns Windows CLI/API/WPF receiver, preview,
+evidence, and cleanup routes. Dedicated media bytes do not travel through
+Manifold command/status payloads.
+
+## Store, Sidecar, And Local-Service Boundaries
+
+- For organization-managed Store apps, identify Individual versus Shared Mode
+  and the active Android user/profile. Never automate purchases, payment, Store
+  PIN entry, terms acceptance, or account-holder choices.
+- A fresh Android task is not necessarily a fresh process. Do not force-stop
+  unrelated Store apps to clean ordinary background tasks.
+- Treat Termux as a normal Android app. It becomes ADB-shell-capable only when
+  an already-authorized live route reports `uid=2000(shell)`.
+- Treat Wi-Fi Direct or LocalOnlyHotspot topology as separate from Wireless ADB
+  readiness. Require current TLS listener state and shell-UID readback.
+- A Quest-local HTTP/WebSocket service is an app or Manifold adapter. It may
+  expose bounded status and acknowledgements; it does not own another app's
+  OpenXR frame loop or create parallel command/session/stream authority.
+
+## Cleanup And Evidence
+
+For each device-facing run, record:
+
+- provider and version;
+- serial/model and exact target package/activity or endpoint;
+- command goal and operator authorization;
+- foreground and effective state before/after;
+- prompts or manual actions;
+- readiness, status, logcat, capture, and artifact types;
+- result, uncertainty, and cleanup readback.
+
+Restore only state owned by the run. Stop only the target package/process,
+remove only run-owned forwards/files, restore exact prior values where
+recorded, and report anything that could not be restored.
+
+## Stop And Ask
+
+Require explicit operator approval before disruptive ADB daemon work, Wi-Fi ADB
+setup/recovery, app uninstall or data clearing, device file deletion, power or
+proximity policy changes, paid Store actions, long shared-device builds or
+captures, or publishing device-derived/private artifacts.
+
+When durable device, capture, evidence, or repo-routing rules change,
+synchronize this skill, the repo `AGENTS.md`, README, and nearest focused
+playbook. Keep long recipes in those playbooks rather than expanding this file.

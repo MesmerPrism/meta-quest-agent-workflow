@@ -15,8 +15,9 @@ artifact name and report.
 | ADB screencap | Still image of what Android exposes to screenshot capture | Full fidelity of protected compositor layers |
 | `hzdb` screenshot | Quest-specific capture route when available | It still has provider-specific timing and policy |
 | Built-in Sharing/MQDH recorder | Operator-visible MP4 capture owned by Meta UI/tools | A documented generic ADB video-recording API |
-| Casting/screenrecord | Operator-visible presentation over a transport | Raw camera texture data |
-| Direct stream frame/status | Frame or metadata pulled from an app, VNC, MJPEG, or broker endpoint | Proof that the headset display or compositor presented the same content |
+| ADB `screenrecord` MP4 or stdout H.264 | Shell-captured physical-display output, often as a raw stereo headset view | Raw camera texture data or a polished single-view spectator capture |
+| Casting/scrcpy | Operator-visible presentation over a transport | Raw camera texture data |
+| Direct stream frame/status | Frame or metadata pulled from an app, VNC, MJPEG, or an app/Manifold adapter | Proof that the headset display or compositor presented the same content |
 | App-private diagnostics | Internal renderer/camera counters and metadata | User-visible proof unless paired with capture |
 
 ## Naming
@@ -27,6 +28,7 @@ Use filenames that encode source and timing:
 <case>-adb-screencap.png
 <case>-hzdb-screencap.png
 <case>-mediaprojection.png
+<case>-adb-screenrecord.h264
 <case>-camera-probe.json
 <case>-broker-status.json
 <case>-stream-status.json
@@ -71,4 +73,5 @@ fiducials and estimate a local display-eye-UV-to-screenshot mapping.
 ## Focused Notes
 
 See `quest-capture-stack-notes.md` for the current built-in recorder,
-Metacam App Function, `hzdb capture`, and MediaProjection frame-stream notes.
+ADB stdout H.264, Metacam App Function, `hzdb capture`, and MediaProjection
+frame-stream notes.

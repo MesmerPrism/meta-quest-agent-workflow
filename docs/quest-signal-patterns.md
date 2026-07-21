@@ -45,13 +45,14 @@ source metadata
 final projection status
 OpenXR frame
 visibleCameraProjectionReady=true
-RUSTY_XR_MAKEPAD_OPENXR_END_FRAME
-RUSTY_XR_MAKEPAD_CADENCE ... xrUpdateRateHz=<nonzero>
+OPENXR_FRAME_SUBMITTED frame_index=<increasing>
+OPENXR_CADENCE update_rate_hz=<nonzero>
 ```
 
-These names come from one public renderer family, but the pattern is generic:
-capture after an app-authored source/render readiness marker, not after a fixed
-sleep alone.
+Marker names are application contracts. Current Morphospace apps should use
+their owning Rusty Quest/Lattice/Optics vocabulary and preserve old renderer
+markers only inside explicit compatibility tests. Capture after an app-authored
+source/render readiness marker, not after a fixed sleep alone.
 
 If readiness polling times out, classify the run as `timeout` or `needs
 evidence`. Do not silently treat the fixed timeout as success.
@@ -69,6 +70,23 @@ When a process reads a log file while ADB is still writing it, the reader must
 open it with shared read/write access. Otherwise the harness can miss real
 markers until timeout and make the run look slower or less deterministic than
 it is.
+
+Verbose Spatial or multi-panel relaunches can also roll early service markers
+out of Quest's log buffer. Preserve stage snapshots or a streaming harness-owned
+window; do not require an early arm/connect token to remain in one final dump.
+
+## Accessibility Window Signals
+
+`TYPE_WINDOW_STATE_CHANGED` and `TYPE_WINDOWS_CHANGED` can provide immediate
+top-level package/class transitions without retrieving UI nodes. They are
+useful for foreground-watchdog diagnostics, including Meta panels that usage
+history may miss.
+
+One physical or synthetic Home action can emit several exact Navigator/shell
+events plus a late generic Meta package tail. Group those events into one Home
+invocation. The late tail may still require another refocus if Horizon finishes
+opening Home after the first launch, but it must not increment an escape
+counter again. See `accessibility-foreground-watchdogs.md`.
 
 ## Critical Signals
 

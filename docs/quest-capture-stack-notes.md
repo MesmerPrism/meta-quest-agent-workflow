@@ -254,6 +254,38 @@ Use `screenrecord` as a diagnostic witness for raw display output. Do not use
 it as the default source for public onboarding clips when the target is a
 single coherent flat capture.
 
+### Host-streamed Annex-B H.264
+
+A 2026-07-21 Quest 3S validation also confirmed the unadvertised stdout form on
+two headsets running the same tested Horizon OS build:
+
+```powershell
+adb -s <serial> exec-out screenrecord --output-format=h264 --size 3664x1920 --bit-rate 40000000 --time-limit <seconds> -
+```
+
+The command emits Annex-B H.264 without installing an APK, showing a consent
+prompt, or creating a capture file on the headset. Treat it as a developer
+display witness. It still captures the physical stereo display rather than raw
+camera frames or a guaranteed spectator layout.
+
+The raw stream has no useful container presentation timestamps. A low-latency
+preview should clock frames from host arrival, allow late-frame drops, and
+avoid an unbounded playback queue. One working FFplay argument shape is:
+
+```text
+-fflags nobuffer -flags low_delay -probesize 32 -analyzeduration 0
+-use_wallclock_as_timestamps 1 -framedrop -sync ext -f h264 -i pipe:0
+```
+
+Use an owning wrapper rather than an ad hoc infinite pipe for operator work.
+The wrapper should preserve stdout as bytes, bound or explicitly stop the run,
+record capture/decode and visible-preview state separately, check `pidof
+screenrecord`, and leave no recorder process or host viewer after cleanup.
+Current Morphospace implementations route the Quest source/platform portion to
+[Rusty Quest](https://github.com/MesmerPrism/rusty-quest) and the Windows
+CLI/API/WPF capture and evidence workflow to
+[Rusty Hostess](https://github.com/MesmerPrism/rusty-hostess).
+
 ## MediaProjection Frame Streams
 
 MediaProjection is the app-owned route when the goal is live pixels rather
@@ -267,7 +299,7 @@ and requires user consent before each MediaProjection session. See Android's
 [Media projection guide](https://developer.android.com/media/grow/media-projection)
 and [foreground service type guidance](https://developer.android.com/develop/background-work/services/fgs/service-types#media-projection).
 
-The reusable pattern used by the Rusty XR public example is:
+The reusable app-owned pattern is:
 
 1. The foreground activity calls
    `MediaProjectionManager.createScreenCaptureIntent()`.
@@ -310,8 +342,8 @@ A 2026-06-14 Quest 3S probe confirmed the normal app route:
   `SecurityException` with guidance not to reuse `resultData` or invoke
   multiple captures from one token.
 
-The Rusty XR sample protocol is a 4-byte little-endian JSON header length,
-then the JSON header, then the raw payload. Example header fields:
+A portable diagnostic framing example uses a 4-byte little-endian JSON header
+length, then the JSON header, then the raw payload. Example header fields:
 
 ```json
 {
@@ -325,12 +357,12 @@ then the JSON header, then the raw payload. Example header fields:
 }
 ```
 
-Companion receiver shape:
-
-```powershell
-dotnet run --project src\RustyXr.Companion.Cli -- media reverse --serial <serial> --device-port 8787 --host-port 8787
-dotnet run --project src\RustyXr.Companion.Cli -- media receive --port 8787 --out .\artifacts\media-stream --once
-```
+The framing example is not an authority assignment. For current Morphospace
+work, [Manifold](https://github.com/MesmerPrism/rusty-manifold) owns accepted
+session/stream references, Rusty Quest owns the Android capture lifecycle and
+effective-runtime receipt, and Rusty Hostess owns the Windows CLI/API receiver,
+preview, evidence, and cleanup route. High-rate frame bytes stay on a dedicated
+media path rather than a Manifold command/status payload.
 
 MediaProjection still requires headset/user consent in normal app flows. The
 tested Quest prompt was exposed to UIAutomator as
