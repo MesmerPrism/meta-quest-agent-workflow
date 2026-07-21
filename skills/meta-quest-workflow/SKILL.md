@@ -39,6 +39,10 @@ repository, headset serial, app package, broker implementation, or MCP client.
    and the active Android user/profile before making availability claims.
    Treat every paid purchase, Store PIN, payment entry, and terms acceptance as
    attended account-holder action. See `docs/managed-device-store-apps.md`.
+8. For every PC command that can change headset state, create a receipt before
+   dispatch and advance it through `sent`, `pending`, and `confirmed` only after
+   fresh route-specific device readback. A wearer prompt remains pending until
+   effective state changes. See `docs/host-headset-mutation-confirmation.md`.
 
 ## Provider Order
 
@@ -573,6 +577,12 @@ Use these default gates:
 | Device settings: stay-awake, proximity, sensor-lock, testing modes | Explicit intent, bounded duration, restore notes. |
 | Shell helper, network forward, root-like commands | Explicit intent and audit trail. |
 
+For every state-changing row, command exit zero means only that dispatch was
+accepted. Keep the desktop receipt pending until Package Manager, app-owned
+state, settings, power-manager output, properties, hashes, or the refreshed ADB
+inventory confirms the requested effect. Preserve mismatches and timeouts for
+later reconciliation rather than reporting success.
+
 ## Evidence Checklist
 
 For any headset-facing run, capture:
@@ -604,6 +614,7 @@ See the repository `docs/` folder for focused playbooks:
 - `docs/termux-linux-sidecars.md`
 - `docs/meta-horizon-mcp-and-hzdb.md`
 - `docs/managed-device-store-apps.md`
+- `docs/host-headset-mutation-confirmation.md`
 - `docs/openxr-tracking-boundary.md`
 - `docs/permissions-and-distribution-boundary.md`
 - `docs/quest-signal-patterns.md`

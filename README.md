@@ -44,6 +44,8 @@ are split from read-only inspection.
   boundaries.
 - Managed Individual/Shared Mode Store checks, attended paid-entitlement
   validation, and launcher task/process boundaries.
+- Host-to-headset mutation receipts that distinguish command dispatch from
+  pending wearer/device work and confirmation by effective-state readback.
 - OpenXR tracking and ADB shell-helper boundaries.
 - Reusable PowerShell scripts under `examples/`.
 
@@ -127,6 +129,9 @@ powershell -NoProfile -ExecutionPolicy Bypass `
     or provide payment.
 14. Distinguish a fresh Android task from a fresh process. Do not force-stop
     arbitrary Store apps merely to clean normal background tasks.
+15. Model every state-changing PC command as `sent -> pending -> confirmed`.
+    Confirm only from fresh route-specific headset readback; a prompt request
+    or zero process exit code is not confirmation.
 
 ## Provider Model
 
@@ -172,6 +177,7 @@ docs/termux-linux-sidecars.md
 docs/xr-questionnaire-panel-handoff.md
 docs/meta-horizon-mcp-and-hzdb.md
 docs/managed-device-store-apps.md
+docs/host-headset-mutation-confirmation.md
 docs/permissions-and-distribution-boundary.md
 docs/openxr-tracking-boundary.md
 docs/quest-signal-patterns.md
