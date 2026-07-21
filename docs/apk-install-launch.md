@@ -69,6 +69,28 @@ adb -s <serial> shell am start -n <package>/<activity>
 Treat `force-stop` as an app lifecycle operation. It may change immersive
 state, background services, and any broker or companion surfaces.
 
+## Tasks, Processes, And Launcher Handoffs
+
+Leaving an app normally stops its Activity and backgrounds its task. Android
+may retain that process as a cache and reclaim it later. This is not an
+accumulating foreground CPU/GPU workload for a well-behaved app, although
+app-owned services, audio, downloads, or faulty workers can continue.
+
+Task flags do not provide process authority:
+
+- `FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK` can provide a fresh
+  Activity/task for an initial kiosk launch;
+- Android may still reuse the same Linux process and process-wide state;
+- `FLAG_ACTIVITY_REORDER_TO_FRONT` can resume the existing task when a soft
+  watchdog recovers it;
+- an ordinary launcher cannot finish another package's task or reliably kill
+  arbitrary Store apps.
+
+Do not add privileged force-stop behavior merely to clean cached tasks. Use
+`am force-stop <package>` only for an explicitly authorized cold-process test,
+and stop only the named target. See
+[Managed Device Store Apps And Paid Entitlements](managed-device-store-apps.md).
+
 ## Crash Watch
 
 Use a bounded run directory:

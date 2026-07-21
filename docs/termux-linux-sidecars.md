@@ -63,6 +63,43 @@ Termux workspace or another readable path. A host-staged `/data/local/tmp` APK
 is acceptable lab plumbing when recorded as external ADB workflow state, but it
 should not become the default app communication or update channel.
 
+## Modern TLS Wireless Debugging Topology Gate
+
+Do not infer Wireless ADB availability from the presence of a local interface
+or an Android NSD callback. A live Quest probe tested two headset-owned
+topologies after disconnecting the ordinary infrastructure Wi-Fi association:
+
+- peerless Wi-Fi Direct with the Quest as group owner; and
+- Android `LocalOnlyHotspot` with the Quest as hotspot owner.
+
+Both topologies retained a local interface, proving that the headset can host
+local networking without a router. Neither topology started modern TLS
+Wireless Debugging on the tested Horizon OS build:
+
+- `adb_wifi_enabled` remained or returned to `0`;
+- `service.adb.tls.port` was empty;
+- no protected Meta approval Activity appeared; and
+- Termux could not prove `uid=2000(shell)`.
+
+Android NSD also returned a cached `_adb-tls-connect._tcp` endpoint from the
+previous infrastructure-network epoch. Treat discovery as advisory. Recovery
+passes only when the setting is currently enabled, a current TLS listener is
+reachable, and an independent `adb shell id` reports `uid=2000(shell)`.
+
+The validated modern TLS route therefore still requires an infrastructure
+Wi-Fi access point. The provider can be a router, phone hotspot, PC hotspot, or
+travel router; it does not need internet service or a connected PC once the
+one-time installation, grants, authorization, and pairing are complete.
+
+This is consistent with Android's documented requirement that the device and
+workstation use the same wireless network for normal Wireless Debugging and
+with AOSP's ADB manager consulting the active Wi-Fi connection during
+enablement. Horizon OS's protected confirmation Activity is a separate
+platform surface:
+
+- <https://developer.android.com/tools/adb#connect-to-a-device-over-wi-fi>
+- <https://android.googlesource.com/platform/frameworks/base/+/f2387994151f/services/core/java/com/android/server/adb/AdbDebuggingManager.java>
+
 When the headset has internet but is not on the same WiFi as the operator
 machine, trigger updates through outbound control. The operator or CI publishes
 a verified APK manifest to an HTTPS controller; the Termux agent polls outbound,

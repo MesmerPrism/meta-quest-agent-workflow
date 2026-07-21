@@ -17,9 +17,11 @@ repository, headset serial, app package, broker implementation, or MCP client.
 1. Identify whether the task is planning-only, read-only device inspection,
    bounded capture, app lifecycle, file mutation, device setting, shell command,
    network forwarding, or destructive cleanup.
-2. If the task touches a shared headset, ADB server, long APK build, local port,
-   or capture session, use the team's local resource-locking process before
-   running commands.
+2. If the task touches a shared headset, long APK build, local port, or capture
+   session, use the team's local resource-locking process before running
+   commands. Keep the default ADB daemon shared for normal
+   `adb -s <serial> ...` clients; lock its lifecycle only before disruptive
+   daemon or transport changes.
 3. Prefer read-only probes before side effects.
 4. Preserve headset power, stay-awake, and proximity state unless the task
    explicitly asks to test or change those states.
@@ -33,6 +35,10 @@ repository, headset serial, app package, broker implementation, or MCP client.
    caller-created return route such as a `PendingIntent`. See
    `docs/xr-questionnaire-panel-handoff.md` and the generic hardening checklist
    in `docs/cross-app-content-uri-ipc.md`.
+7. For organization-managed Store apps, identify Individual versus Shared Mode
+   and the active Android user/profile before making availability claims.
+   Treat every paid purchase, Store PIN, payment entry, and terms acceptance as
+   attended account-holder action. See `docs/managed-device-store-apps.md`.
 
 ## Provider Order
 
@@ -75,6 +81,19 @@ As of the 2026-06-16 public-source check:
   caller-owned `content://` result URIs for private data, and avoid broad
   storage, overlays, `QUERY_ALL_PACKAGES`, public shared storage, and
   Termux/ADB as production result channels.
+- Individual Mode can expose the consumer Horizon Store when administrator
+  policy permits it; Shared Mode uses a separate managed catalog. Paid
+  entitlements and personal/managed libraries are account-scoped. Automation
+  may inspect or open the Store but must never buy or enter payment/PIN data.
+- A fresh Android task is not necessarily a fresh process. Treat background
+  tasks as normal OS-managed state, and do not add arbitrary app force-stop
+  authority merely for launcher cleanup.
+- For modern TLS Wireless Debugging on the tested Horizon OS build, use an
+  infrastructure Wi-Fi association as the baseline. A router, phone hotspot,
+  PC hotspot, or travel router is sufficient and does not need internet
+  service after setup. Quest-owned Wi-Fi Direct and `LocalOnlyHotspot` can keep
+  local interfaces active without ordinary WLAN, but neither satisfied the
+  platform's Wireless Debugging network gate in the live probe.
 - Unity Quest work should treat Unity 6 and Meta XR SDK 203.0 as the current
   public line unless a project pins an older SDK. Current release notes raise
   minimum Unity support to 6000.0.66f2 for several SDK packages, add
@@ -449,6 +468,26 @@ normal installer confirmation because ADB shell owns the install operation; it
 does not make Termux a device owner, ADB bootstrapper, MDM replacement, or
 reboot-durable updater.
 
+For Android 11+ TLS Wireless Debugging, use the currently discovered dynamic
+connect port rather than assuming classic port `5555`. Do not count Android
+NSD discovery by itself: a network transition can leave a cached
+`_adb-tls-connect._tcp` result after the listener has stopped. Require all of:
+
+```text
+adb_wifi_enabled=1
+current live TLS listener/port
+adb shell id contains uid=2000(shell)
+```
+
+A live Quest probe kept both a peerless Wi-Fi Direct group-owner interface and
+a Quest-owned `LocalOnlyHotspot` interface active after infrastructure Wi-Fi
+was disconnected. In both cases the setting remained or returned to `0`, no
+live TLS listener appeared, and Termux did not receive shell UID `2000`.
+Classify those routes as self-hosted networking evidence, not Wireless ADB
+recovery. The validated TLS route still needs an infrastructure access point,
+but not internet service or a connected PC once installation, grants, and
+pairing are complete.
+
 Keep APK staging readable by Termux. Prefer Termux-private storage for
 downloads. Treat `/data/local/tmp` as external ADB lab staging when used, and
 do not assume public shared storage is readable from every non-interactive
@@ -564,6 +603,7 @@ See the repository `docs/` folder for focused playbooks:
 - `docs/long-running-watchdogs.md`
 - `docs/termux-linux-sidecars.md`
 - `docs/meta-horizon-mcp-and-hzdb.md`
+- `docs/managed-device-store-apps.md`
 - `docs/openxr-tracking-boundary.md`
 - `docs/permissions-and-distribution-boundary.md`
 - `docs/quest-signal-patterns.md`

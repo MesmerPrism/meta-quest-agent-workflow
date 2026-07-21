@@ -24,8 +24,9 @@ are split from read-only inspection.
 - Termux, Termux:X11, Proot, local dashboard, and localhost-only VNC guidance
   for lab sidecars that stay separate from HOME, ADB shell authority, and XR
   runtime ownership, including the bounded loopback WiFi ADB case after normal
-  user authorization and the visible helper restart case for a stopped Termux
-  fleet agent.
+  user authorization, the tested infrastructure-network requirement for
+  modern TLS Wireless Debugging, and the visible helper restart case for a
+  stopped Termux fleet agent.
 - Cross-package XR questionnaire panel handoff guidance for validating a
   foreground XR app launching a reusable 2D panel app and returning to the same
   XR app, with a caller-owned `content://` result URI for answers and no ADB,
@@ -41,6 +42,8 @@ are split from read-only inspection.
   MediaProjection, screenshots, casting, and direct stream-frame witnesses.
 - Meta Horizon MCP / Meta VR CLI setup notes and `hzdb` compatibility
   boundaries.
+- Managed Individual/Shared Mode Store checks, attended paid-entitlement
+  validation, and launcher task/process boundaries.
 - OpenXR tracking and ADB shell-helper boundaries.
 - Reusable PowerShell scripts under `examples/`.
 
@@ -99,20 +102,31 @@ powershell -NoProfile -ExecutionPolicy Bypass `
    `<apk>`, `<out-dir>`.
 2. Keep generated artifacts out of git.
 3. Prefer read-only probes first.
-4. Preserve headset power, stay-awake, and proximity state unless the current
+4. Keep the default ADB daemon shared for serial-scoped clients. Coordinate
+   exclusive work per headset, and lock the daemon lifecycle only for global
+   reset, recovery, transport, key, binary, or port changes.
+5. Preserve headset power, stay-awake, and proximity state unless the current
    test explicitly needs to change them.
-5. Treat ADB grants and launch commands as developer workflows, not production
+6. Treat ADB grants and launch commands as developer workflows, not production
    user experience.
-6. Do not treat ADB synthetic input as proof of Meta Touch/OpenXR controller
+7. Do not treat ADB synthetic input as proof of Meta Touch/OpenXR controller
    input.
-7. Do not treat MediaProjection, screenshots, casting, or screenrecord as raw
+8. Do not treat MediaProjection, screenshots, casting, or screenrecord as raw
    camera access.
-8. Keep fused HMD/controller tracking inside the active XR app's OpenXR
+9. Keep fused HMD/controller tracking inside the active XR app's OpenXR
    session.
-9. Gate app lifecycle, file mutation, device settings, shell commands, network
+10. Gate app lifecycle, file mutation, device settings, shell commands, network
    forwarding, and Perfetto capture with an explicit operator decision.
-10. Record provider, command goal, fallback, foreground before/after, and
+11. Record provider, command goal, fallback, foreground before/after, and
     artifact paths for every device-facing run.
+12. Keep topology proof separate from Wireless ADB proof. A Quest-owned Wi-Fi
+    Direct group or local-only hotspot can provide local networking while the
+    tested Horizon OS build still refuses to start its TLS ADB listener.
+13. Treat paid Store purchases as attended account-holder actions. Automation
+    may inspect or open the Store but must not choose, buy, enter a Store PIN,
+    or provide payment.
+14. Distinguish a fresh Android task from a fresh process. Do not force-stop
+    arbitrary Store apps merely to clean normal background tasks.
 
 ## Provider Model
 
@@ -157,6 +171,7 @@ docs/long-running-watchdogs.md
 docs/termux-linux-sidecars.md
 docs/xr-questionnaire-panel-handoff.md
 docs/meta-horizon-mcp-and-hzdb.md
+docs/managed-device-store-apps.md
 docs/permissions-and-distribution-boundary.md
 docs/openxr-tracking-boundary.md
 docs/quest-signal-patterns.md

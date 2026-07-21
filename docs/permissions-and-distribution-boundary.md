@@ -10,6 +10,23 @@ manual headset user approval
 
 Keep them separate.
 
+## Managed Device And Store Authority
+
+Managed-device enrollment does not give an ordinary launcher the device
+owner's authority. First identify the Horizon managed mode:
+
+- Individual Mode can expose the consumer Store when administrator policy
+  permits it, including account-scoped paid purchases.
+- Shared Mode does not expose the consumer Store; its managed **Discover
+  Apps** catalog is a separate administrator distribution surface.
+
+Opening a Store Activity through ADB is developer lifecycle control, not
+purchase consent. Buying, entering a Store PIN, adding payment, accepting
+terms, and choosing an account remain attended wearer actions. Managed and
+personal account libraries are separate, so validate under the same
+user/profile as the launcher. See
+[Managed Device Store Apps And Paid Entitlements](managed-device-store-apps.md).
+
 ## Installed APK
 
 An installed APK can only use permissions that are declared in its manifest and
