@@ -30,9 +30,17 @@ $warnPatterns = @(
     [ordered]@{ name = "possible-secret-word"; pattern = "(?i)\b(secret|password|api[_-]?key|access[_-]?token)\b" }
 )
 
+$warnAllowlist = @{
+    # Public Meta Help Center article IDs resemble Quest serials but are stable source URLs.
+    "possible-device-serial" = @(
+        "https://www.facebook.com/help/1093311068161696/",
+        "https://www.facebook.com/help/929282808591864/"
+    )
+}
+
 $files = Get-ChildItem -LiteralPath $resolvedRoot -Recurse -File -Force |
     Where-Object {
-        $_.FullName -notmatch "[\\/]\.git[\\/]" -and
+        $_.FullName -notmatch "[\\/]\.git(?:[\\/]|$)" -and
         $_.FullName -notmatch "[\\/]artifacts[\\/]" -and
         $_.FullName -ine $selfPath
     }
@@ -59,7 +67,11 @@ foreach ($file in $files) {
     }
 
     foreach ($entry in $warnPatterns) {
-        if ([regex]::IsMatch($text, $entry.pattern)) {
+        $warningText = $text
+        foreach ($allowedText in $warnAllowlist[$entry.name]) {
+            $warningText = $warningText.Replace($allowedText, "")
+        }
+        if ([regex]::IsMatch($warningText, $entry.pattern)) {
             $warnings.Add([ordered]@{
                 file = $file.FullName
                 pattern = $entry.name

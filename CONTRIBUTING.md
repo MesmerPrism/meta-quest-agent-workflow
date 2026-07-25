@@ -14,11 +14,15 @@ Keep this repository portable and public-safe.
   prompts, Store policy, or OpenXR focus/session ownership.
 - Keep read-only, bounded capture, app lifecycle, file mutation, device setting,
   shell command, network forward, and destructive operations visibly separate.
+- Route current Rusty Morphospace work through
+  `docs/rusty-morphospace-repo-routing.md`. Keep old Rusty XR names in
+  historical attribution or explicit compatibility notes only.
 
 Run the public-safety scan before publishing:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-public-safe.ps1
+pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-public-safe.ps1
+pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-rusty-morphospace-routing.ps1
 ```
 
 ## Documentation Style

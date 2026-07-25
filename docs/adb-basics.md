@@ -21,6 +21,29 @@ adb -s <serial> shell getprop ro.build.version.sdk
 adb -s <serial> shell getprop ro.build.fingerprint
 ```
 
+## Parallel Devices And Clients
+
+One default ADB server is designed to multiplex multiple connected devices and
+multiple client processes. Keep that daemon shared and run independent work in
+separate terminals with an explicit serial on every device command:
+
+```powershell
+adb -s <serial-a> shell getprop ro.product.model
+adb -s <serial-b> shell getprop ro.product.model
+```
+
+Coordinate exclusive work per device rather than locking the daemon merely
+because a command uses ADB. Reserve or lock the ADB server lifecycle only before
+global operations such as `adb kill-server`, daemon start/restart or recovery,
+Wi-Fi ADB setup, changing ADB binaries or authorization keys, or intentionally
+owning another server port. A broad `adb-server` lock should not block normal
+`adb devices` discovery or serial-scoped commands.
+
+Running a second ADB server on another port is possible, but two host daemons
+can compete for the same USB interfaces. Use a separate server port only when
+it owns a deliberately isolated transport; use a VM or another host when USB
+ownership must be truly separate.
+
 Display basics:
 
 ```powershell
