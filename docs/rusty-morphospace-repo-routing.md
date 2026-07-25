@@ -18,6 +18,7 @@ changing the separately governed runtime/module baseline.
 | [rusty-morphospace-work-environment](https://github.com/MesmerPrism/rusty-morphospace-work-environment) | Portable onboarding, project composition, feature locks, workspace isolation, and workflow contracts. |
 | [rusty-quest](https://github.com/MesmerPrism/rusty-quest) | Quest/Android/OpenXR/Spatial SDK apps and platform adapters, permissions, packaging, lifecycle, and effective-runtime evidence. |
 | [rusty-hostess](https://github.com/MesmerPrism/rusty-hostess) | Windows CLI/API and WPF operator routes for install, launch, capture, validation, cleanup, and evidence projection. |
+| [rusty-fleet](https://github.com/MesmerPrism/rusty-fleet) | Multi-headset Fleet Hub, Fleet Console, `fleetctl`, operator policy, enrollment/status projections, and no-ADB monitoring. The permission-minimal Quest Fleet Agent producer remains in Rusty Quest. |
 | [rusty-manifold](https://github.com/MesmerPrism/rusty-manifold) | Command, session, stream, host-manifest, admission, and control-transport authority. |
 | [rusty-manifold-packages](https://github.com/MesmerPrism/rusty-manifold-packages) | Product-specific Manifold packages that must not broaden core authority. |
 | [rusty-lattice](https://github.com/MesmerPrism/rusty-lattice) | Reference spaces, transforms, poses, view sets, validity, confidence, staleness, and capability snapshots. |
@@ -36,6 +37,10 @@ Use this repository for the device-facing procedure around those owners:
 project composition and exact feature lock
   -> Rusty Quest build and runtime/profile authority
   -> this repo's serial-scoped device-operation procedure
+  -> Rusty Quest Fleet Agent proposal when fleet monitoring is enabled
+  -> Rusty Fleet ingress verifies Fleet enrollment and signer binding
+  -> the pinned Manifold adapter reviews peer-status authority
+  -> both Fleet and Manifold transitions apply, or neither does
   -> Rusty Hostess CLI/API-equivalent orchestration and evidence projection
   -> effective-runtime and cleanup readback
 ```
@@ -44,6 +49,17 @@ For commands, sessions, streams, and peer state, Manifold owns the accepted
 contract and revision. A Quest-local HTTP/WebSocket service, ADB forward, Binder
 surface, or sidecar is a transport/platform adapter. It must not define a
 second command or stream authority.
+
+Rusty Fleet owns the multi-headset product and fleet-level projections, but it
+does not discover or silently enroll a headset through this device-workflow
+repository. Its permission-minimal baseline consumes explicit app-private
+configuration in the Rusty Quest Fleet Agent, leaves unsupported arbitrary
+foreground observation unknown, and sends signed proposals to an
+already-enrolled Hub. Fleet ingress verifies its device enrollment and key
+binding, then uses the exact pinned Manifold adapter for peer-status review;
+the two state transitions are committed transactionally or rejected together.
+ADB remains an optional validation and maintenance route, not the base
+monitoring transport.
 
 For tracking, the active OpenXR app obtains fused poses and routes generic
 relation snapshots through Lattice contracts. ADB, shell helpers, background

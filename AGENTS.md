@@ -15,6 +15,9 @@ application behavior.
   packaging, permissions, lifecycle, and effective-runtime receipts.
 - `rusty-hostess` owns Windows CLI/API and WPF operator workflows for install,
   launch, capture, validation, cleanup, and evidence projection.
+- `rusty-fleet` owns multi-headset Hub, Console, `fleetctl`, operator policy,
+  enrollment/status projections, and no-ADB fleet monitoring. Its Quest Fleet
+  Agent producer remains in the Rusty Quest platform lane.
 - `rusty-manifold` owns command, session, stream, and control-transport
   authority. A local HTTP or WebSocket endpoint is an adapter into that owner,
   not a parallel broker authority.

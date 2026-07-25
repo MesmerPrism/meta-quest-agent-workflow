@@ -169,6 +169,7 @@ application stack. Current work routes through these public owners:
 | Portable project workflow, exact composition, isolation, and feature locks | [rusty-morphospace-work-environment](https://github.com/MesmerPrism/rusty-morphospace-work-environment) |
 | Quest/Android/OpenXR/Spatial SDK apps and platform receipts | [rusty-quest](https://github.com/MesmerPrism/rusty-quest) |
 | Windows CLI/API and WPF install, capture, validation, and evidence workflows | [rusty-hostess](https://github.com/MesmerPrism/rusty-hostess) |
+| Multi-headset Hub, Console, `fleetctl`, operator policy, and no-ADB monitoring | [rusty-fleet](https://github.com/MesmerPrism/rusty-fleet) |
 | Command, session, stream, admission, and control-transport authority | [rusty-manifold](https://github.com/MesmerPrism/rusty-manifold) |
 | Tracked-space relations and poses | [rusty-lattice](https://github.com/MesmerPrism/rusty-lattice) |
 | Computational and renderer-neutral visual contracts | [rusty-matter](https://github.com/MesmerPrism/rusty-matter) and [rusty-optics](https://github.com/MesmerPrism/rusty-optics) |

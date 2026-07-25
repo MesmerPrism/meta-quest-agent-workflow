@@ -25,6 +25,9 @@ For Rusty Morphospace work, read the repository's
   permissions, lifecycle, and effective-runtime receipts;
 - `rusty-hostess` owns Windows CLI/API and WPF install, launch, capture,
   validation, cleanup, and evidence projection;
+- `rusty-fleet` owns the multi-headset Hub, Console, `fleetctl`, operator
+  policy, enrollment/status projections, and no-ADB fleet monitoring; its Quest
+  Fleet Agent producer remains in the Rusty Quest platform lane;
 - `rusty-manifold` owns accepted command, session, stream, admission, and
   control-transport state;
 - `rusty-lattice` owns tracked-space relations and poses; Matter and Optics own

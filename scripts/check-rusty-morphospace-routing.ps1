@@ -23,6 +23,7 @@ $requiredRepositories = @(
     "rusty-gui",
     "rusty-quest",
     "rusty-hostess",
+    "rusty-fleet",
     "quest-termux-lab",
     "rusty-quest-sidecar-mesh"
 )
