@@ -108,9 +108,10 @@ When this skill is installed without the repo docs, use the public
   date-time syntax, with an explicit zone, before timestamp semantics are
   evaluated. Normalize schema-valid numeric offsets through `+23:59` and
   `-23:59` without imposing .NET's narrower 14-hour offset-constructor limit.
-  Treat `descriptor-available` as description availability only, never backend
-  health, target availability, activation, approval, authority, or an execution
-  grant.
+  Normalize RFC3339 leap second `:60` to the following second before applying
+  the offset. Treat `descriptor-available` as description availability only,
+  never backend health, target availability, activation, approval, authority,
+  or an execution grant.
 - Keep local File Manager and managed Fleet execution contracts disjoint.
   Portable workflow intents contain no private resolver, target, approval, or
   authority fields.

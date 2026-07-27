@@ -194,7 +194,7 @@ function ConvertFrom-DiscoveryRfc3339Timestamp {
         "^(?<date>[0-9]{4}-(?:0[1-9]|1[0-2])-" +
         "(?:0[1-9]|[12][0-9]|3[01]))[Tt]" +
         "(?<time>(?:[01][0-9]|2[0-3]):[0-5][0-9]:" +
-        "(?:[0-5][0-9]|60))(?<fraction>\.[0-9]+)?" +
+        "(?<second>[0-5][0-9]|60))(?<fraction>\.[0-9]+)?" +
         "(?<zone>[Zz]|(?<sign>[+-])" +
         "(?<offset_hour>(?:[01][0-9]|2[0-3])):" +
         "(?<offset_minute>[0-5][0-9]))$"
@@ -206,10 +206,16 @@ function ConvertFrom-DiscoveryRfc3339Timestamp {
         $syntaxMatch.Success
     ) "$Location must use RFC3339 date-time syntax."
 
+    $localTime = $syntaxMatch.Groups["time"].Value
+    $isLeapSecond =
+        $syntaxMatch.Groups["second"].Value -ceq "60"
+    if ($isLeapSecond) {
+        $localTime = $localTime.Substring(0, 6) + "59"
+    }
     $localTimestamp =
         $syntaxMatch.Groups["date"].Value +
         "T" +
-        $syntaxMatch.Groups["time"].Value +
+        $localTime +
         $syntaxMatch.Groups["fraction"].Value +
         "Z"
     $localInstant = [DateTimeOffset]::MinValue
@@ -234,8 +240,17 @@ function ConvertFrom-DiscoveryRfc3339Timestamp {
             $offsetMinutes = -$offsetMinutes
         }
     }
+    $localTicks = [long]$localInstant.Ticks
+    if ($isLeapSecond) {
+        Assert-True (
+            $localTicks -le (
+                [DateTimeOffset]::MaxValue.Ticks -
+                [TimeSpan]::TicksPerSecond)
+        ) "$Location leap-second normalization exceeds the supported instant range."
+        $localTicks += [TimeSpan]::TicksPerSecond
+    }
     $utcTicks =
-        $localInstant.Ticks -
+        $localTicks -
         ([long]$offsetMinutes * [TimeSpan]::TicksPerMinute)
     Assert-True (
         $utcTicks -ge [DateTimeOffset]::MinValue.Ticks -and
@@ -678,6 +693,27 @@ Assert-DiscoveryRejected `
     "non-rfc3339-offset-24-hours" `
     $rfc3339InvalidOffset `
     $discoveryNow
+
+$leapSecondNow = [DateTimeOffset]::Parse(
+    "1991-01-01T00:02:00Z",
+    [System.Globalization.CultureInfo]::InvariantCulture,
+    [System.Globalization.DateTimeStyles]::RoundtripKind)
+$rfc3339LeapSecond = Copy-JsonValue $discovery
+$rfc3339LeapSecond.availability.observed_at_utc =
+    "1990-12-31T23:59:60Z"
+$rfc3339LeapSecond.availability.expires_at_utc =
+    "1991-01-01T00:05:00Z"
+Assert-ProviderCapabilityDiscovery `
+    -Value $rfc3339LeapSecond `
+    -Now $leapSecondNow
+
+$rfc3339InvalidSecond = Copy-JsonValue $rfc3339LeapSecond
+$rfc3339InvalidSecond.availability.observed_at_utc =
+    "1990-12-31T23:59:61Z"
+Assert-DiscoveryRejected `
+    "non-rfc3339-second-61" `
+    $rfc3339InvalidSecond `
+    $leapSecondNow
 
 $timestampWithSpace = Copy-JsonValue $discovery
 $timestampWithSpace.availability.observed_at_utc =

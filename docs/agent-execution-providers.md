@@ -55,7 +55,9 @@ or arguments. Timestamp fields must first match RFC3339 date-time syntax,
 including an explicit `Z` or numeric offset through `+23:59` or `-23:59`,
 before being normalized to an instant for freshness evaluation. Consumers must
 not narrow that schema range to the platform-specific `DateTimeOffset`
-constructor limit of 14 offset hours.
+constructor limit of 14 offset hours. RFC3339 leap-second timestamps using
+second `60` are normalized to the following second before the numeric offset
+is applied; second `61` is invalid.
 
 Consumers must:
 
