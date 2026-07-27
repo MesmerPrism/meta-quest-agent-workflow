@@ -97,7 +97,13 @@ When this skill is installed without the repo docs, use the public
   schema, provider version, capability, action, and contract-version match.
   Reject duplicate IDs, future observations, expired descriptors, freshness
   windows over 600 seconds, unknown authentication requirements, and sensitive
-  or executable fields. Treat `descriptor-available` as description
+  or executable fields. Apply the workflow's semantic validator in addition
+  to structural JSON Schema validation: timestamp interval and declared
+  maximum age must correspond exactly, observations later than the validation
+  clock fail, and provider/capability/contract/receipt/action identifiers must
+  reject generic shell, ADB, exec/execute, MCP, arbitrary-command, and raw-args
+  forms without rejecting a bounded typed name such as
+  `request-wireless-adb`. Treat `descriptor-available` as description
   availability only, never backend health, target availability, activation,
   approval, authority, or an execution grant.
 - Keep local File Manager and managed Fleet execution contracts disjoint.

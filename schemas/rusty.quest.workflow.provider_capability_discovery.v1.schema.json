@@ -1,6 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/MesmerPrism/meta-quest-agent-workflow/schemas/rusty.quest.workflow.provider_capability_discovery.v1.schema.json",
+  "$comment": "JSON Schema validation is structural. Consumers must also enforce unique capability/action IDs, observed-at before expiry, exact maximum-age correspondence, the 600-second maximum, current freshness, and executable-vocabulary rejection.",
   "title": "Rusty Quest inert provider capability discovery v1",
   "description": "A short-lived, target-free description of a typed provider surface. It grants no execution, resolves no target, and carries no invocation, endpoint, credential, or coordination data.",
   "type": "object",

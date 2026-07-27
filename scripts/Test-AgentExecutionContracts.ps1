@@ -1,5 +1,7 @@
 param(
-    [string]$Root = "."
+    [string]$Root = ".",
+    [string]$ProviderDiscoveryPath = "",
+    [string]$ValidationNowUtc = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -117,6 +119,44 @@ function Assert-BoundedStringArray {
     ) "$Location contains a duplicate value."
 }
 
+function Assert-SafeDiscoveryIdentifier {
+    param(
+        [string]$Value,
+        [string]$Location
+    )
+
+    $normalized = $Value.ToLowerInvariant().Replace(".", "-").Replace("_", "-")
+    while ($normalized.Contains("--")) {
+        $normalized = $normalized.Replace("--", "-")
+    }
+    $tokens = @($normalized.Split(
+        "-",
+        [System.StringSplitOptions]::RemoveEmptyEntries))
+    foreach ($blockedToken in @("shell", "exec", "execute", "mcp")) {
+        Assert-True (
+            $tokens -cnotcontains $blockedToken
+        ) "$Location contains executable vocabulary '$blockedToken'."
+    }
+    Assert-True (
+        $normalized -cne "adb"
+    ) "$Location cannot advertise generic ADB."
+    foreach ($blockedSequence in @(
+        "raw-shell",
+        "raw-adb",
+        "generic-adb",
+        "adb-args",
+        "execute-command",
+        "mcp-execute",
+        "arbitrary-command",
+        "raw-args"
+    )) {
+        Assert-True (
+            $normalized -cnotmatch
+            "(^|-)$([regex]::Escape($blockedSequence))($|-)"
+        ) "$Location contains executable vocabulary '$blockedSequence'."
+    }
+}
+
 function Assert-ProviderCapabilityDiscovery {
     param(
         [object]$Value,
@@ -145,6 +185,9 @@ function Assert-ProviderCapabilityDiscovery {
     Assert-True (
         ([string]$Value.provider.id -cmatch "^[a-z0-9][a-z0-9._-]{1,158}[a-z0-9]$")
     ) "Discovery provider ID is invalid."
+    Assert-SafeDiscoveryIdentifier `
+        -Value ([string]$Value.provider.id) `
+        -Location "discovery.provider.id"
     Assert-True (
         ([string]$Value.provider.version -cmatch "^[0-9]+\.[0-9]+\.[0-9]+(?:-[a-z0-9.-]+)?$") -and
         ([string]$Value.provider.version).Length -le 64
@@ -192,7 +235,7 @@ function Assert-ProviderCapabilityDiscovery {
         [long]$maximumAge -ge 1 -and
         [long]$maximumAge -le 600
     ) "Discovery maximum age is invalid."
-    Assert-True ($observedAt -le $Now.AddSeconds(30)) "Discovery observation is in the future."
+    Assert-True ($observedAt -le $Now) "Discovery observation is in the future."
     Assert-True ($expiresAt -gt $Now) "Discovery descriptor is stale."
     Assert-True ($expiresAt -gt $observedAt) "Discovery expiry must follow observation."
     Assert-True (
@@ -243,12 +286,20 @@ function Assert-ProviderCapabilityDiscovery {
             ([string]$capability.id -cmatch "^[a-z0-9][a-z0-9._-]{1,158}[a-z0-9]$") -and
             $capabilityIds.Add([string]$capability.id)
         ) "Discovery capability ID is invalid or duplicated."
+        Assert-SafeDiscoveryIdentifier `
+            -Value ([string]$capability.id) `
+            -Location "discovery.capability.id"
         Assert-BoundedStringArray `
             -Values @($capability.contract_versions) `
             -Minimum 1 `
             -Maximum 8 `
             -Pattern "^[a-z0-9][a-z0-9._-]{1,190}[a-z0-9]$" `
             -Location "discovery.capability.contract_versions"
+        foreach ($contractVersion in @($capability.contract_versions)) {
+            Assert-SafeDiscoveryIdentifier `
+                -Value ([string]$contractVersion) `
+                -Location "discovery.capability.contract_versions"
+        }
         Assert-True (
             [string]$capability.effect_owner -cmatch
             "^[a-z0-9][a-z0-9._-]{1,158}[a-z0-9]$"
@@ -257,6 +308,9 @@ function Assert-ProviderCapabilityDiscovery {
             [string]$capability.receipt_schema -cmatch
             "^[a-z0-9][a-z0-9._-]{1,190}[a-z0-9]$"
         ) "Discovery receipt schema is invalid."
+        Assert-SafeDiscoveryIdentifier `
+            -Value ([string]$capability.receipt_schema) `
+            -Location "discovery.capability.receipt_schema"
         Assert-BoundedStringArray `
             -Values @($capability.exclusions) `
             -Minimum 1 `
@@ -280,6 +334,9 @@ function Assert-ProviderCapabilityDiscovery {
                 ([string]$action.id -cmatch "^[A-Za-z0-9][A-Za-z0-9._-]{0,94}[A-Za-z0-9]$") -and
                 $actionIds.Add([string]$action.id)
             ) "Discovery action ID is invalid or duplicated."
+            Assert-SafeDiscoveryIdentifier `
+                -Value ([string]$action.id) `
+                -Location "discovery.capability.action.id"
             Assert-True (
                 @("observe", "effect", "cleanup") -ccontains
                 [string]$action.kind
@@ -432,6 +489,13 @@ $overlong.availability.expires_at_utc = "2026-07-27T10:10:01.0000000Z"
 $overlong.availability.maximum_age_seconds = 601
 Assert-DiscoveryRejected "over-600-seconds" $overlong $discoveryNow
 
+$futureObservation = Copy-JsonValue $discovery
+$futureObservation.availability.observed_at_utc =
+    "2026-07-27T10:02:01.0000000Z"
+$futureObservation.availability.expires_at_utc =
+    "2026-07-27T10:07:01.0000000Z"
+Assert-DiscoveryRejected "future-observation" $futureObservation $discoveryNow
+
 $duplicateCapability = Copy-JsonValue $discovery
 $duplicateCapability.capabilities = @($duplicateCapability.capabilities) +
     @(Copy-JsonValue $duplicateCapability.capabilities[0])
@@ -456,6 +520,174 @@ Assert-DiscoveryRejected "executable-invocation" $invocation $discoveryNow
 $authorizing = Copy-JsonValue $discovery
 $authorizing.authorizes_execution = $true
 Assert-DiscoveryRejected "authorizes-execution" $authorizing $discoveryNow
+
+$legitimateWirelessAdb = Copy-JsonValue $discovery
+$legitimateWirelessAdb.capabilities[0].actions[0].id =
+    "request-wireless-adb"
+Assert-ProviderCapabilityDiscovery `
+    -Value $legitimateWirelessAdb `
+    -Now $discoveryNow
+
+$exactShell = Copy-JsonValue $discovery
+$exactShell.provider.id = "shell"
+Assert-DiscoveryRejected "identifier-exact-shell" $exactShell $discoveryNow
+
+$segmentShell = Copy-JsonValue $discovery
+$segmentShell.capabilities[0].id = "example.quest.raw-shell"
+Assert-DiscoveryRejected "identifier-segment-shell" $segmentShell $discoveryNow
+
+$genericAdb = Copy-JsonValue $discovery
+$genericAdb.capabilities[0].contract_versions[0] = "adb"
+Assert-DiscoveryRejected "identifier-generic-adb" $genericAdb $discoveryNow
+
+$exactExec = Copy-JsonValue $discovery
+$exactExec.capabilities[0].actions[0].id = "exec"
+Assert-DiscoveryRejected "identifier-exec" $exactExec $discoveryNow
+
+$exactExecute = Copy-JsonValue $discovery
+$exactExecute.capabilities[0].actions[0].id = "execute"
+Assert-DiscoveryRejected "identifier-execute" $exactExecute $discoveryNow
+
+$executeCommand = Copy-JsonValue $discovery
+$executeCommand.capabilities[0].receipt_schema =
+    "example.quest.execute-command.receipt.v1"
+Assert-DiscoveryRejected `
+    "identifier-execute-command" `
+    $executeCommand `
+    $discoveryNow
+
+$exactMcp = Copy-JsonValue $discovery
+$exactMcp.capabilities[0].actions[0].id = "mcp"
+Assert-DiscoveryRejected "identifier-mcp" $exactMcp $discoveryNow
+
+$mcpExecute = Copy-JsonValue $discovery
+$mcpExecute.capabilities[0].actions[0].id = "mcp-execute"
+Assert-DiscoveryRejected "identifier-mcp-execute" $mcpExecute $discoveryNow
+
+$arbitraryCommand = Copy-JsonValue $discovery
+$arbitraryCommand.capabilities[0].actions[0].id = "arbitrary-command"
+Assert-DiscoveryRejected `
+    "identifier-arbitrary-command" `
+    $arbitraryCommand `
+    $discoveryNow
+
+$rawArgs = Copy-JsonValue $discovery
+$rawArgs.capabilities[0].actions[0].id = "raw-args"
+Assert-DiscoveryRejected "identifier-raw-args" $rawArgs $discoveryNow
+
+if (-not [string]::IsNullOrWhiteSpace($ProviderDiscoveryPath)) {
+    $resolvedDiscoveryPath = (
+        Resolve-Path -LiteralPath $ProviderDiscoveryPath -ErrorAction Stop
+    ).Path
+    $candidateDiscovery = Get-Content -Raw -LiteralPath $resolvedDiscoveryPath |
+        ConvertFrom-Json -Depth 100 -DateKind String
+    if ([string]::IsNullOrWhiteSpace($ValidationNowUtc)) {
+        $candidateNow = [DateTimeOffset]::UtcNow
+    }
+    else {
+        $candidateNow = [DateTimeOffset]::MinValue
+        Assert-True (
+            [DateTimeOffset]::TryParseExact(
+                $ValidationNowUtc,
+                "O",
+                [System.Globalization.CultureInfo]::InvariantCulture,
+                [System.Globalization.DateTimeStyles]::None,
+                [ref]$candidateNow)
+        ) "ValidationNowUtc must use the round-trip UTC timestamp format."
+        Assert-True (
+            $candidateNow.Offset -eq [TimeSpan]::Zero
+        ) "ValidationNowUtc must be UTC."
+    }
+    Assert-ProviderCapabilityDiscovery `
+        -Value $candidateDiscovery `
+        -Now $candidateNow
+    Write-Host (
+        "Provider discovery semantic validation passed for " +
+        $resolvedDiscoveryPath)
+}
+elseif (-not [string]::IsNullOrWhiteSpace($ValidationNowUtc)) {
+    throw "ValidationNowUtc requires ProviderDiscoveryPath."
+}
+
+if ([string]::IsNullOrWhiteSpace($ProviderDiscoveryPath)) {
+    $entrypointNow = "2026-07-27T10:02:00.0000000Z"
+    $validArguments = @(
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        $PSCommandPath,
+        "-Root",
+        $resolvedRoot,
+        "-ProviderDiscoveryPath",
+        $discoveryPath,
+        "-ValidationNowUtc",
+        $entrypointNow
+    )
+    $previousNativePreference = $PSNativeCommandUseErrorActionPreference
+    $PSNativeCommandUseErrorActionPreference = $false
+    $temporaryDescriptorPath = [IO.Path]::GetTempFileName()
+    try {
+        $validOutput = @(& pwsh @validArguments 2>&1)
+        Assert-True ($LASTEXITCODE -eq 0) "Descriptor validation entrypoint rejected a valid descriptor."
+        Assert-True (
+            ($validOutput -join "`n") -match
+            "Provider discovery semantic validation passed"
+        ) "Descriptor validation entrypoint did not report semantic validation."
+
+        $currentDescriptor = Copy-JsonValue $discovery
+        $currentObservedAt = [DateTimeOffset]::UtcNow.AddSeconds(-1)
+        $currentDescriptor.availability.observed_at_utc =
+            $currentObservedAt.ToString("O")
+        $currentDescriptor.availability.expires_at_utc =
+            $currentObservedAt.AddSeconds(300).ToString("O")
+        [IO.File]::WriteAllText(
+            $temporaryDescriptorPath,
+            ($currentDescriptor | ConvertTo-Json -Depth 100) + "`n",
+            [Text.UTF8Encoding]::new($false))
+        $currentArguments = @(
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            $PSCommandPath,
+            "-Root",
+            $resolvedRoot,
+            "-ProviderDiscoveryPath",
+            $temporaryDescriptorPath
+        )
+        $currentOutput = @(& pwsh @currentArguments 2>&1)
+        Assert-True (
+            $LASTEXITCODE -eq 0
+        ) "Descriptor validation entrypoint rejected a currently fresh descriptor."
+
+        $entrypointDamaged = Copy-JsonValue $currentDescriptor
+        $entrypointDamaged.authorizes_execution = $true
+        [IO.File]::WriteAllText(
+            $temporaryDescriptorPath,
+            ($entrypointDamaged | ConvertTo-Json -Depth 100) + "`n",
+            [Text.UTF8Encoding]::new($false))
+        $invalidArguments = @(
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            $PSCommandPath,
+            "-Root",
+            $resolvedRoot,
+            "-ProviderDiscoveryPath",
+            $temporaryDescriptorPath
+        )
+        $invalidOutput = @(& pwsh @invalidArguments 2>&1)
+        Assert-True (
+            $LASTEXITCODE -ne 0
+        ) "Descriptor validation entrypoint accepted a damaged descriptor."
+    }
+    finally {
+        $PSNativeCommandUseErrorActionPreference = $previousNativePreference
+        Remove-Item -LiteralPath $temporaryDescriptorPath -Force -ErrorAction SilentlyContinue
+    }
+}
 
 $rawFallbackAllowedClaims = @("transport-observed", "diagnostic-only")
 Assert-True ($rawFallbackAllowedClaims -notcontains "owner-effect-confirmed") "Raw fallback must not claim an owner effect."
