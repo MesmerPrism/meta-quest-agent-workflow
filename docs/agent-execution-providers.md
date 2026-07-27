@@ -22,6 +22,37 @@ Provider availability is not authority. A discovered executable, device, app,
 or adapter is inert until the operation's exact target, approval, and
 owner-specific authority checks pass.
 
+## Inert Capability Discovery
+
+An owner may project its existing typed registry through
+`rusty.quest.workflow.provider_capability_discovery.v1`. The short-lived
+descriptor identifies the provider and version, placement, descriptor
+availability, typed capabilities and actions, accepted contract versions,
+authentication requirements, effect owner, receipt schema, and exclusions.
+
+Discovery is target-free and authorizes nothing. It contains no invocation,
+executable or artifact location, device identity, resolver, endpoint,
+credential, approval, coordination record, raw arguments, shell, or MCP
+execution surface. The descriptor does not probe a backend or activate a
+capability. `descriptor-available` means only that the provider described its
+registry; it does not prove that a target, platform dependency, effect-owner
+profile, wearer approval, or caller authority is available.
+
+Consumers must:
+
+1. reject unknown properties and unsupported descriptor schemas;
+2. reject duplicate capability or action IDs;
+3. reject an observation from the future, an expired descriptor, or a
+   freshness window longer than 600 seconds;
+4. match one advertised capability, action, and contract version exactly;
+5. satisfy every advertised authentication requirement through the real
+   owner before constructing an owner-specific request;
+6. preserve the descriptor as description only and obtain a separate
+   operation approval, target binding, authority decision, and owner receipt.
+
+The public example is illustrative. It is not an installed provider,
+activation record, health result, or permission to execute.
+
 ## Contract Separation
 
 Do not use one executable operation manifest for both local ADB and managed
@@ -43,8 +74,8 @@ Fleet work.
    sanitized result, claim class, and limitations. It never augments or
    relabels the owner-issued evidence.
 
-The portable intent and wrapper schemas live under `schemas/`. They are
-workflow records, not executable provider requests.
+The portable intent, inert discovery, and wrapper schemas live under
+`schemas/`. They are workflow records, not executable provider requests.
 
 ## Typed Surface Before MCP
 
@@ -68,7 +99,8 @@ authority labels, or credentials.
 For every operation:
 
 1. State the goal and evidence needed.
-2. Discover provider capabilities without mutating a device.
+2. Discover provider capabilities without mutating a device and reject stale
+   descriptors.
 3. Select the narrowest owning provider that can produce the required
    confirmation.
 4. Resolve private target and artifact inputs outside portable records.

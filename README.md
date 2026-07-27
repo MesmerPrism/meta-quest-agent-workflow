@@ -54,6 +54,10 @@ side effects are split from read-only inspection.
   validation, and launcher task/process boundaries.
 - Host-to-headset mutation receipts that distinguish command dispatch from
   pending wearer/device work and confirmation by effective-state readback.
+- Target-free, short-lived provider capability discovery that describes typed
+  owner surfaces without granting execution or exposing invocation details,
+  paths, endpoints, targets, credentials, raw arguments, shell access, or MCP
+  execution.
 - OpenXR tracking and ADB shell-helper boundaries.
 - Reusable PowerShell scripts under `examples/`.
 

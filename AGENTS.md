@@ -43,6 +43,12 @@ the public repo-family map. Keep historical attribution in `NOTICE.md`.
 - Prefer owning-application typed commands for repeatable operations they fully
   support. Keep local File Manager execution and managed Fleet execution on
   disjoint executable contracts, and label raw ADB as diagnostic fallback.
+- Keep provider capability discovery descriptive and inert. It may identify
+  typed actions, contract versions, effect owners, receipt schemas, placement,
+  short-lived descriptor availability, authentication requirements, and
+  exclusions, but must not contain invocations, paths, targets, endpoints,
+  credentials, coordination records, raw arguments, shell access, MCP
+  execution, or an execution grant.
 - Preserve owner-issued evidence byte-for-byte. A workflow wrapper may bind its
   schema and SHA-256 with a sanitized outcome, but must not add fields under the
   owner's schema or create an authority claim.

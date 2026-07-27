@@ -92,6 +92,14 @@ When this skill is installed without the repo docs, use the public
 - Prefer an owning application's typed CLI or local API for a repeatable
   operation it fully supports. Preserve raw serial-scoped ADB as a labeled
   diagnostic fallback and do not relabel its results as owner acceptance.
+- When an owner projects
+  `rusty.quest.workflow.provider_capability_discovery.v1`, require an exact
+  schema, provider version, capability, action, and contract-version match.
+  Reject duplicate IDs, future observations, expired descriptors, freshness
+  windows over 600 seconds, unknown authentication requirements, and sensitive
+  or executable fields. Treat `descriptor-available` as description
+  availability only, never backend health, target availability, activation,
+  approval, authority, or an execution grant.
 - Keep local File Manager and managed Fleet execution contracts disjoint.
   Portable workflow intents contain no private resolver, target, approval, or
   authority fields.
@@ -105,6 +113,12 @@ When this skill is installed without the repo docs, use the public
 ## Provider Order
 
 Use the narrowest provider that answers the question:
+
+Before choosing, prefer a fresh inert descriptor projected from the owner's
+existing typed registry. Do not ask discovery to resolve a target, initialize
+a backend, probe a device, obtain credentials, or execute an action. Absence or
+rejection of a descriptor is a provider-selection limitation, not permission
+to broaden another provider's authority.
 
 1. App-owned status for OpenXR, renderer, source, effective runtime, clocks,
    streams, and application receipts.
