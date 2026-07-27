@@ -106,9 +106,11 @@ When this skill is installed without the repo docs, use the public
   forms. Preserve only narrowly typed ADB contexts such as
   `request-wireless-adb`, `wifi-adb`, and `wireless-adb`. Require RFC3339
   date-time syntax, with an explicit zone, before timestamp semantics are
-  evaluated. Treat `descriptor-available` as description availability only,
-  never backend health, target availability, activation, approval, authority,
-  or an execution grant.
+  evaluated. Normalize schema-valid numeric offsets through `+23:59` and
+  `-23:59` without imposing .NET's narrower 14-hour offset-constructor limit.
+  Treat `descriptor-available` as description availability only, never backend
+  health, target availability, activation, approval, authority, or an execution
+  grant.
 - Keep local File Manager and managed Fleet execution contracts disjoint.
   Portable workflow intents contain no private resolver, target, approval, or
   authority fields.

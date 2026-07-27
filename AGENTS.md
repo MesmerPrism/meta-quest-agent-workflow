@@ -57,6 +57,8 @@ the public repo-family map. Keep historical attribution in `NOTICE.md`.
   an identifier token and reject generic ADB forms while preserving the
   explicit bounded `wifi-adb` and `wireless-adb` contexts. Timestamp strings
   must use RFC3339 date-time syntax before their semantic interval is checked.
+  Normalize numeric offsets through `+23:59` and `-23:59`; do not impose
+  .NET's narrower 14-hour `DateTimeOffset` constructor limit.
 - Preserve owner-issued evidence byte-for-byte. A workflow wrapper may bind its
   schema and SHA-256 with a sanitized outcome, but must not add fields under the
   owner's schema or create an authority claim.

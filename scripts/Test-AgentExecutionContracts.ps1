@@ -181,6 +181,71 @@ function Assert-SafeDiscoveryIdentifier {
     }
 }
 
+function ConvertFrom-DiscoveryRfc3339Timestamp {
+    param(
+        [object]$Value,
+        [string]$Location
+    )
+
+    Assert-True (
+        $Value -is [string]
+    ) "$Location must be a string."
+    $rfc3339DateTimePattern =
+        "^(?<date>[0-9]{4}-(?:0[1-9]|1[0-2])-" +
+        "(?:0[1-9]|[12][0-9]|3[01]))[Tt]" +
+        "(?<time>(?:[01][0-9]|2[0-3]):[0-5][0-9]:" +
+        "(?:[0-5][0-9]|60))(?<fraction>\.[0-9]+)?" +
+        "(?<zone>[Zz]|(?<sign>[+-])" +
+        "(?<offset_hour>(?:[01][0-9]|2[0-3])):" +
+        "(?<offset_minute>[0-5][0-9]))$"
+    $syntaxMatch = [regex]::Match(
+        [string]$Value,
+        $rfc3339DateTimePattern,
+        [System.Text.RegularExpressions.RegexOptions]::CultureInvariant)
+    Assert-True (
+        $syntaxMatch.Success
+    ) "$Location must use RFC3339 date-time syntax."
+
+    $localTimestamp =
+        $syntaxMatch.Groups["date"].Value +
+        "T" +
+        $syntaxMatch.Groups["time"].Value +
+        $syntaxMatch.Groups["fraction"].Value +
+        "Z"
+    $localInstant = [DateTimeOffset]::MinValue
+    Assert-True (
+        [DateTimeOffset]::TryParse(
+            $localTimestamp,
+            [System.Globalization.CultureInfo]::InvariantCulture,
+            [System.Globalization.DateTimeStyles]::RoundtripKind,
+            [ref]$localInstant)
+    ) "$Location contains an invalid calendar date or time."
+
+    $offsetMinutes = 0
+    if (
+        -not $syntaxMatch.Groups["zone"].Value.Equals(
+            "Z",
+            [StringComparison]::OrdinalIgnoreCase)
+    ) {
+        $offsetMinutes =
+            ([int]$syntaxMatch.Groups["offset_hour"].Value * 60) +
+            [int]$syntaxMatch.Groups["offset_minute"].Value
+        if ($syntaxMatch.Groups["sign"].Value -ceq "-") {
+            $offsetMinutes = -$offsetMinutes
+        }
+    }
+    $utcTicks =
+        $localInstant.Ticks -
+        ([long]$offsetMinutes * [TimeSpan]::TicksPerMinute)
+    Assert-True (
+        $utcTicks -ge [DateTimeOffset]::MinValue.Ticks -and
+        $utcTicks -le [DateTimeOffset]::MaxValue.Ticks
+    ) "$Location cannot be normalized within the supported instant range."
+    return [DateTimeOffset]::new(
+        [long]$utcTicks,
+        [TimeSpan]::Zero)
+}
+
 function Assert-ProviderCapabilityDiscovery {
     param(
         [object]$Value,
@@ -242,42 +307,12 @@ function Assert-ProviderCapabilityDiscovery {
         @("descriptor-available", "unavailable", "disabled") -ccontains
         [string]$Value.availability.status
     ) "Discovery availability status is invalid."
-    Assert-True (
-        $Value.availability.observed_at_utc -is [string]
-    ) "Discovery observation timestamp must be a string."
-    Assert-True (
-        $Value.availability.expires_at_utc -is [string]
-    ) "Discovery expiry timestamp must be a string."
-    $rfc3339DateTimePattern =
-        "^[0-9]{4}-(?:0[1-9]|1[0-2])-" +
-        "(?:0[1-9]|[12][0-9]|3[01])[Tt]" +
-        "(?:[01][0-9]|2[0-3]):[0-5][0-9]:" +
-        "(?:[0-5][0-9]|60)(?:\.[0-9]+)?" +
-        "(?:[Zz]|[+-](?:[01][0-9]|2[0-3]):[0-5][0-9])$"
-    Assert-True (
-        [string]$Value.availability.observed_at_utc -cmatch
-        $rfc3339DateTimePattern
-    ) "Discovery observation timestamp must use RFC3339 date-time syntax."
-    Assert-True (
-        [string]$Value.availability.expires_at_utc -cmatch
-        $rfc3339DateTimePattern
-    ) "Discovery expiry timestamp must use RFC3339 date-time syntax."
-    $observedAt = [DateTimeOffset]::MinValue
-    $expiresAt = [DateTimeOffset]::MinValue
-    Assert-True (
-        [DateTimeOffset]::TryParse(
-            [string]$Value.availability.observed_at_utc,
-            [System.Globalization.CultureInfo]::InvariantCulture,
-            [System.Globalization.DateTimeStyles]::RoundtripKind,
-            [ref]$observedAt)
-    ) "Discovery observation timestamp is invalid."
-    Assert-True (
-        [DateTimeOffset]::TryParse(
-            [string]$Value.availability.expires_at_utc,
-            [System.Globalization.CultureInfo]::InvariantCulture,
-            [System.Globalization.DateTimeStyles]::RoundtripKind,
-            [ref]$expiresAt)
-    ) "Discovery expiry timestamp is invalid."
+    $observedAt = ConvertFrom-DiscoveryRfc3339Timestamp `
+        -Value $Value.availability.observed_at_utc `
+        -Location "Discovery observation timestamp"
+    $expiresAt = ConvertFrom-DiscoveryRfc3339Timestamp `
+        -Value $Value.availability.expires_at_utc `
+        -Location "Discovery expiry timestamp"
     $maximumAge = $Value.availability.maximum_age_seconds
     $maximumAgeIsNumber =
         $maximumAge -is [byte] -or
@@ -626,6 +661,23 @@ $rfc3339WithOffset.availability.expires_at_utc =
 Assert-ProviderCapabilityDiscovery `
     -Value $rfc3339WithOffset `
     -Now $discoveryNow
+
+$rfc3339BeyondDateTimeOffsetLimit = Copy-JsonValue $discovery
+$rfc3339BeyondDateTimeOffsetLimit.availability.observed_at_utc =
+    "2026-07-28T01:00:00+15:00"
+$rfc3339BeyondDateTimeOffsetLimit.availability.expires_at_utc =
+    "2026-07-28T01:05:00+15:00"
+Assert-ProviderCapabilityDiscovery `
+    -Value $rfc3339BeyondDateTimeOffsetLimit `
+    -Now $discoveryNow
+
+$rfc3339InvalidOffset = Copy-JsonValue $discovery
+$rfc3339InvalidOffset.availability.observed_at_utc =
+    "2026-07-28T10:00:00+24:00"
+Assert-DiscoveryRejected `
+    "non-rfc3339-offset-24-hours" `
+    $rfc3339InvalidOffset `
+    $discoveryNow
 
 $timestampWithSpace = Copy-JsonValue $discovery
 $timestampWithSpace.availability.observed_at_utc =

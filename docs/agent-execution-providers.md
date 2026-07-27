@@ -52,8 +52,10 @@ are also rejected. Bounded typed Wi-Fi contexts such as
 `request-wireless-adb`, `wifi-adb`, and `wireless-adb` remain valid because
 they name one connectivity capability rather than expose generic ADB commands
 or arguments. Timestamp fields must first match RFC3339 date-time syntax,
-including an explicit `Z` or numeric offset, before instant and freshness
-semantics are evaluated.
+including an explicit `Z` or numeric offset through `+23:59` or `-23:59`,
+before being normalized to an instant for freshness evaluation. Consumers must
+not narrow that schema range to the platform-specific `DateTimeOffset`
+constructor limit of 14 offset hours.
 
 Consumers must:
 
