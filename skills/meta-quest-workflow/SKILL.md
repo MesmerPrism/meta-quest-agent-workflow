@@ -43,17 +43,18 @@ Read only the playbooks needed for the task:
 
 1. `README.md`
 2. `docs/adb-basics.md`
-3. `docs/apk-install-launch.md`
-4. `docs/artifact-and-evidence-discipline.md`
-5. `docs/quest-signal-patterns.md`
-6. `docs/accessibility-foreground-watchdogs.md` for attended foreground
+3. `docs/agent-execution-providers.md`
+4. `docs/apk-install-launch.md`
+5. `docs/artifact-and-evidence-discipline.md`
+6. `docs/quest-signal-patterns.md`
+7. `docs/accessibility-foreground-watchdogs.md` for attended foreground
    monitoring, Meta Home transitions, or special Accessibility enablement
-7. `docs/host-headset-mutation-confirmation.md` for state changes
-8. `docs/managed-device-store-apps.md` for managed modes or Store apps
-9. `docs/quest-capture-stack-notes.md` and
+8. `docs/host-headset-mutation-confirmation.md` for state changes
+9. `docs/managed-device-store-apps.md` for managed modes or Store apps
+10. `docs/quest-capture-stack-notes.md` and
    `docs/capture-source-taxonomy.md` for capture or streaming
-10. `docs/termux-linux-sidecars.md` when Termux or Wi-Fi ADB is involved
-11. `docs/meta-horizon-mcp-and-hzdb.md` for Meta VR CLI/MCP
+11. `docs/termux-linux-sidecars.md` when Termux or Wi-Fi ADB is involved
+12. `docs/meta-horizon-mcp-and-hzdb.md` for Meta VR CLI/MCP
 
 When this skill is installed without the repo docs, use the public
 `MesmerPrism/meta-quest-agent-workflow` repository as the playbook source.
@@ -88,23 +89,41 @@ When this skill is installed without the repo docs, use the public
   shell tails to request refocus without double-counting escape gestures, and
   revalidate exact signals and background launch behavior after Horizon
   updates.
+- Prefer an owning application's typed CLI or local API for a repeatable
+  operation it fully supports. Preserve raw serial-scoped ADB as a labeled
+  diagnostic fallback and do not relabel its results as owner acceptance.
+- Keep local File Manager and managed Fleet execution contracts disjoint.
+  Portable workflow intents contain no private resolver, target, approval, or
+  authority fields.
+- Preserve owner evidence byte-for-byte and bind only its schema and SHA-256
+  from a sanitized workflow wrapper.
+- Add MCP only after the owning typed command registry and CLI/local API
+  projections are stable. Never expose raw shell, generic ADB arguments,
+  arbitrary components/intents/paths/properties/processes, or caller-supplied
+  authority.
 
 ## Provider Order
 
 Use the narrowest provider that answers the question:
 
-1. App-owned or Manifold-adapter status for app health, clocks, streams, and
-   command acknowledgements.
-2. Meta Horizon MCP / Meta VR CLI / `hzdb` for Quest-specific docs, device
+1. App-owned status for OpenXR, renderer, source, effective runtime, clocks,
+   streams, and application receipts.
+2. QuestIonAble File Manager typed CLI/local API for advertised exact-serial
+   artifact inspection, inspected install, resolved launch, bounded
+   observation, and reviewed local device utilities.
+3. Rusty Fleet for approved managed operations over immutable target snapshots
+   with current Manifold authority and effect-owner receipts.
+4. Meta Horizon MCP / Meta VR CLI / `hzdb` for Quest-specific docs, device
    status, screenshots, logcat, Perfetto, and assets when configured.
-3. ADB for install, launch, dumpsys, logcat, screencap/screenrecord, forwarding,
-   and file transfer.
-4. App-private diagnostics, normally via `run-as` for debuggable builds.
-5. Manual headset action for runtime permissions, MediaProjection consent,
+5. ADB fallback for novel diagnostics, provider-gap investigation, and
+   recovery.
+6. App-private diagnostics, normally via `run-as` for debuggable builds.
+7. Manual headset action for runtime permissions, MediaProjection consent,
    protected prompts, paid Store steps, and real controller input.
 
-Label the selected provider and version. Do not substitute one capture or
-authority source for another without saying so.
+Label the selected provider and version. Choose per operation, not once per
+run. Do not substitute one capture or authority source for another without
+saying so.
 
 ## Safe Device Shape
 

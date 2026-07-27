@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MesmerPrism/meta-quest-agent-workflow/schemas/rusty.quest.workflow.intent.v1.schema.json",
+  "title": "Rusty Quest portable workflow intent v1",
+  "description": "A non-executable, public-safe statement of a Quest workflow goal. Private resolution, target selection, approval, authority, and provider execution use separate records.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "intent_id",
+    "goal",
+    "required_capabilities",
+    "required_claim",
+    "constraints"
+  ],
+  "properties": {
+    "schema": {
+      "const": "rusty.quest.workflow.intent.v1"
+    },
+    "intent_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,126}[a-z0-9]$"
+    },
+    "goal": {
+      "enum": [
+        "inspect-artifact",
+        "install-artifact",
+        "launch-installed-app",
+        "observe-runtime",
+        "collect-diagnostics",
+        "configure-reviewed-capability"
+      ]
+    },
+    "artifact_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "required_capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "artifact.inspect",
+          "apk.install-inspected",
+          "app.launch-resolved",
+          "runtime.observe",
+          "diagnostics.collect-bounded",
+          "capability.configure-reviewed",
+          "fleet.execute-managed"
+        ]
+      }
+    },
+    "required_claim": {
+      "enum": [
+        "artifact-inspected",
+        "transport-observed",
+        "device-state-confirmed",
+        "owner-effect-confirmed",
+        "diagnostic-only"
+      ]
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "exact_target_required",
+        "effective_readback_required",
+        "raw_fallback_allowed"
+      ],
+      "properties": {
+        "exact_target_required": {
+          "const": true
+        },
+        "effective_readback_required": {
+          "type": "boolean"
+        },
+        "operator_approval_required": {
+          "type": "boolean"
+        },
+        "raw_fallback_allowed": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

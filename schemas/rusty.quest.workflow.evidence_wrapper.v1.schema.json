@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MesmerPrism/meta-quest-agent-workflow/schemas/rusty.quest.workflow.evidence_wrapper.v1.schema.json",
+  "title": "Rusty Quest sanitized workflow evidence wrapper v1",
+  "description": "A public-safe hash binding to byte-preserved owner evidence. The wrapper is not the owner receipt and creates no authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "intent_sha256",
+    "provider",
+    "provider_contract_schema",
+    "provider_evidence_sha256",
+    "claim",
+    "result",
+    "cleanup",
+    "artifact_types",
+    "limitations"
+  ],
+  "properties": {
+    "schema": {
+      "const": "rusty.quest.workflow.evidence_wrapper.v1"
+    },
+    "intent_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "provider": {
+      "enum": [
+        "file-manager-local",
+        "fleet-managed",
+        "app-owner",
+        "kiosk-owner",
+        "meta-tools",
+        "raw-adb-fallback",
+        "manual"
+      ]
+    },
+    "provider_contract_schema": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 160,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]+$"
+    },
+    "provider_evidence_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "claim": {
+      "enum": [
+        "artifact-inspected",
+        "transport-observed",
+        "device-state-confirmed",
+        "owner-effect-confirmed",
+        "diagnostic-only"
+      ]
+    },
+    "result": {
+      "enum": [
+        "pass",
+        "partial",
+        "fail",
+        "blocked"
+      ]
+    },
+    "cleanup": {
+      "enum": [
+        "not-required",
+        "confirmed",
+        "partial",
+        "failed",
+        "unknown"
+      ]
+    },
+    "artifact_types": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9-]{1,62}[a-z0-9]$"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 240
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "provider": {
+            "const": "raw-adb-fallback"
+          }
+        },
+        "required": [
+          "provider"
+        ]
+      },
+      "then": {
+        "properties": {
+          "claim": {
+            "enum": [
+              "transport-observed",
+              "diagnostic-only"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,5 +1,16 @@
 # APK Install, Permission, Launch, And Crash Watch
 
+For repeatable agent work, first discover the typed capabilities of
+QuestIonAble File Manager. Prefer its inspected-artifact install and resolved
+launcher route when available: those routes bind the artifact digest and
+identity to one exact target and require fresh installed-state readback.
+
+Use the direct ADB procedure below as an explicitly labeled fallback for a
+missing provider capability, provider troubleshooting, or novel diagnostics.
+Do not relabel fallback output as File Manager, Fleet, Manifold, or
+application-owned evidence. See
+[Agent Execution Providers](agent-execution-providers.md).
+
 This playbook is for development APKs on a Quest headset with Developer Mode
 and ADB authorization already active.
 

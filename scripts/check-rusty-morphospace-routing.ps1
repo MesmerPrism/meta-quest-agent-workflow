@@ -14,6 +14,7 @@ if (-not (Test-Path -LiteralPath $routingPath -PathType Leaf)) {
 $routing = Get-Content -Raw -LiteralPath $routingPath
 $requiredRepositories = @(
     "rusty-morphospace-work-environment",
+    "QuestIonAble-File-Manager",
     "rusty-manifold",
     "rusty-manifold-packages",
     "rusty-matter",
@@ -38,6 +39,7 @@ foreach ($repository in $requiredRepositories) {
 
 $activeFiles = @(
     "README.md",
+    "docs\agent-execution-providers.md",
     "docs\accessibility-foreground-watchdogs.md",
     "docs\quest-capture-stack-notes.md",
     "docs\quest-signal-patterns.md"

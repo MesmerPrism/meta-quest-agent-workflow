@@ -71,6 +71,13 @@ Two images can look similar but prove different things. A screenshot can show
 what the headset mirror saw; it does not prove raw camera metadata, decode path,
 or OpenXR layer ownership.
 
+Preserve an application or Fleet owner receipt byte-for-byte. When a portable
+summary is needed, use `rusty.quest.workflow.evidence_wrapper.v1` to bind the
+owner schema and SHA-256 plus a sanitized claim, result, cleanup state,
+artifact types, and limitations. The wrapper is not the owner receipt and
+creates no authority. A `raw-adb-fallback` wrapper may claim only
+`transport-observed` or `diagnostic-only`.
+
 ## Re-run After Code Changes
 
 A device pass belongs to the exact app, manifest, scripts, properties, and
