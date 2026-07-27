@@ -53,9 +53,10 @@ the public repo-family map. Keep historical attribution in `NOTICE.md`.
   enforce unique capability/action IDs, exact `TimeSpan`-tick timestamp/max-age
   correspondence, a 600-second maximum, zero future-observation skew, current
   freshness, and executable-vocabulary rejection across provider, capability,
-  contract, effect-owner, receipt, and action identifiers. Reject generic
-  command/ADB forms while preserving the explicit bounded `wifi-adb` and
-  `wireless-adb` contexts.
+  contract, effect-owner, receipt, and action identifiers. Reject `command` as
+  an identifier token and reject generic ADB forms while preserving the
+  explicit bounded `wifi-adb` and `wireless-adb` contexts. Timestamp strings
+  must use RFC3339 date-time syntax before their semantic interval is checked.
 - Preserve owner-issued evidence byte-for-byte. A workflow wrapper may bind its
   schema and SHA-256 with a sanitized outcome, but must not add fields under the
   owner's schema or create an authority claim.

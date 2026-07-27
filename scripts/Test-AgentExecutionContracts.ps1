@@ -143,14 +143,20 @@ function Assert-SafeDiscoveryIdentifier {
     $tokens = @($normalized.Split(
         "-",
         [System.StringSplitOptions]::RemoveEmptyEntries))
-    foreach ($blockedToken in @("shell", "exec", "execute", "mcp")) {
+    foreach ($blockedToken in @(
+        "shell",
+        "exec",
+        "execute",
+        "mcp",
+        "command"
+    )) {
         Assert-True (
             $tokens -cnotcontains $blockedToken
         ) "$Location contains executable vocabulary '$blockedToken'."
     }
     Assert-True (
-        @("adb", "command") -cnotcontains $normalized
-    ) "$Location cannot advertise a generic ADB or command identifier."
+        $normalized -cne "adb"
+    ) "$Location cannot advertise a generic ADB identifier."
     foreach ($blockedSequence in @(
         "raw-shell",
         "raw-adb",
@@ -242,6 +248,20 @@ function Assert-ProviderCapabilityDiscovery {
     Assert-True (
         $Value.availability.expires_at_utc -is [string]
     ) "Discovery expiry timestamp must be a string."
+    $rfc3339DateTimePattern =
+        "^[0-9]{4}-(?:0[1-9]|1[0-2])-" +
+        "(?:0[1-9]|[12][0-9]|3[01])[Tt]" +
+        "(?:[01][0-9]|2[0-3]):[0-5][0-9]:" +
+        "(?:[0-5][0-9]|60)(?:\.[0-9]+)?" +
+        "(?:[Zz]|[+-](?:[01][0-9]|2[0-3]):[0-5][0-9])$"
+    Assert-True (
+        [string]$Value.availability.observed_at_utc -cmatch
+        $rfc3339DateTimePattern
+    ) "Discovery observation timestamp must use RFC3339 date-time syntax."
+    Assert-True (
+        [string]$Value.availability.expires_at_utc -cmatch
+        $rfc3339DateTimePattern
+    ) "Discovery expiry timestamp must use RFC3339 date-time syntax."
     $observedAt = [DateTimeOffset]::MinValue
     $expiresAt = [DateTimeOffset]::MinValue
     Assert-True (
@@ -598,6 +618,39 @@ Assert-ProviderCapabilityDiscovery `
     -Value $rfc3339WithoutFraction `
     -Now $discoveryNow
 
+$rfc3339WithOffset = Copy-JsonValue $discovery
+$rfc3339WithOffset.availability.observed_at_utc =
+    "2026-07-27T12:00:00.1234567+02:00"
+$rfc3339WithOffset.availability.expires_at_utc =
+    "2026-07-27T12:05:00.1234567+02:00"
+Assert-ProviderCapabilityDiscovery `
+    -Value $rfc3339WithOffset `
+    -Now $discoveryNow
+
+$timestampWithSpace = Copy-JsonValue $discovery
+$timestampWithSpace.availability.observed_at_utc =
+    "2026-07-27 10:00:00Z"
+Assert-DiscoveryRejected `
+    "non-rfc3339-space-separator" `
+    $timestampWithSpace `
+    $discoveryNow
+
+$timestampWithoutZone = Copy-JsonValue $discovery
+$timestampWithoutZone.availability.observed_at_utc =
+    "2026-07-27T10:00:00"
+Assert-DiscoveryRejected `
+    "non-rfc3339-missing-zone" `
+    $timestampWithoutZone `
+    $discoveryNow
+
+$timestampWithCompactOffset = Copy-JsonValue $discovery
+$timestampWithCompactOffset.availability.observed_at_utc =
+    "2026-07-27T12:00:00+0200"
+Assert-DiscoveryRejected `
+    "non-rfc3339-compact-offset" `
+    $timestampWithCompactOffset `
+    $discoveryNow
+
 $duplicateCapability = Copy-JsonValue $discovery
 $duplicateCapability.capabilities = @($duplicateCapability.capabilities) +
     @(Copy-JsonValue $duplicateCapability.capabilities[0])
@@ -667,6 +720,28 @@ $genericCommand.capabilities[0].actions[0].id = "command"
 Assert-DiscoveryRejected `
     "identifier-generic-command" `
     $genericCommand `
+    $discoveryNow
+
+$genericCommandToken = Copy-JsonValue $discovery
+$genericCommandToken.capabilities[0].actions[0].id = "generic-command"
+Assert-DiscoveryRejected `
+    "identifier-generic-command-token" `
+    $genericCommandToken `
+    $discoveryNow
+
+$rawCommandToken = Copy-JsonValue $discovery
+$rawCommandToken.capabilities[0].actions[0].id = "raw-command"
+Assert-DiscoveryRejected `
+    "identifier-raw-command-token" `
+    $rawCommandToken `
+    $discoveryNow
+
+$commandWirelessAdb = Copy-JsonValue $discovery
+$commandWirelessAdb.capabilities[0].actions[0].id =
+    "command-wireless-adb"
+Assert-DiscoveryRejected `
+    "identifier-command-wireless-adb" `
+    $commandWirelessAdb `
     $discoveryNow
 
 $adbCommand = Copy-JsonValue $discovery

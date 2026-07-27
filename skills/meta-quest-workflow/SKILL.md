@@ -101,12 +101,14 @@ When this skill is installed without the repo docs, use the public
   to structural JSON Schema validation: timestamp interval and declared
   maximum age must correspond at exact `TimeSpan` tick precision, observations
   later than the validation clock fail, and provider/capability/contract/
-  effect-owner/receipt/action identifiers must reject generic command, shell,
-  ADB, exec/execute, MCP, arbitrary-command, and raw-args forms. Preserve only
-  narrowly typed ADB contexts such as `request-wireless-adb`, `wifi-adb`, and
-  `wireless-adb`. Treat `descriptor-available` as description availability
-  only, never backend health, target availability, activation, approval,
-  authority, or an execution grant.
+  effect-owner/receipt/action identifiers must reject `command` as a token,
+  plus generic shell, ADB, exec/execute, MCP, arbitrary-command, and raw-args
+  forms. Preserve only narrowly typed ADB contexts such as
+  `request-wireless-adb`, `wifi-adb`, and `wireless-adb`. Require RFC3339
+  date-time syntax, with an explicit zone, before timestamp semantics are
+  evaluated. Treat `descriptor-available` as description availability only,
+  never backend health, target availability, activation, approval, authority,
+  or an execution grant.
 - Keep local File Manager and managed Fleet execution contracts disjoint.
   Portable workflow intents contain no private resolver, target, approval, or
   authority fields.

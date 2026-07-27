@@ -44,12 +44,16 @@ than the validation clock, expiry after observation, exact correspondence
 between the timestamp interval and `maximum_age_seconds` at exact
 100-nanosecond `TimeSpan` tick precision, a maximum 600-second window, current
 freshness, and rejection of executable vocabulary in provider, capability,
-contract, effect-owner, receipt, and action identifiers. Exact generic `adb`
-and `command`, `adb-command`, `run-adb`, shell, exec/execute, MCP,
-arbitrary-command, and raw-argument identifier forms are rejected. Bounded
-typed Wi-Fi contexts such as `request-wireless-adb`, `wifi-adb`, and
-`wireless-adb` remain valid because they name one connectivity capability
-rather than expose generic ADB commands or arguments.
+contract, effect-owner, receipt, and action identifiers. `command` is rejected
+as an identifier token, including forms such as `generic-command`,
+`raw-command`, and `command-wireless-adb`. Exact generic `adb`, `adb-command`,
+`run-adb`, shell, exec/execute, MCP, arbitrary-command, and raw-argument forms
+are also rejected. Bounded typed Wi-Fi contexts such as
+`request-wireless-adb`, `wifi-adb`, and `wireless-adb` remain valid because
+they name one connectivity capability rather than expose generic ADB commands
+or arguments. Timestamp fields must first match RFC3339 date-time syntax,
+including an explicit `Z` or numeric offset, before instant and freshness
+semantics are evaluated.
 
 Consumers must:
 
