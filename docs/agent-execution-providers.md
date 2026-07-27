@@ -41,12 +41,15 @@ profile, wearer approval, or caller authority is available.
 Ordinary JSON Schema validation is structural. Required semantic validation
 also enforces unique capability and action IDs, `observed_at_utc` not later
 than the validation clock, expiry after observation, exact correspondence
-between the timestamp interval and `maximum_age_seconds`, a maximum 600-second
-window, current freshness, and rejection of executable vocabulary in provider,
-capability, contract, receipt, and action identifiers. Exact generic `adb` and
-shell, exec/execute, MCP, arbitrary-command, and raw-argument identifier forms
-are rejected. A bounded typed action such as `request-wireless-adb` remains
-valid because it does not expose generic ADB arguments.
+between the timestamp interval and `maximum_age_seconds` at exact
+100-nanosecond `TimeSpan` tick precision, a maximum 600-second window, current
+freshness, and rejection of executable vocabulary in provider, capability,
+contract, effect-owner, receipt, and action identifiers. Exact generic `adb`
+and `command`, `adb-command`, `run-adb`, shell, exec/execute, MCP,
+arbitrary-command, and raw-argument identifier forms are rejected. Bounded
+typed Wi-Fi contexts such as `request-wireless-adb`, `wifi-adb`, and
+`wireless-adb` remain valid because they name one connectivity capability
+rather than expose generic ADB commands or arguments.
 
 Consumers must:
 

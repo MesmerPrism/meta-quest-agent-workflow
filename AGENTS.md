@@ -50,11 +50,12 @@ the public repo-family map. Keep historical attribution in `NOTICE.md`.
   credentials, coordination records, raw arguments, shell access, MCP
   execution, or an execution grant.
 - Treat JSON Schema validation as structural. Descriptor consumers must also
-  enforce unique capability/action IDs, exact timestamp/max-age correspondence,
-  a 600-second maximum, zero future-observation skew, current freshness, and
-  executable-vocabulary rejection across provider, capability, contract,
-  receipt, and action identifiers. Do not reject a bounded typed name merely
-  because it ends in `-adb`.
+  enforce unique capability/action IDs, exact `TimeSpan`-tick timestamp/max-age
+  correspondence, a 600-second maximum, zero future-observation skew, current
+  freshness, and executable-vocabulary rejection across provider, capability,
+  contract, effect-owner, receipt, and action identifiers. Reject generic
+  command/ADB forms while preserving the explicit bounded `wifi-adb` and
+  `wireless-adb` contexts.
 - Preserve owner-issued evidence byte-for-byte. A workflow wrapper may bind its
   schema and SHA-256 with a sanitized outcome, but must not add fields under the
   owner's schema or create an authority claim.

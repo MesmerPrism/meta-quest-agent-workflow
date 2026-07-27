@@ -119,6 +119,17 @@ function Assert-BoundedStringArray {
     ) "$Location contains a duplicate value."
 }
 
+function Assert-JsonArray {
+    param(
+        [object]$Value,
+        [string]$Location
+    )
+
+    Assert-True (
+        $Value -is [System.Array]
+    ) "$Location must be a JSON array."
+}
+
 function Assert-SafeDiscoveryIdentifier {
     param(
         [string]$Value,
@@ -138,13 +149,15 @@ function Assert-SafeDiscoveryIdentifier {
         ) "$Location contains executable vocabulary '$blockedToken'."
     }
     Assert-True (
-        $normalized -cne "adb"
-    ) "$Location cannot advertise generic ADB."
+        @("adb", "command") -cnotcontains $normalized
+    ) "$Location cannot advertise a generic ADB or command identifier."
     foreach ($blockedSequence in @(
         "raw-shell",
         "raw-adb",
         "generic-adb",
         "adb-args",
+        "adb-command",
+        "run-adb",
         "execute-command",
         "mcp-execute",
         "arbitrary-command",
@@ -154,6 +167,11 @@ function Assert-SafeDiscoveryIdentifier {
             $normalized -cnotmatch
             "(^|-)$([regex]::Escape($blockedSequence))($|-)"
         ) "$Location contains executable vocabulary '$blockedSequence'."
+    }
+    if ($tokens -ccontains "adb") {
+        Assert-True (
+            $normalized -cmatch "(^|-)(wifi-adb|wireless-adb)($|-)"
+        ) "$Location contains ADB outside a bounded Wi-Fi or wireless-ADB context."
     }
 }
 
@@ -175,6 +193,7 @@ function Assert-ProviderCapabilityDiscovery {
         "exclusions"
     ) -Location "discovery"
     Assert-True (
+        ($Value.schema -is [string]) -and
         $Value.schema -ceq "rusty.quest.workflow.provider_capability_discovery.v1"
     ) "Unexpected discovery schema."
 
@@ -183,12 +202,14 @@ function Assert-ProviderCapabilityDiscovery {
         "version"
     ) -Location "discovery.provider"
     Assert-True (
+        ($Value.provider.id -is [string]) -and
         ([string]$Value.provider.id -cmatch "^[a-z0-9][a-z0-9._-]{1,158}[a-z0-9]$")
     ) "Discovery provider ID is invalid."
     Assert-SafeDiscoveryIdentifier `
         -Value ([string]$Value.provider.id) `
         -Location "discovery.provider.id"
     Assert-True (
+        ($Value.provider.version -is [string]) -and
         ([string]$Value.provider.version -cmatch "^[0-9]+\.[0-9]+\.[0-9]+(?:-[a-z0-9.-]+)?$") -and
         ([string]$Value.provider.version).Length -le 64
     ) "Discovery provider version is invalid."
@@ -199,7 +220,10 @@ function Assert-ProviderCapabilityDiscovery {
         "quest-application",
         "managed-service"
     )
-    Assert-True ($placements -ccontains [string]$Value.placement) "Discovery placement is invalid."
+    Assert-True (
+        ($Value.placement -is [string]) -and
+        $placements -ccontains [string]$Value.placement
+    ) "Discovery placement is invalid."
 
     Assert-ExactProperties -Value $Value.availability -Expected @(
         "status",
@@ -208,43 +232,65 @@ function Assert-ProviderCapabilityDiscovery {
         "maximum_age_seconds"
     ) -Location "discovery.availability"
     Assert-True (
+        ($Value.availability.status -is [string]) -and
         @("descriptor-available", "unavailable", "disabled") -ccontains
         [string]$Value.availability.status
     ) "Discovery availability status is invalid."
+    Assert-True (
+        $Value.availability.observed_at_utc -is [string]
+    ) "Discovery observation timestamp must be a string."
+    Assert-True (
+        $Value.availability.expires_at_utc -is [string]
+    ) "Discovery expiry timestamp must be a string."
     $observedAt = [DateTimeOffset]::MinValue
     $expiresAt = [DateTimeOffset]::MinValue
     Assert-True (
-        [DateTimeOffset]::TryParseExact(
+        [DateTimeOffset]::TryParse(
             [string]$Value.availability.observed_at_utc,
-            "O",
             [System.Globalization.CultureInfo]::InvariantCulture,
-            [System.Globalization.DateTimeStyles]::None,
+            [System.Globalization.DateTimeStyles]::RoundtripKind,
             [ref]$observedAt)
     ) "Discovery observation timestamp is invalid."
     Assert-True (
-        [DateTimeOffset]::TryParseExact(
+        [DateTimeOffset]::TryParse(
             [string]$Value.availability.expires_at_utc,
-            "O",
             [System.Globalization.CultureInfo]::InvariantCulture,
-            [System.Globalization.DateTimeStyles]::None,
+            [System.Globalization.DateTimeStyles]::RoundtripKind,
             [ref]$expiresAt)
     ) "Discovery expiry timestamp is invalid."
     $maximumAge = $Value.availability.maximum_age_seconds
+    $maximumAgeIsNumber =
+        $maximumAge -is [byte] -or
+        $maximumAge -is [sbyte] -or
+        $maximumAge -is [short] -or
+        $maximumAge -is [ushort] -or
+        $maximumAge -is [int] -or
+        $maximumAge -is [uint] -or
+        $maximumAge -is [long] -or
+        $maximumAge -is [ulong] -or
+        $maximumAge -is [float] -or
+        $maximumAge -is [double] -or
+        $maximumAge -is [decimal]
+    $maximumAgeDecimal =
+        if ($maximumAgeIsNumber) { [decimal]$maximumAge } else { -1 }
     Assert-True (
-        ($maximumAge -is [int] -or $maximumAge -is [long]) -and
-        [long]$maximumAge -ge 1 -and
-        [long]$maximumAge -le 600
+        $maximumAgeIsNumber -and
+        [decimal]::Truncate($maximumAgeDecimal) -eq $maximumAgeDecimal -and
+        $maximumAgeDecimal -ge 1 -and
+        $maximumAgeDecimal -le 600
     ) "Discovery maximum age is invalid."
+    $maximumAgeSeconds = [long]$maximumAgeDecimal
     Assert-True ($observedAt -le $Now) "Discovery observation is in the future."
     Assert-True ($expiresAt -gt $Now) "Discovery descriptor is stale."
     Assert-True ($expiresAt -gt $observedAt) "Discovery expiry must follow observation."
+    $expectedFreshnessTicks =
+        $maximumAgeSeconds * [TimeSpan]::TicksPerSecond
     Assert-True (
-        [Math]::Abs(
-            ($expiresAt - $observedAt).TotalSeconds - [long]$maximumAge
-        ) -lt 0.001
+        ($expiresAt - $observedAt).Ticks -eq $expectedFreshnessTicks
     ) "Discovery freshness window is inconsistent."
 
     Assert-True (
+        ($Value.description_authentication -is [string]) -and
         $Value.description_authentication -ceq "none"
     ) "Discovery description authentication must be none."
     Assert-True (
@@ -256,6 +302,9 @@ function Assert-ProviderCapabilityDiscovery {
         $Value.target_specific -eq $false
     ) "Discovery must be target-free."
 
+    Assert-JsonArray `
+        -Value $Value.capabilities `
+        -Location "discovery.capabilities"
     $capabilities = @($Value.capabilities)
     Assert-True (
         $capabilities.Count -ge 1 -and $capabilities.Count -le 64
@@ -283,12 +332,16 @@ function Assert-ProviderCapabilityDiscovery {
             "exclusions"
         ) -Location "discovery.capability"
         Assert-True (
+            ($capability.id -is [string]) -and
             ([string]$capability.id -cmatch "^[a-z0-9][a-z0-9._-]{1,158}[a-z0-9]$") -and
             $capabilityIds.Add([string]$capability.id)
         ) "Discovery capability ID is invalid or duplicated."
         Assert-SafeDiscoveryIdentifier `
             -Value ([string]$capability.id) `
             -Location "discovery.capability.id"
+        Assert-JsonArray `
+            -Value $capability.contract_versions `
+            -Location "discovery.capability.contract_versions"
         Assert-BoundedStringArray `
             -Values @($capability.contract_versions) `
             -Minimum 1 `
@@ -301,16 +354,24 @@ function Assert-ProviderCapabilityDiscovery {
                 -Location "discovery.capability.contract_versions"
         }
         Assert-True (
+            ($capability.effect_owner -is [string]) -and
             [string]$capability.effect_owner -cmatch
             "^[a-z0-9][a-z0-9._-]{1,158}[a-z0-9]$"
         ) "Discovery effect owner is invalid."
+        Assert-SafeDiscoveryIdentifier `
+            -Value ([string]$capability.effect_owner) `
+            -Location "discovery.capability.effect_owner"
         Assert-True (
+            ($capability.receipt_schema -is [string]) -and
             [string]$capability.receipt_schema -cmatch
             "^[a-z0-9][a-z0-9._-]{1,190}[a-z0-9]$"
         ) "Discovery receipt schema is invalid."
         Assert-SafeDiscoveryIdentifier `
             -Value ([string]$capability.receipt_schema) `
             -Location "discovery.capability.receipt_schema"
+        Assert-JsonArray `
+            -Value $capability.exclusions `
+            -Location "discovery.capability.exclusions"
         Assert-BoundedStringArray `
             -Values @($capability.exclusions) `
             -Minimum 1 `
@@ -318,6 +379,9 @@ function Assert-ProviderCapabilityDiscovery {
             -Pattern "^[a-z0-9][a-z0-9.-]{1,126}[a-z0-9]$" `
             -Location "discovery.capability.exclusions"
 
+        Assert-JsonArray `
+            -Value $capability.actions `
+            -Location "discovery.capability.actions"
         $actions = @($capability.actions)
         Assert-True (
             $actions.Count -ge 1 -and $actions.Count -le 64
@@ -331,16 +395,21 @@ function Assert-ProviderCapabilityDiscovery {
                 "authentication_requirements"
             ) -Location "discovery.capability.action"
             Assert-True (
-                ([string]$action.id -cmatch "^[A-Za-z0-9][A-Za-z0-9._-]{0,94}[A-Za-z0-9]$") -and
+                ($action.id -is [string]) -and
+                ([string]$action.id -cmatch "^[A-Za-z0-9][A-Za-z0-9._-]{1,94}[A-Za-z0-9]$") -and
                 $actionIds.Add([string]$action.id)
             ) "Discovery action ID is invalid or duplicated."
             Assert-SafeDiscoveryIdentifier `
                 -Value ([string]$action.id) `
                 -Location "discovery.capability.action.id"
             Assert-True (
+                ($action.kind -is [string]) -and
                 @("observe", "effect", "cleanup") -ccontains
                 [string]$action.kind
             ) "Discovery action kind is invalid."
+            Assert-JsonArray `
+                -Value $action.authentication_requirements `
+                -Location "discovery.capability.action.authentication_requirements"
             Assert-BoundedStringArray `
                 -Values @($action.authentication_requirements) `
                 -Minimum 1 `
@@ -358,6 +427,9 @@ function Assert-ProviderCapabilityDiscovery {
             ) "Discovery authentication 'none' cannot be combined with another requirement."
         }
     }
+    Assert-JsonArray `
+        -Value $Value.exclusions `
+        -Location "discovery.exclusions"
     Assert-BoundedStringArray `
         -Values @($Value.exclusions) `
         -Minimum 1 `
@@ -489,12 +561,42 @@ $overlong.availability.expires_at_utc = "2026-07-27T10:10:01.0000000Z"
 $overlong.availability.maximum_age_seconds = 601
 Assert-DiscoveryRejected "over-600-seconds" $overlong $discoveryNow
 
+$integralJsonNumber = Copy-JsonValue $discovery
+$integralJsonNumber.availability.maximum_age_seconds = [double]300
+Assert-ProviderCapabilityDiscovery `
+    -Value $integralJsonNumber `
+    -Now $discoveryNow
+
+$fractionalJsonNumber = Copy-JsonValue $discovery
+$fractionalJsonNumber.availability.maximum_age_seconds = [double]300.5
+Assert-DiscoveryRejected `
+    "fractional-maximum-age" `
+    $fractionalJsonNumber `
+    $discoveryNow
+
 $futureObservation = Copy-JsonValue $discovery
 $futureObservation.availability.observed_at_utc =
     "2026-07-27T10:02:01.0000000Z"
 $futureObservation.availability.expires_at_utc =
     "2026-07-27T10:07:01.0000000Z"
 Assert-DiscoveryRejected "future-observation" $futureObservation $discoveryNow
+
+$subMillisecondMismatch = Copy-JsonValue $discovery
+$subMillisecondMismatch.availability.expires_at_utc =
+    "2026-07-27T10:05:00.0000001Z"
+Assert-DiscoveryRejected `
+    "sub-millisecond-freshness-mismatch" `
+    $subMillisecondMismatch `
+    $discoveryNow
+
+$rfc3339WithoutFraction = Copy-JsonValue $discovery
+$rfc3339WithoutFraction.availability.observed_at_utc =
+    "2026-07-27T10:00:00Z"
+$rfc3339WithoutFraction.availability.expires_at_utc =
+    "2026-07-27T10:05:00Z"
+Assert-ProviderCapabilityDiscovery `
+    -Value $rfc3339WithoutFraction `
+    -Now $discoveryNow
 
 $duplicateCapability = Copy-JsonValue $discovery
 $duplicateCapability.capabilities = @($duplicateCapability.capabilities) +
@@ -528,6 +630,26 @@ Assert-ProviderCapabilityDiscovery `
     -Value $legitimateWirelessAdb `
     -Now $discoveryNow
 
+$legitimateWifiAdb = Copy-JsonValue $discovery
+$legitimateWifiAdb.capabilities[0].actions[0].id = "wifi-adb"
+Assert-ProviderCapabilityDiscovery `
+    -Value $legitimateWifiAdb `
+    -Now $discoveryNow
+
+$legitimateWirelessAdbContext = Copy-JsonValue $discovery
+$legitimateWirelessAdbContext.capabilities[0].actions[0].id =
+    "wireless-adb"
+Assert-ProviderCapabilityDiscovery `
+    -Value $legitimateWirelessAdbContext `
+    -Now $discoveryNow
+
+$twoCharacterAction = Copy-JsonValue $discovery
+$twoCharacterAction.capabilities[0].actions[0].id = "go"
+Assert-DiscoveryRejected `
+    "structural-two-character-action" `
+    $twoCharacterAction `
+    $discoveryNow
+
 $exactShell = Copy-JsonValue $discovery
 $exactShell.provider.id = "shell"
 Assert-DiscoveryRejected "identifier-exact-shell" $exactShell $discoveryNow
@@ -539,6 +661,29 @@ Assert-DiscoveryRejected "identifier-segment-shell" $segmentShell $discoveryNow
 $genericAdb = Copy-JsonValue $discovery
 $genericAdb.capabilities[0].contract_versions[0] = "adb"
 Assert-DiscoveryRejected "identifier-generic-adb" $genericAdb $discoveryNow
+
+$genericCommand = Copy-JsonValue $discovery
+$genericCommand.capabilities[0].actions[0].id = "command"
+Assert-DiscoveryRejected `
+    "identifier-generic-command" `
+    $genericCommand `
+    $discoveryNow
+
+$adbCommand = Copy-JsonValue $discovery
+$adbCommand.capabilities[0].actions[0].id = "adb-command"
+Assert-DiscoveryRejected "identifier-adb-command" $adbCommand $discoveryNow
+
+$runAdb = Copy-JsonValue $discovery
+$runAdb.capabilities[0].actions[0].id = "run-adb"
+Assert-DiscoveryRejected "identifier-run-adb" $runAdb $discoveryNow
+
+$dangerousEffectOwner = Copy-JsonValue $discovery
+$dangerousEffectOwner.capabilities[0].effect_owner =
+    "example.quest.execute-command"
+Assert-DiscoveryRejected `
+    "identifier-effect-owner" `
+    $dangerousEffectOwner `
+    $discoveryNow
 
 $exactExec = Copy-JsonValue $discovery
 $exactExec.capabilities[0].actions[0].id = "exec"
