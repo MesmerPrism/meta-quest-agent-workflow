@@ -40,6 +40,32 @@ the public repo-family map. Keep historical attribution in `NOTICE.md`.
 - Keep high-rate media out of generic JSON control/status channels.
 - Treat Accessibility foreground monitoring as a privacy-minimized,
   user-enabled diagnostic capability, never HOME interception or kiosk policy.
+- Prefer owning-application typed commands for repeatable operations they fully
+  support. Keep local File Manager execution and managed Fleet execution on
+  disjoint executable contracts, and label raw ADB as diagnostic fallback.
+- Keep provider capability discovery descriptive and inert. It may identify
+  typed actions, contract versions, effect owners, receipt schemas, placement,
+  short-lived descriptor availability, authentication requirements, and
+  exclusions, but must not contain invocations, paths, targets, endpoints,
+  credentials, coordination records, raw arguments, shell access, MCP
+  execution, or an execution grant.
+- Treat JSON Schema validation as structural. Descriptor consumers must also
+  enforce unique capability/action IDs, exact `TimeSpan`-tick timestamp/max-age
+  correspondence, a 600-second maximum, zero future-observation skew, current
+  freshness, and executable-vocabulary rejection across provider, capability,
+  contract, effect-owner, receipt, and action identifiers. Reject `command` as
+  an identifier token and reject generic ADB forms while preserving the
+  explicit bounded `wifi-adb` and `wireless-adb` contexts. Timestamp strings
+  must use RFC3339 date-time syntax before their semantic interval is checked.
+  Normalize numeric offsets through `+23:59` and `-23:59`; do not impose
+  .NET's narrower 14-hour `DateTimeOffset` constructor limit. Normalize an
+  RFC3339 leap second (`:60`) to the following second before offset handling.
+- Preserve owner-issued evidence byte-for-byte. A workflow wrapper may bind its
+  schema and SHA-256 with a sanitized outcome, but must not add fields under the
+  owner's schema or create an authority claim.
+- Add MCP only after an owning application's typed CLI/local API registry is
+  stable. Never expose raw shell, generic ADB arguments, arbitrary Android
+  components/intents/paths/properties/processes, or caller-supplied authority.
 - Prefer primary Android, OpenXR, and Meta sources for platform claims.
 - Use `pwsh` for repository scripts; Windows PowerShell 5.1 is not the current
   workflow host.
@@ -51,5 +77,6 @@ Before publishing documentation changes, run:
 ```powershell
 pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-public-safe.ps1
 pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-rusty-morphospace-routing.ps1
+pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-AgentExecutionContracts.ps1
 git diff --check
 ```

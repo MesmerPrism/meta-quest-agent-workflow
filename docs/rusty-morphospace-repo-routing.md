@@ -17,6 +17,7 @@ changing the separately governed runtime/module baseline.
 | --- | --- |
 | [rusty-morphospace-work-environment](https://github.com/MesmerPrism/rusty-morphospace-work-environment) | Portable onboarding, project composition, feature locks, workspace isolation, and workflow contracts. |
 | [rusty-quest](https://github.com/MesmerPrism/rusty-quest) | Quest/Android/OpenXR/Spatial SDK apps and platform adapters, permissions, packaging, lifecycle, and effective-runtime evidence. |
+| [QuestIonAble File Manager](https://github.com/MesmerPrism/QuestIonAble-File-Manager) | Windows-first exact-serial ADB/file/APK utilities through shared typed CLI, local API, and WPF routes. It owns local execution only for advertised commands and no managed Fleet or Manifold authority. |
 | [rusty-hostess](https://github.com/MesmerPrism/rusty-hostess) | Windows CLI/API and WPF operator routes for install, launch, capture, validation, cleanup, and evidence projection. |
 | [rusty-fleet](https://github.com/MesmerPrism/rusty-fleet) | Multi-headset Fleet Hub, Fleet Console, `fleetctl`, operator policy, enrollment/status projections, and no-ADB monitoring. The permission-minimal Quest Fleet Agent producer remains in Rusty Quest. |
 | [rusty-manifold](https://github.com/MesmerPrism/rusty-manifold) | Command, session, stream, host-manifest, admission, and control-transport authority. |
@@ -36,7 +37,9 @@ Use this repository for the device-facing procedure around those owners:
 ```text
 project composition and exact feature lock
   -> Rusty Quest build and runtime/profile authority
-  -> this repo's serial-scoped device-operation procedure
+  -> this repo selects an owning typed provider per operation
+  -> QuestIonAble File Manager for supported local exact-serial utilities
+     OR raw serial-scoped ADB as an explicitly labeled diagnostic fallback
   -> Rusty Quest Fleet Agent proposal when fleet monitoring is enabled
   -> Rusty Fleet ingress verifies Fleet enrollment and signer binding
   -> the pinned Manifold adapter reviews peer-status authority
@@ -60,6 +63,12 @@ binding, then uses the exact pinned Manifold adapter for peer-status review;
 the two state transitions are committed transactionally or rejected together.
 ADB remains an optional validation and maintenance route, not the base
 monitoring transport.
+
+QuestIonAble File Manager is a preferred local provider only for the closed
+typed operations it advertises and confirms through exact-target readback.
+Rusty Fleet uses a different managed request and receipt contract. A portable
+workflow intent may feed either private resolver, but it contains no local
+path, serial, target, credential, approval, coordination, or Manifold state.
 
 For tracking, the active OpenXR app obtains fused poses and routes generic
 relation snapshots through Lattice contracts. ADB, shell helpers, background

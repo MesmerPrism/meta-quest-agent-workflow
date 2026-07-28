@@ -1,0 +1,17 @@
+{
+  "schema": "rusty.quest.workflow.intent.v1",
+  "intent_id": "example-inspected-deployment",
+  "goal": "install-artifact",
+  "artifact_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "required_capabilities": [
+    "artifact.inspect",
+    "apk.install-inspected"
+  ],
+  "required_claim": "device-state-confirmed",
+  "constraints": {
+    "exact_target_required": true,
+    "effective_readback_required": true,
+    "operator_approval_required": true,
+    "raw_fallback_allowed": false
+  }
+}

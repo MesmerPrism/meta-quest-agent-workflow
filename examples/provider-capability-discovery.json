@@ -1,0 +1,69 @@
+{
+  "schema": "rusty.quest.workflow.provider_capability_discovery.v1",
+  "provider": {
+    "id": "example.quest.device-utility-provider",
+    "version": "1.0.0"
+  },
+  "placement": "windows-host-process",
+  "availability": {
+    "status": "descriptor-available",
+    "observed_at_utc": "2026-07-27T10:00:00.0000000Z",
+    "expires_at_utc": "2026-07-27T10:05:00.0000000Z",
+    "maximum_age_seconds": 300
+  },
+  "description_authentication": "none",
+  "authorizes_execution": false,
+  "target_specific": false,
+  "capabilities": [
+    {
+      "id": "example.quest.keep-awake",
+      "contract_versions": [
+        "example.quest.keep_awake.provider_request.v1"
+      ],
+      "actions": [
+        {
+          "id": "status",
+          "kind": "observe",
+          "authentication_requirements": [
+            "caller-authority-external",
+            "exact-target-binding",
+            "current-identity-revision"
+          ]
+        },
+        {
+          "id": "apply-bounded",
+          "kind": "effect",
+          "authentication_requirements": [
+            "caller-authority-external",
+            "exact-target-binding",
+            "current-identity-revision"
+          ]
+        },
+        {
+          "id": "restore-normal",
+          "kind": "cleanup",
+          "authentication_requirements": [
+            "caller-authority-external",
+            "exact-target-binding",
+            "current-identity-revision"
+          ]
+        }
+      ],
+      "effect_owner": "example.quest.device-utility",
+      "receipt_schema": "example.quest.keep_awake.provider_receipt.v1",
+      "exclusions": [
+        "no-fleet-scheduling",
+        "no-home-ownership",
+        "no-kiosk-authority"
+      ]
+    }
+  ],
+  "exclusions": [
+    "no-credentials",
+    "no-endpoints",
+    "no-execution-grant",
+    "no-mcp-execution",
+    "no-shell",
+    "no-target-resolution"
+  ]
+}

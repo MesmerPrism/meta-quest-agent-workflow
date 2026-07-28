@@ -54,6 +54,10 @@ side effects are split from read-only inspection.
   validation, and launcher task/process boundaries.
 - Host-to-headset mutation receipts that distinguish command dispatch from
   pending wearer/device work and confirmation by effective-state readback.
+- Target-free, short-lived provider capability discovery that describes typed
+  owner surfaces without granting execution or exposing invocation details,
+  paths, endpoints, targets, credentials, raw arguments, shell access, or MCP
+  execution, with a reusable structural-plus-semantic descriptor validator.
 - OpenXR tracking and ADB shell-helper boundaries.
 - Reusable PowerShell scripts under `examples/`.
 
@@ -146,6 +150,9 @@ pwsh -NoProfile -ExecutionPolicy Bypass `
 16. Treat Accessibility foreground monitoring as a special user-enabled
     capability: disable UI-tree retrieval, separate refocus from escape
     counting, and revalidate Meta-shell signals after Horizon updates.
+17. Prefer an owning application's typed CLI or local API for repeatable
+    operations it fully supports. Preserve raw serial-scoped ADB as an
+    explicitly labeled diagnostic fallback, not equivalent owner evidence.
 
 ## Provider Model
 
@@ -154,10 +161,16 @@ Use the narrowest provider that answers the question:
 | Provider | Good for | Notes |
 | --- | --- | --- |
 | App/Manifold-adapter status endpoint | App-owned health, clock, stream state | Requires the app or service to be running; the endpoint does not replace Manifold authority. |
+| QuestIonAble File Manager typed CLI/local API | Exact-serial artifact inspection, inspected install, resolved launch, bounded package/foreground/process observation, and reviewed local device utilities | Preferred local provider only for advertised typed commands with fresh operation-specific readback. It owns no Fleet or Manifold authority. |
+| Rusty Fleet | Approved operations over immutable managed target snapshots | Requires current Manifold command/lease authority and effect-owner receipts. Local ADB requests and Fleet requests are deliberately different contracts. |
 | Meta Horizon MCP / Meta VR CLI / `hzdb` | Quest-specific docs, device status, logcat, screenshots, Perfetto, assets | Optional provider; prefer `npx -y metavr` for new manual setup and record the selected route. |
-| ADB | Install, launch, logcat, screenshot, dumpsys, file push/pull, port forward | Developer Mode and user ADB authorization required. |
+| ADB fallback | Novel diagnostics, provider-gap investigation, and recovery | Developer Mode and user authorization required. Label the fallback; transport readback cannot be relabeled as app, File Manager, Fleet, or Manifold acceptance. |
 | App-private diagnostics | Camera/source metadata, renderer counters, probe payloads | Pull with `run-as` only when the app is debuggable. |
 | Manual headset action | Permissions, MediaProjection consent, protected prompts, real controllers | Record the user action in the evidence. |
+
+See [Agent Execution Providers](docs/agent-execution-providers.md) for the
+provider-selection algorithm, deliberately disjoint local/Fleet contracts,
+portable non-executable intent, sanitized evidence wrapper, and MCP boundary.
 
 ## Rusty Morphospace Routing
 
@@ -219,6 +232,8 @@ docs/openxr-tracking-boundary.md
 docs/quest-signal-patterns.md
 docs/shell-helper-boundary.md
 docs/troubleshooting.md
+examples/agent-execution-intent.json
+examples/agent-execution-evidence-wrapper.json
 examples/collect-camera-metadata.ps1
 examples/install-launch-watch.ps1
 examples/broker-status-probe.ps1
@@ -226,6 +241,9 @@ examples/start-device-watchdog-template.ps1
 examples/mcp-config-example.json
 scripts/check-public-safe.ps1
 scripts/check-rusty-morphospace-routing.ps1
+scripts/Test-AgentExecutionContracts.ps1
+schemas/rusty.quest.workflow.intent.v1.schema.json
+schemas/rusty.quest.workflow.evidence_wrapper.v1.schema.json
 ```
 
 ## Historical Lineage
