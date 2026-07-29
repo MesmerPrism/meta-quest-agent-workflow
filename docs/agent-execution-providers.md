@@ -5,6 +5,12 @@ closed, typed command with exact-target validation and fresh readback. Keep
 this workflow as the provider selector, evidence wrapper, troubleshooting
 guide, and raw-diagnostic fallback.
 
+For routine Rusty Morphospace use, follow
+[Rusty Morphospace Default Device Loop](rusty-morphospace-default-device-loop.md).
+It makes File Manager plus Kiosk the normal local product loop and Fleet plus
+the applicable effect owner the normal managed loop. It does not require every
+provider for every operation.
+
 ## Decision
 
 Choose a provider per operation, not once for an entire run:
@@ -119,7 +125,8 @@ authority labels, or credentials.
 
 For every operation:
 
-1. State the goal and evidence needed.
+1. State the goal and evidence needed; default routine intents to
+   `raw_fallback_allowed=false`.
 2. Discover provider capabilities without mutating a device and reject stale
    descriptors.
 3. Select the narrowest owning provider that can produce the required
@@ -129,8 +136,10 @@ For every operation:
 6. Execute one typed operation.
 7. Preserve the owner evidence byte-for-byte and emit a sanitized hash-bound
    workflow wrapper.
-8. If the provider cannot complete the operation, record the limitation before
-   using a narrower diagnostic fallback.
+8. If the provider cannot complete the operation, record its version, missing
+   or failed capability/action, unavailable owner claim, fallback scope, stop
+   condition, cleanup, and suggested product improvement before using a
+   narrower diagnostic fallback.
 
 Never present a raw ADB fallback result as accepted File Manager, Fleet,
 Manifold, Kiosk, or app-owned evidence.

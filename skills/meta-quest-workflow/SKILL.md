@@ -1,6 +1,6 @@
 ---
 name: meta-quest-workflow
-description: 'Use for Meta Quest device work: serial-scoped ADB, APK install/launch/validation, screenshots, screenrecord, logcat, Perfetto, Camera2 metadata, MediaProjection, Termux sidecars, Manifold/app-owned localhost probes, or Meta Horizon MCP / Meta VR CLI / hzdb workflows.'
+description: 'Use for Meta Quest device work through Rusty Morphospace File Manager, Kiosk, or Fleet defaults, with serial-scoped ADB fallback, APK validation, capture, diagnostics, sidecars, app-owned probes, and Meta tooling.'
 ---
 
 # Meta Quest Workflow
@@ -42,22 +42,48 @@ current work.
 Read only the playbooks needed for the task:
 
 1. `README.md`
-2. `docs/adb-basics.md`
+2. `docs/rusty-morphospace-default-device-loop.md` for routine Rusty
+   Morphospace build/deploy/launch/validate work
 3. `docs/agent-execution-providers.md`
-4. `docs/apk-install-launch.md`
-5. `docs/artifact-and-evidence-discipline.md`
-6. `docs/quest-signal-patterns.md`
-7. `docs/accessibility-foreground-watchdogs.md` for attended foreground
+4. `docs/adb-basics.md` only for bootstrap, diagnostics, or fallback
+5. `docs/apk-install-launch.md`
+6. `docs/artifact-and-evidence-discipline.md`
+7. `docs/quest-signal-patterns.md`
+8. `docs/accessibility-foreground-watchdogs.md` for attended foreground
    monitoring, Meta Home transitions, or special Accessibility enablement
-8. `docs/host-headset-mutation-confirmation.md` for state changes
-9. `docs/managed-device-store-apps.md` for managed modes or Store apps
-10. `docs/quest-capture-stack-notes.md` and
+9. `docs/host-headset-mutation-confirmation.md` for state changes
+10. `docs/managed-device-store-apps.md` for managed modes or Store apps
+11. `docs/quest-capture-stack-notes.md` and
    `docs/capture-source-taxonomy.md` for capture or streaming
-11. `docs/termux-linux-sidecars.md` when Termux or Wi-Fi ADB is involved
-12. `docs/meta-horizon-mcp-and-hzdb.md` for Meta VR CLI/MCP
+12. `docs/termux-linux-sidecars.md` when Termux or Wi-Fi ADB is involved
+13. `docs/meta-horizon-mcp-and-hzdb.md` for Meta VR CLI/MCP
 
 When this skill is installed without the repo docs, use the public
 `MesmerPrism/meta-quest-agent-workflow` repository as the playbook source.
+
+## Default Rusty Morphospace Ecosystem Loop
+
+For routine work, use:
+
+```text
+project-owned build and run capsule
+  -> File Manager inspected deployment on one local exact serial
+     OR Fleet approved execution over one immutable managed target snapshot
+  -> Kiosk catalog/launch/foreground control when the app participates
+  -> app-owned effective-runtime evidence
+  -> owner-specific cleanup and reconciliation
+```
+
+Do not force every operation through all three products. File Manager is the
+default local single-headset route. Fleet is the default managed multi-target
+route only when its current authority and effect-owner contracts apply. Kiosk
+is the default launch front door when the app participates in its catalog or
+foreground-control workflow.
+
+Resolve executable paths, targets, aliases, approvals, credentials, and
+coordination privately. For routine intents set `raw_fallback_allowed=false`.
+Before using raw ADB, record the provider gap, bounded fallback goal, stop
+condition, cleanup, and suggested owner-product improvement.
 
 ## Core Rules
 
@@ -90,8 +116,10 @@ When this skill is installed without the repo docs, use the public
   revalidate exact signals and background launch behavior after Horizon
   updates.
 - Prefer an owning application's typed CLI or local API for a repeatable
-  operation it fully supports. Preserve raw serial-scoped ADB as a labeled
-  diagnostic fallback and do not relabel its results as owner acceptance.
+  operation it fully supports. Default routine Morphospace work to File
+  Manager, Kiosk, and Fleet according to the loop above. Preserve raw
+  serial-scoped ADB as a labeled bootstrap, provider-gap, diagnostic, or
+  recovery fallback and do not relabel its results as owner acceptance.
 - When an owner projects
   `rusty.quest.workflow.provider_capability_discovery.v1`, require an exact
   schema, provider version, capability, action, and contract-version match.
@@ -132,28 +160,39 @@ a backend, probe a device, obtain credentials, or execute an action. Absence or
 rejection of a descriptor is a provider-selection limitation, not permission
 to broaden another provider's authority.
 
-1. App-owned status for OpenXR, renderer, source, effective runtime, clocks,
-   streams, and application receipts.
-2. QuestIonAble File Manager typed CLI/local API for advertised exact-serial
+1. QuestIonAble File Manager typed CLI/local API for advertised exact-serial
    artifact inspection, inspected install, resolved launch, bounded
    observation, and reviewed local device utilities.
-3. Rusty Fleet for approved managed operations over immutable target snapshots
+2. Rusty Kiosk, directly or through its bounded File Manager/Fleet adapter, for
+   catalog, selection, normal or guarded launch, and Kiosk-owned foreground
+   state.
+3. App-owned status for OpenXR, renderer, source, effective runtime, clocks,
+   streams, and application receipts.
+4. Rusty Fleet for approved managed operations over immutable target snapshots
    with current Manifold authority and effect-owner receipts.
-4. Meta Horizon MCP / Meta VR CLI / `hzdb` for Quest-specific docs, device
+5. Meta Horizon MCP / Meta VR CLI / `hzdb` for Quest-specific docs, device
    status, screenshots, logcat, Perfetto, and assets when configured.
-5. ADB fallback for novel diagnostics, provider-gap investigation, and
+6. ADB fallback for bootstrap, novel diagnostics, provider-gap investigation,
+   and
    recovery.
-6. App-private diagnostics, normally via `run-as` for debuggable builds.
-7. Manual headset action for runtime permissions, MediaProjection consent,
+7. App-private diagnostics, normally via `run-as` for debuggable builds.
+8. Manual headset action for runtime permissions, MediaProjection consent,
    protected prompts, paid Store steps, and real controller input.
 
 Label the selected provider and version. Choose per operation, not once per
 run. Do not substitute one capture or authority source for another without
 saying so.
 
-## Safe Device Shape
+## Default Local Product Shape
 
-Start with serial-scoped readback:
+Use File Manager's current inspected-deployment commands and Kiosk routes from
+`docs/rusty-morphospace-default-device-loop.md`. Require exact artifact,
+serial, installed-byte, resolved-launcher, foreground, and owner-state
+readback. Confirm runtime truth through the participating app.
+
+## Raw ADB Fallback Shape
+
+Only after the fallback gate is satisfied, start with serial-scoped readback:
 
 ```powershell
 adb devices -l

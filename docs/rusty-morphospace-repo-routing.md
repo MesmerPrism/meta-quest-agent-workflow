@@ -32,20 +32,25 @@ changing the separately governed runtime/module baseline.
 
 ## Device Workflow Boundary
 
-Use this repository for the device-facing procedure around those owners:
+Use
+[Rusty Morphospace Default Device Loop](rusty-morphospace-default-device-loop.md)
+for the routine device-facing procedure around those owners:
 
 ```text
 project composition and exact feature lock
   -> Rusty Quest build and runtime/profile authority
   -> this repo selects an owning typed provider per operation
-  -> QuestIonAble File Manager for supported local exact-serial utilities
-     OR raw serial-scoped ADB as an explicitly labeled diagnostic fallback
+  -> QuestIonAble File Manager for local inspected deployment
+     OR Rusty Fleet for an approved immutable managed target snapshot
+  -> Rusty Kiosk for catalog/launch/foreground ownership when applicable
+  -> participating app for effective-runtime evidence
   -> Rusty Quest Fleet Agent proposal when fleet monitoring is enabled
   -> Rusty Fleet ingress verifies Fleet enrollment and signer binding
   -> the pinned Manifold adapter reviews peer-status authority
   -> both Fleet and Manifold transitions apply, or neither does
   -> Rusty Hostess CLI/API-equivalent orchestration and evidence projection
   -> effective-runtime and cleanup readback
+  -> raw serial-scoped ADB only after a labeled fallback gate
 ```
 
 For commands, sessions, streams, and peer state, Manifold owns the accepted
