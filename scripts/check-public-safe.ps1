@@ -91,4 +91,45 @@ if ($failures.Count -gt 0) {
     exit 1
 }
 
+$termuxSidecarPath = Join-Path $resolvedRoot "docs\termux-linux-sidecars.md"
+$termuxSidecar = Get-Content -Raw -LiteralPath $termuxSidecarPath
+foreach ($requiredBoundary in @(
+    "classic TCP ADB lab route",
+    "current dynamically assigned TLS connect",
+    "127.0.0.1:<current-tls-connect-port>",
+    "Do not reuse the classic TCP commands above for this modern TLS route."
+)) {
+    if (-not $termuxSidecar.Contains($requiredBoundary, [StringComparison]::Ordinal)) {
+        Write-Error "Termux ADB port-authority boundary is missing: $requiredBoundary"
+        exit 1
+    }
+}
+if ($termuxSidecar.Contains(
+    "After an operator or external workflow enables WiFi ADB",
+    [StringComparison]::Ordinal
+)) {
+    Write-Error "Generic WiFi ADB guidance must not imply that modern TLS uses port 5555."
+    exit 1
+}
+
+$markdownFiles = Get-ChildItem -LiteralPath $resolvedRoot -Recurse -File -Filter "*.md" |
+    Where-Object {
+        $_.FullName -notmatch "[\\/]\.git(?:[\\/]|$)" -and
+        $_.FullName -notmatch "[\\/]artifacts[\\/]"
+    }
+foreach ($markdownFile in $markdownFiles) {
+    $markdownText = Get-Content -Raw -LiteralPath $markdownFile.FullName
+    if (
+        $markdownFile.FullName -ine $termuxSidecarPath -and
+        $markdownText.Contains("127.0.0.1:5555", [StringComparison]::Ordinal)
+    ) {
+        Write-Error "Fixed-port ADB recipe is not labeled in the canonical route owner: $($markdownFile.FullName)"
+        exit 1
+    }
+    if ($markdownText.Contains("user-authorized WiFi ADB", [StringComparison]::Ordinal)) {
+        Write-Error "Generic WiFi ADB wording must distinguish classic TCP from modern TLS: $($markdownFile.FullName)"
+        exit 1
+    }
+}
+
 Write-Host "Public-safety check passed for $resolvedRoot"
