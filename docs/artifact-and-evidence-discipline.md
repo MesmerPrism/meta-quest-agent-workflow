@@ -30,6 +30,11 @@ local that differs from a parameter only by case, such as `$runtimeProfile`
 beside `$RuntimeProfile`; use a role-specific name such as
 `$runtimeProfileEntry` for parsed data.
 
+Invoke programs explicitly and pass arguments as an array or separate
+PowerShell arguments. Do not render a command string and then reparse or
+evaluate it. Keep long human-readable labels in the run manifest rather than
+embedding them in fragile command lines or deep artifact paths.
+
 When a native command can emit useful failure evidence, preserve its real
 stdout, stderr, and exit code through the repository-owned runner or an
 equivalent bounded capture helper. Do not let PowerShell's

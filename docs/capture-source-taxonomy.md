@@ -28,6 +28,14 @@ Android's
 and
 [secure-display](https://developer.android.com/reference/android/view/Display#FLAG_SECURE)
 contracts are the primary platform references for this boundary.
+Do not infer a private SurfaceFlinger, compositor-mirror, or provider
+implementation from the resulting pixels; claim only the observed capture
+route unless direct owner evidence establishes more.
+
+If an application renders its own MediaProjection output back into the
+captured visible scene, recursive or delayed visual feedback can occur. That
+is evidence of flattened display access and application rendering, not access
+to an individual XR layer, raw camera, depth, or private compositor path.
 
 ## Naming
 
