@@ -17,6 +17,7 @@ artifact name and report.
 | Built-in Sharing/MQDH recorder | Operator-visible MP4 capture owned by Meta UI/tools | A documented generic ADB video-recording API |
 | ADB `screenrecord` MP4 or stdout H.264 | Shell-captured physical-display output, often as a raw stereo headset view | Raw camera texture data or a polished single-view spectator capture |
 | Casting/scrcpy | Operator-visible presentation over a transport | Raw camera texture data |
+| Hostess Meta/MQDH Cinematic adapter | On the reviewed pinned matrix, supervised live Cast presentation with an operator-observed Cinematic 16:9 label and graceful owned-host exit recorded in a sanitized summary | Hostess-owned frames or generic media packets, recording finalization, input forwarding, arbitrary 2D-panel control, Meta device-session cleanup, or FOV restoration |
 | Direct stream frame/status | Frame or metadata pulled from an app, VNC, MJPEG, or an app/Manifold adapter | Proof that the headset display or compositor presented the same content |
 | App-private diagnostics | Internal renderer/camera counters and metadata | User-visible proof unless paired with capture |
 

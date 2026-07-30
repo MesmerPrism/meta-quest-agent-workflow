@@ -21,6 +21,7 @@ Choose a provider per operation, not once for an entire run:
 | Execute an approved operation across managed enrolled headsets | Rusty Fleet | Immutable target snapshot, the current Manifold authorization state required by the owner-issued registered contract for the selected command, effect-owner receipt, and separate cleanup |
 | Prove OpenXR, Spatial SDK, renderer, source, or app-owned effective state | The participating Quest app | App-owned current-run receipt or marker |
 | Search or control Kiosk-owned catalog/foreground behavior | Rusty Kiosk through its bounded provider or Fleet adapter | Kiosk-owned receipt and effective state |
+| Present a supervised Meta/MQDH Cinematic Cast window | Rusty Hostess typed Meta Quest casting CLI | Pinned provider compatibility, independently observed presentation/Cinematic state, separate recording state, owned-host exit, and explicit unresolved Meta device/FOV cleanup |
 | Inspect Meta tooling state, capture, or performance evidence | Meta Horizon MCP, Meta VR CLI, or `hzdb` | Provider-specific readback and artifact provenance |
 | Investigate a missing provider feature or recover a broken development route | Explicit serial-scoped ADB fallback | Transport facts only, unless an owning consumer independently confirms the effect |
 

@@ -421,10 +421,42 @@ frame-rate, bitrate, selector, or product-version observations dated; do not
 promote them into a current recorder contract without a fresh exact-version
 run.
 
+## Hostess Meta/MQDH Cinematic Presentation
+
+Rusty Hostess exposes a Windows-only typed adapter for a separately installed,
+reviewed MQDH `Casting.exe`. It is an opaque operator-presentation route, not
+another Rusty Quest display source or Manifold media session: Hostess receives
+no frames, codec stream, socket endpoint, or generic media packets.
+
+The Hostess sanitized reviewed-run summary records stable Hostess launch,
+operator-observed live presentation with a Cast overlay reporting Cinematic
+16:9, and graceful exit of the exact Hostess-owned process on MQDH 6.4.1. It is
+hash-bound to the tested Hostess implementation and compatibility profile, but
+is not an owner-issued runtime receipt and excludes private raw evidence. Keep
+that result bounded to the pinned provider matrix. The isolated recorder
+attempt produced no new artifact, while Meta device-session stop and FOV
+restoration lacked owner-issued evidence. Record presentation, Cinematic
+selection, recording requested/active/finalized plus artifact metadata,
+host-process exit, device session stop, FOV restoration, and terminal cleanup
+as separate facts.
+
+Input forwarding, keyboard/controller forwarding, and arbitrary 2D-panel
+interaction are not part of the completed matrix. Defer them to a separate
+exact-version validation rather than inferring interactivity from a successful
+Cast window.
+
+The owning route and current distribution limits are documented in
+`docs/meta-quest-casting-adapter.md` in
+[Rusty Hostess](https://github.com/MesmerPrism/rusty-hostess).
+
 ## Decision Guidance
 
-Use the built-in Sharing recorder or MQDH when a human can operate the UI and
-the target is a polished MP4. Use MediaProjection when an app or companion
-needs immediate frames for validation, feedback loops, or receiver-side
-analysis. Use Meta CLI / `hzdb` or ADB screenshots when one still image is enough. Label
-each artifact by route.
+Use the Hostess Meta/MQDH adapter only for supervised local developer use from
+source on the reviewed Windows machine when a Cinematic live view is the goal
+and the exact pinned compatibility profile applies. This is not yet a general
+user or packaged distribution route. Use the built-in Sharing recorder or MQDH
+recorder UI only when a human can operate it and a route-specific finalized MP4
+is required. Use MediaProjection when an app or companion needs immediate
+frames for validation, feedback loops, or receiver-side analysis. Use Meta CLI
+/ `hzdb` or ADB screenshots when one still image is enough. Label each artifact
+by route.

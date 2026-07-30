@@ -52,7 +52,8 @@ side effects are split from read-only inspection.
   logcat windows, and evidence captures are meaningful.
 - Capture-source taxonomy for passthrough, raw camera, environment depth,
   MediaProjection, screenshots, ADB `screenrecord`, casting, and direct
-  stream-frame witnesses.
+  stream-frame witnesses, including the tested Hostess-owned Meta/MQDH
+  Cinematic presentation route and its explicit non-claims.
 - Provider-neutral streaming and direct-link gates that keep topology,
   socket ownership, control/session state, media transfer, decode/import,
   render adoption, cleanup, and bounded fatal evidence separate.
@@ -185,6 +186,7 @@ Use the narrowest provider that answers the question:
 | Rusty Kiosk typed provider | Catalog, selected app, normal or guarded launch, foreground guard, and return-to-Kiosk state | Kiosk owns these effects even when File Manager or Fleet transports the request. |
 | App/Manifold-adapter status endpoint | App-owned health, clock, stream state | Requires the app or service to be running; the endpoint does not replace Manifold authority. |
 | Rusty Fleet | Approved operations over immutable managed target snapshots | Requires the current Manifold authorization state declared by the owner-issued registered contract for the selected Fleet command, plus effect-owner receipts. Local ADB requests and Fleet requests are deliberately different contracts. |
+| Rusty Hostess Meta/MQDH Cinematic adapter | Supervised Windows presentation from a separately installed, reviewed Meta Quest Developer Hub build | Opaque presentation provider only. Its sanitized reviewed-run summary records live Cinematic 16:9 presentation and graceful owned-host exit; recording, input forwarding, arbitrary 2D-panel control, device-session cleanup, and FOV restoration remain separate or unproven. |
 | Meta Horizon MCP / Meta VR CLI / `hzdb` | Quest-specific docs, device status, logcat, screenshots, Perfetto, assets | Optional provider; prefer `npx -y metavr` for new manual setup and record the selected route. |
 | ADB fallback | Novel diagnostics, provider-gap investigation, and recovery | Developer Mode and user authorization required. Label the fallback; transport readback cannot be relabeled as app, File Manager, Fleet, or Manifold acceptance. |
 | App-private diagnostics | Camera/source metadata, renderer counters, probe payloads | Pull with `run-as` only when the app is debuggable. |

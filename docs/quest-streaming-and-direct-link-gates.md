@@ -36,6 +36,21 @@ its contract. When selected, Rusty Hostess owns Windows operator orchestration,
 receiver, presentation, evidence, and cleanup projections. High-rate media
 remains on a dedicated media plane.
 
+## Opaque Operator-Presentation Routes
+
+Some operator views expose neither owned media bytes nor the full provider
+lifecycle. Mark unavailable media-transfer, decode, socket, and Manifold
+session rows `not-applicable` instead of synthesizing them.
+
+The tested Hostess Meta/MQDH Cinematic adapter is such a route. Hostess owns
+compatibility checks, process supervision, presentation observations, and its
+own receipts; Meta retains casting transport, Cast presentation, recording,
+device-session, and Cinematic-FOV effects. A successful window may establish
+independently observed presentation, but it does not prove recording,
+input forwarding, arbitrary 2D-panel interaction, device-session cleanup, or
+FOV restoration. Keep it adjacent to—not interchangeable with—the Rusty-owned
+display/media stream that exposes receiver-observed packets and frames.
+
 ## Diagnostic Escalation
 
 Start at the lowest layer that can explain the current blocker:
