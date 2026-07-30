@@ -14,7 +14,9 @@ side effects are split from read-only inspection.
 
 ## What Is Included
 
-- A Codex-style skill at `skills/meta-quest-workflow/SKILL.md`.
+- The canonical Codex-style skill and agent manifest under
+  `skills/meta-quest-workflow/`. Downstream installers may add local locator
+  metadata, but do not own a competing tracked copy.
 - A current [Rusty Morphospace repo-routing map](docs/rusty-morphospace-repo-routing.md)
   that keeps device workflow, Quest runtime, Hostess orchestration, Manifold
   authority, and reusable core contracts separate.
@@ -228,6 +230,7 @@ remote-operations console pattern, not a browser shell or raw ADB proxy.
 ```text
 AGENTS.md
 skills/meta-quest-workflow/SKILL.md
+skills/meta-quest-workflow/agents/openai.yaml
 docs/adb-basics.md
 docs/accessibility-foreground-watchdogs.md
 docs/apk-install-launch.md
@@ -260,6 +263,7 @@ examples/mcp-config-example.json
 scripts/check-public-safe.ps1
 scripts/check-rusty-morphospace-routing.ps1
 scripts/Test-AgentExecutionContracts.ps1
+scripts/Test-MetaQuestWorkflowSkill.ps1
 schemas/rusty.quest.workflow.intent.v1.schema.json
 schemas/rusty.quest.workflow.evidence_wrapper.v1.schema.json
 ```

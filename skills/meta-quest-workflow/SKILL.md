@@ -37,6 +37,24 @@ Public Rusty XR is historical/compatibility provenance only. Do not introduce
 new `rusty.xr.*`, `/rustyxr/...`, `RustyXr.*`, or Makepad-specific authority for
 current work.
 
+## Optional Local Work Environment
+
+An installer may add
+`references/local-work-environment.json` beside this skill. When present, use
+it only to resolve the exact local `rusty-morphospace-work-environment` clone
+and its portable project docs:
+
+- `docs/QUEST_APK_WORKFLOW.md`
+- `docs/PROJECT_ISOLATION.md`
+- `docs/PUBLIC_PRIVATE_BOUNDARY.md`
+- `docs/INSTRUCTION_SYNCHRONIZATION.md`
+
+The generated locator is local installation metadata, not part of this
+canonical skill and not device authority. It cannot override this repository's
+device-operation procedure, select a target, authorize a mutation, or supply
+credentials. If the locator is absent, use a repository explicitly named by
+the user or ask for its location; never guess a machine path.
+
 ## First Read
 
 Read only the playbooks needed for the task:
