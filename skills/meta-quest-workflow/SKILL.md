@@ -60,23 +60,25 @@ the user or ask for its location; never guess a machine path.
 Read only the playbooks needed for the task:
 
 1. `README.md`
-2. `docs/rusty-morphospace-default-device-loop.md` for routine Rusty
+2. `docs/playbook-index.md` when choosing a focused playbook or locating an
+   application-owned command, status, receipt, or cleanup contract
+3. `docs/rusty-morphospace-default-device-loop.md` for routine Rusty
    Morphospace build/deploy/launch/validate work
-3. `docs/agent-execution-providers.md`
-4. `docs/adb-basics.md` only for bootstrap, diagnostics, or fallback
-5. `docs/apk-install-launch.md`
-6. `docs/artifact-and-evidence-discipline.md`
-7. `docs/quest-signal-patterns.md`
-8. `docs/accessibility-foreground-watchdogs.md` for attended foreground
+4. `docs/agent-execution-providers.md`
+5. `docs/adb-basics.md` only for bootstrap, diagnostics, or fallback
+6. `docs/apk-install-launch.md`
+7. `docs/artifact-and-evidence-discipline.md`
+8. `docs/quest-signal-patterns.md`
+9. `docs/accessibility-foreground-watchdogs.md` for attended foreground
    monitoring, Meta Home transitions, or special Accessibility enablement
-9. `docs/host-headset-mutation-confirmation.md` for state changes
-10. `docs/managed-device-store-apps.md` for managed modes or Store apps
-11. `docs/quest-capture-stack-notes.md` and
+10. `docs/host-headset-mutation-confirmation.md` for state changes
+11. `docs/managed-device-store-apps.md` for managed modes or Store apps
+12. `docs/quest-capture-stack-notes.md` and
    `docs/capture-source-taxonomy.md` for capture tasks
-12. `docs/quest-streaming-and-direct-link-gates.md` for Quest/Quest or
+13. `docs/quest-streaming-and-direct-link-gates.md` for Quest/Quest or
    Quest/PC streaming, direct links, and multi-layer promotion evidence
-13. `docs/termux-linux-sidecars.md` when Termux or Wi-Fi ADB is involved
-14. `docs/meta-horizon-mcp-and-hzdb.md` for Meta VR CLI/MCP
+14. `docs/termux-linux-sidecars.md` when Termux or Wi-Fi ADB is involved
+15. `docs/meta-horizon-mcp-and-hzdb.md` for Meta VR CLI/MCP
 
 When this skill is installed without the repo docs, use the public
 `MesmerPrism/meta-quest-agent-workflow` repository as the playbook source.

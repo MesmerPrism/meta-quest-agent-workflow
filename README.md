@@ -228,12 +228,17 @@ bridges, and MediaProjection preview boundaries, start with
 `docs/termux-linux-sidecars.md`. That lane is a typed, outbound
 remote-operations console pattern, not a browser shell or raw ADB proxy.
 
+For task-to-playbook and cross-repository owner routing, use
+[`docs/playbook-index.md`](docs/playbook-index.md). The index points to the
+canonical application contracts without copying their implementation detail.
+
 ## Repository Layout
 
 ```text
 AGENTS.md
 skills/meta-quest-workflow/SKILL.md
 skills/meta-quest-workflow/agents/openai.yaml
+docs/playbook-index.md
 docs/adb-basics.md
 docs/accessibility-foreground-watchdogs.md
 docs/apk-install-launch.md
