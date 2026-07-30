@@ -271,15 +271,20 @@ Classify runs separately:
   the caller-provided route;
 - ADB fallback: `adb shell am start`, `input keyevent`, or explicit relaunch
   was used for setup or recovery;
-- Termux fallback: an on-device Termux ADB client was used only after normal
-  user-authorized WiFi ADB proved Android `shell` identity.
+- Termux fallback: an on-device Termux ADB client was used only after the exact
+  operator-authorized ADB route proved Android `shell` identity.
 
 For Termux-side ADB, the shell gate is:
 
 ```sh
-adb connect 127.0.0.1:5555
-adb -s 127.0.0.1:5555 shell id
+adb connect 127.0.0.1:<authorized-adb-port>
+adb -s 127.0.0.1:<authorized-adb-port> shell id
 ```
+
+For modern TLS Wireless Debugging, `<authorized-adb-port>` is the current
+dynamically assigned TLS connect port from fresh listener proof. Port `5555`
+is valid only when an operator explicitly enabled the distinct classic TCP lab
+route. Never substitute it for an absent modern TLS listener.
 
 The pass condition is:
 

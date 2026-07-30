@@ -21,9 +21,10 @@ policy engine, not as an XR runtime authority, and not as a hidden watchdog.
   for queries while still being blocked for privileged or cross-package actions.
 - ADB from inside Termux still depends on normal user authorization and should
   be treated as externally leased developer access.
-- If Termux runs an ADB client against `127.0.0.1:5555`, require
-  `adb shell id` to report `uid=2000(shell)` before install, launch, logcat,
-  wake, or package-management commands.
+- If an operator deliberately enables the classic TCP ADB lab route on
+  `127.0.0.1:5555`, keep it distinct from modern TLS Wireless Debugging and
+  require `adb shell id` to report `uid=2000(shell)` before install, launch,
+  logcat, wake, or package-management commands.
 - Termux ADB subprocesses need a writable temporary directory. Use `TMPDIR`
   when already set, or create `$PREFIX/tmp` before starting ADB.
 - APKs for Termux-mediated installs should live in a path the Termux process
@@ -34,9 +35,10 @@ policy engine, not as an XR runtime authority, and not as a hidden watchdog.
   shell services, graphics acceleration, and LAN-visible VNC all require
   separate gates.
 
-## Loopback ADB Install/Update
+## Classic TCP Loopback ADB Install/Update
 
-After an operator or external workflow enables WiFi ADB, Termux can run:
+Only after an operator or external workflow explicitly enables the classic
+TCP ADB listener on port `5555`, Termux can run:
 
 ```sh
 export TMPDIR="${TMPDIR:-$PREFIX/tmp}"
@@ -85,6 +87,19 @@ Android NSD also returned a cached `_adb-tls-connect._tcp` endpoint from the
 previous infrastructure-network epoch. Treat discovery as advisory. Recovery
 passes only when the setting is currently enabled, a current TLS listener is
 reachable, and an independent `adb shell id` reports `uid=2000(shell)`.
+Modern Wireless Debugging uses the current dynamically assigned TLS connect
+port; never silently substitute the classic port `5555` when current listener
+proof is absent.
+
+For a separately authorized and paired Termux ADB client, use that observed
+port explicitly:
+
+```sh
+adb connect 127.0.0.1:<current-tls-connect-port>
+adb -s 127.0.0.1:<current-tls-connect-port> shell id
+```
+
+Do not reuse the classic TCP commands above for this modern TLS route.
 
 The validated modern TLS route therefore still requires an infrastructure
 Wi-Fi access point. The provider can be a router, phone hotspot, PC hotspot, or
