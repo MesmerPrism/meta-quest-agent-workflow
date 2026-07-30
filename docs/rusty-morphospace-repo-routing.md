@@ -5,10 +5,10 @@ focused repositories. This repository owns portable Meta Quest device-operation
 procedure; it does not own application composition, runtime features, command
 authority, tracked-space models, or desktop operator policy.
 
-The public work-environment release `v0.5.0` is the current portable workflow
-baseline. It adds exact multi-repository composition locks, detached
-materializations, local resource claims, revision checkpoints, repeated
-same-headset run capsules, and extraction-bound promotion reviews without
+The public work-environment release `0.6.0` is the current portable workflow
+baseline. It carries forward the `0.5.0` project/source/build/run isolation
+contracts and adds hash-bound historical adoption, exact publication
+accounting, protected-branch source resolution, and bounded recovery without
 changing the separately governed runtime/module baseline.
 
 ## Current Public Repositories

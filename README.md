@@ -53,6 +53,9 @@ side effects are split from read-only inspection.
 - Capture-source taxonomy for passthrough, raw camera, environment depth,
   MediaProjection, screenshots, ADB `screenrecord`, casting, and direct
   stream-frame witnesses.
+- Provider-neutral streaming and direct-link gates that keep topology,
+  socket ownership, control/session state, media transfer, decode/import,
+  render adoption, cleanup, and bounded fatal evidence separate.
 - Meta Horizon MCP / Meta VR CLI setup notes and `hzdb` compatibility
   boundaries.
 - Managed Individual/Shared Mode Store checks, attended paid-entitlement
@@ -181,7 +184,7 @@ Use the narrowest provider that answers the question:
 | QuestIonAble File Manager typed CLI/local API | Exact-serial artifact inspection, inspected install, resolved launch, bounded package/foreground/process observation, and reviewed local device utilities | Preferred local provider only for advertised typed commands with fresh operation-specific readback. It owns no Fleet or Manifold authority. |
 | Rusty Kiosk typed provider | Catalog, selected app, normal or guarded launch, foreground guard, and return-to-Kiosk state | Kiosk owns these effects even when File Manager or Fleet transports the request. |
 | App/Manifold-adapter status endpoint | App-owned health, clock, stream state | Requires the app or service to be running; the endpoint does not replace Manifold authority. |
-| Rusty Fleet | Approved operations over immutable managed target snapshots | Requires current Manifold command/lease authority and effect-owner receipts. Local ADB requests and Fleet requests are deliberately different contracts. |
+| Rusty Fleet | Approved operations over immutable managed target snapshots | Requires the current Manifold authorization state declared by the owner-issued registered contract for the selected Fleet command, plus effect-owner receipts. Local ADB requests and Fleet requests are deliberately different contracts. |
 | Meta Horizon MCP / Meta VR CLI / `hzdb` | Quest-specific docs, device status, logcat, screenshots, Perfetto, assets | Optional provider; prefer `npx -y metavr` for new manual setup and record the selected route. |
 | ADB fallback | Novel diagnostics, provider-gap investigation, and recovery | Developer Mode and user authorization required. Label the fallback; transport readback cannot be relabeled as app, File Manager, Fleet, or Manifold acceptance. |
 | App-private diagnostics | Camera/source metadata, renderer counters, probe payloads | Pull with `run-as` only when the app is debuggable. |
@@ -241,6 +244,7 @@ docs/rusty-morphospace-repo-routing.md
 docs/camera-metadata-collection.md
 docs/capture-source-taxonomy.md
 docs/quest-capture-stack-notes.md
+docs/quest-streaming-and-direct-link-gates.md
 docs/cross-app-content-uri-ipc.md
 docs/long-running-watchdogs.md
 docs/termux-linux-sidecars.md

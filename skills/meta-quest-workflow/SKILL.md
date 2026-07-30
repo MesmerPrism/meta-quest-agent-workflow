@@ -72,9 +72,11 @@ Read only the playbooks needed for the task:
 9. `docs/host-headset-mutation-confirmation.md` for state changes
 10. `docs/managed-device-store-apps.md` for managed modes or Store apps
 11. `docs/quest-capture-stack-notes.md` and
-   `docs/capture-source-taxonomy.md` for capture or streaming
-12. `docs/termux-linux-sidecars.md` when Termux or Wi-Fi ADB is involved
-13. `docs/meta-horizon-mcp-and-hzdb.md` for Meta VR CLI/MCP
+   `docs/capture-source-taxonomy.md` for capture tasks
+12. `docs/quest-streaming-and-direct-link-gates.md` for Quest/Quest or
+   Quest/PC streaming, direct links, and multi-layer promotion evidence
+13. `docs/termux-linux-sidecars.md` when Termux or Wi-Fi ADB is involved
+14. `docs/meta-horizon-mcp-and-hzdb.md` for Meta VR CLI/MCP
 
 When this skill is installed without the repo docs, use the public
 `MesmerPrism/meta-quest-agent-workflow` repository as the playbook source.

@@ -20,6 +20,15 @@ artifact name and report.
 | Direct stream frame/status | Frame or metadata pulled from an app, VNC, MJPEG, or an app/Manifold adapter | Proof that the headset display or compositor presented the same content |
 | App-private diagnostics | Internal renderer/camera counters and metadata | User-visible proof unless paired with capture |
 
+Android and provider capture policy may omit or blank protected surfaces.
+Classify missing content as a capture-policy or route limitation until
+route-specific evidence proves an application or renderer failure.
+Android's
+[`FLAG_SECURE`](https://developer.android.com/reference/android/view/WindowManager.LayoutParams#FLAG_SECURE)
+and
+[secure-display](https://developer.android.com/reference/android/view/Display#FLAG_SECURE)
+contracts are the primary platform references for this boundary.
+
 ## Naming
 
 Use filenames that encode source and timing:

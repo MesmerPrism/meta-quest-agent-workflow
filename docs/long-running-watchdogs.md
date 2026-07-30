@@ -25,6 +25,32 @@ installed app or broker
 The installed app cannot start an ADB helper by itself. The helper exists only
 because an authorized external ADB host pushed and launched it.
 
+Do not assume an ADB-launched helper, keep-awake policy, or proximity hold
+survives a headset reboot. After reboot, re-establish a required mutable layer
+only when the operator's authorization still applies. Otherwise, perform
+read-only readiness checks and report the missing guard. Confirm display,
+foreground, OpenXR, tracking, and source readiness separately.
+
+## Boot And Foreground-Service Limits
+
+A boot receiver, foreground service, or wake lock proves only its own bounded
+application lifecycle. It does not prove mounted-headset or proximity state,
+foreground adoption, OpenXR readiness, tracking, or an advancing source.
+
+Android restricts background foreground-service starts according to platform
+version, target SDK, service type, and current while-in-use permissions. Some
+service types also cannot be started from `BOOT_COMPLETED`. Treat an accepted
+boot broadcast or service start as one evidence row, then read back every
+required runtime layer. Do not work around a denied or inapplicable start by
+silently changing app, device, or permission policy.
+
+Primary Android references:
+
+- [background foreground-service start restrictions](https://developer.android.com/develop/background-work/services/fgs/restrictions-bg-start)
+- [foreground-service types](https://developer.android.com/develop/background-work/services/fgs/service-types)
+- [background optimization and delayed boot delivery](https://developer.android.com/topic/performance/background-optimization)
+- [awake API selection](https://developer.android.com/develop/background-work/background-tasks/awake)
+
 ## Why This Matters
 
 For long camera, OpenXR, capture, or screenshot runs, the headset can drift into

@@ -407,6 +407,20 @@ calling `getMediaProjection()` with a fabricated `Intent` still returned
 `null`. Treat `PROJECT_MEDIA` as an ADB-only lab pregrant, reset it after the
 run, and do not ship or document it as an in-app permission request.
 
+## Built-In Recorder Evidence Hygiene
+
+When comparing built-in recorder routes, isolate one route and one run at a
+time. Record pre-run state, identify the newly created artifact, wait for the
+recorder to close and for file size and modification time to stabilize, and
+only then copy and hash it. A stale, reused, or still-growing file is not
+current-run evidence.
+
+Restore temporary recorder settings and `PROJECT_MEDIA` only when the run owns
+those mutations, and verify the restored state separately. Keep historical
+frame-rate, bitrate, selector, or product-version observations dated; do not
+promote them into a current recorder contract without a fresh exact-version
+run.
+
 ## Decision Guidance
 
 Use the built-in Sharing recorder or MQDH when a human can operate the UI and

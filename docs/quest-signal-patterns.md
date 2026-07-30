@@ -22,6 +22,11 @@ Use a ladder, not one boolean:
 For camera work, `display ready` and `app launch ready` do not imply
 `camera ready`.
 
+For Quest/Quest or Quest/PC streaming, keep topology, socket ownership,
+control/session, media transfer, decode/import, and final render adoption as
+separate readiness layers. Use
+`quest-streaming-and-direct-link-gates.md` before promoting a route.
+
 ## Good Screenshot Timing
 
 Prefer readiness-timed capture:
