@@ -30,6 +30,12 @@ application behavior.
 Use [Rusty Morphospace Repo Routing](docs/rusty-morphospace-repo-routing.md) as
 the public repo-family map. Keep historical attribution in `NOTICE.md`.
 
+This repository is the canonical tracked owner for
+`skills/meta-quest-workflow/SKILL.md` and its `agents/openai.yaml`. A downstream
+installer may copy those exact bytes, record this repository and commit as
+skill-source provenance, and generate separate local locator metadata. It must
+remove rather than maintain a competing tracked skill entrypoint.
+
 ## Documentation Rules
 
 - Use placeholders such as `<serial>`, `<package>`, `<activity>`, `<path-to.apk>`,
@@ -82,5 +88,6 @@ Before publishing documentation changes, run:
 pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-public-safe.ps1
 pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-rusty-morphospace-routing.ps1
 pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-AgentExecutionContracts.ps1
+pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-MetaQuestWorkflowSkill.ps1
 git diff --check
 ```
