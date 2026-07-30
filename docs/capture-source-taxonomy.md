@@ -17,8 +17,26 @@ artifact name and report.
 | Built-in Sharing/MQDH recorder | Operator-visible MP4 capture owned by Meta UI/tools | A documented generic ADB video-recording API |
 | ADB `screenrecord` MP4 or stdout H.264 | Shell-captured physical-display output, often as a raw stereo headset view | Raw camera texture data or a polished single-view spectator capture |
 | Casting/scrcpy | Operator-visible presentation over a transport | Raw camera texture data |
+| Hostess Meta/MQDH Cinematic adapter | On the reviewed pinned matrix, supervised live Cast presentation with an operator-observed Cinematic 16:9 label and graceful owned-host exit recorded in a sanitized summary | Hostess-owned frames or generic media packets, recording finalization, input forwarding, arbitrary 2D-panel control, Meta device-session cleanup, or FOV restoration |
 | Direct stream frame/status | Frame or metadata pulled from an app, VNC, MJPEG, or an app/Manifold adapter | Proof that the headset display or compositor presented the same content |
 | App-private diagnostics | Internal renderer/camera counters and metadata | User-visible proof unless paired with capture |
+
+Android and provider capture policy may omit or blank protected surfaces.
+Classify missing content as a capture-policy or route limitation until
+route-specific evidence proves an application or renderer failure.
+Android's
+[`FLAG_SECURE`](https://developer.android.com/reference/android/view/WindowManager.LayoutParams#FLAG_SECURE)
+and
+[secure-display](https://developer.android.com/reference/android/view/Display#FLAG_SECURE)
+contracts are the primary platform references for this boundary.
+Do not infer a private SurfaceFlinger, compositor-mirror, or provider
+implementation from the resulting pixels; claim only the observed capture
+route unless direct owner evidence establishes more.
+
+If an application renders its own MediaProjection output back into the
+captured visible scene, recursive or delayed visual feedback can occur. That
+is evidence of flattened display access and application rendering, not access
+to an individual XR layer, raw camera, depth, or private compositor path.
 
 ## Naming
 

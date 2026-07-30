@@ -23,6 +23,23 @@ Do not commit:
 - generated diagnostic JSON from a private device
 - zip bundles
 
+## PowerShell Runner Safety
+
+PowerShell parameter and variable names are case-insensitive. Do not create a
+local that differs from a parameter only by case, such as `$runtimeProfile`
+beside `$RuntimeProfile`; use a role-specific name such as
+`$runtimeProfileEntry` for parsed data.
+
+Invoke programs explicitly and pass arguments as an array or separate
+PowerShell arguments. Do not render a command string and then reparse or
+evaluate it. Keep long human-readable labels in the run manifest rather than
+embedding them in fragile command lines or deep artifact paths.
+
+When a native command can emit useful failure evidence, preserve its real
+stdout, stderr, and exit code through the repository-owned runner or an
+equivalent bounded capture helper. Do not let PowerShell's
+`NativeCommandError` wrapper replace the command's own report.
+
 ## Minimum Run Manifest
 
 Record at least:
@@ -70,6 +87,11 @@ Label artifacts by owner:
 Two images can look similar but prove different things. A screenshot can show
 what the headset mirror saw; it does not prove raw camera metadata, decode path,
 or OpenXR layer ownership.
+
+For a multi-hop stream, bind evidence to the layer that produced it. Receiver
+bytes do not prove decode, decoded frames do not prove final render adoption,
+and changing pixels do not prove cleanup or fatal-free lifecycle. Use
+`quest-streaming-and-direct-link-gates.md` for the complete promotion ladder.
 
 Preserve an application or Fleet owner receipt byte-for-byte. When a portable
 summary is needed, use `rusty.quest.workflow.evidence_wrapper.v1` to bind the

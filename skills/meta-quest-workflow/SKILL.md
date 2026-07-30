@@ -24,7 +24,8 @@ For Rusty Morphospace work, read the repository's
 - `rusty-quest` owns Quest/Android/OpenXR/Spatial SDK adapters, packaging,
   permissions, lifecycle, and effective-runtime receipts;
 - `rusty-hostess` owns Windows CLI/API and WPF install, launch, capture,
-  validation, cleanup, and evidence projection;
+  validation, cleanup, and evidence projection, including its opaque
+  Meta/MQDH Cinematic presentation adapter;
 - `rusty-fleet` owns the multi-headset Hub, Console, `fleetctl`, operator
   policy, enrollment/status projections, and no-ADB fleet monitoring; its Quest
   Fleet Agent producer remains in the Rusty Quest platform lane;
@@ -60,21 +61,25 @@ the user or ask for its location; never guess a machine path.
 Read only the playbooks needed for the task:
 
 1. `README.md`
-2. `docs/rusty-morphospace-default-device-loop.md` for routine Rusty
+2. `docs/playbook-index.md` when choosing a focused playbook or locating an
+   application-owned command, status, receipt, or cleanup contract
+3. `docs/rusty-morphospace-default-device-loop.md` for routine Rusty
    Morphospace build/deploy/launch/validate work
-3. `docs/agent-execution-providers.md`
-4. `docs/adb-basics.md` only for bootstrap, diagnostics, or fallback
-5. `docs/apk-install-launch.md`
-6. `docs/artifact-and-evidence-discipline.md`
-7. `docs/quest-signal-patterns.md`
-8. `docs/accessibility-foreground-watchdogs.md` for attended foreground
+4. `docs/agent-execution-providers.md`
+5. `docs/adb-basics.md` only for bootstrap, diagnostics, or fallback
+6. `docs/apk-install-launch.md`
+7. `docs/artifact-and-evidence-discipline.md`
+8. `docs/quest-signal-patterns.md`
+9. `docs/accessibility-foreground-watchdogs.md` for attended foreground
    monitoring, Meta Home transitions, or special Accessibility enablement
-9. `docs/host-headset-mutation-confirmation.md` for state changes
-10. `docs/managed-device-store-apps.md` for managed modes or Store apps
-11. `docs/quest-capture-stack-notes.md` and
-   `docs/capture-source-taxonomy.md` for capture or streaming
-12. `docs/termux-linux-sidecars.md` when Termux or Wi-Fi ADB is involved
-13. `docs/meta-horizon-mcp-and-hzdb.md` for Meta VR CLI/MCP
+10. `docs/host-headset-mutation-confirmation.md` for state changes
+11. `docs/managed-device-store-apps.md` for managed modes or Store apps
+12. `docs/quest-capture-stack-notes.md` and
+   `docs/capture-source-taxonomy.md` for capture tasks
+13. `docs/quest-streaming-and-direct-link-gates.md` for Quest/Quest or
+   Quest/PC streaming, direct links, and multi-layer promotion evidence
+14. `docs/termux-linux-sidecars.md` when Termux or Wi-Fi ADB is involved
+15. `docs/meta-horizon-mcp-and-hzdb.md` for Meta VR CLI/MCP
 
 When this skill is installed without the repo docs, use the public
 `MesmerPrism/meta-quest-agent-workflow` repository as the playbook source.
@@ -188,13 +193,16 @@ to broaden another provider's authority.
    streams, and application receipts.
 4. Rusty Fleet for approved managed operations over immutable target snapshots
    with current Manifold authority and effect-owner receipts.
-5. Meta Horizon MCP / Meta VR CLI / `hzdb` for Quest-specific docs, device
+5. Rusty Hostess for its typed Windows capture/presentation routes. Its
+   Meta/MQDH Cinematic adapter is an opaque supervised presentation provider,
+   not a generic Quest/Manifold stream source.
+6. Meta Horizon MCP / Meta VR CLI / `hzdb` for Quest-specific docs, device
    status, screenshots, logcat, Perfetto, and assets when configured.
-6. ADB fallback for bootstrap, novel diagnostics, provider-gap investigation,
+7. ADB fallback for bootstrap, novel diagnostics, provider-gap investigation,
    and
    recovery.
-7. App-private diagnostics, normally via `run-as` for debuggable builds.
-8. Manual headset action for runtime permissions, MediaProjection consent,
+8. App-private diagnostics, normally via `run-as` for debuggable builds.
+9. Manual headset action for runtime permissions, MediaProjection consent,
    protected prompts, paid Store steps, and real controller input.
 
 Label the selected provider and version. Choose per operation, not once per
@@ -257,6 +265,12 @@ unexpected protected system prompt.
   wrapper, host-arrival clocking, bounded/explicit stop, decode/readiness
   evidence, and `pidof screenrecord` cleanup readback.
 - Casting and scrcpy are operator presentation transports, not camera access.
+  The Hostess Meta/MQDH adapter's sanitized reviewed-run summary records stable
+  live Cinematic 16:9 presentation and graceful owned-host exit on its pinned
+  matrix. Limit it to supervised local source use on the reviewed Windows
+  machine; it receives no frames or generic media packets, and success does not
+  prove recording, input forwarding, arbitrary 2D-panel interaction, Meta
+  device-session cleanup, FOV restoration, or general distribution readiness.
 - Direct frame/status endpoints prove their route produced content, not that
   the Quest compositor presented the same pixels.
 

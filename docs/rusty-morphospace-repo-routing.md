@@ -5,10 +5,10 @@ focused repositories. This repository owns portable Meta Quest device-operation
 procedure; it does not own application composition, runtime features, command
 authority, tracked-space models, or desktop operator policy.
 
-The public work-environment release `v0.5.0` is the current portable workflow
-baseline. It adds exact multi-repository composition locks, detached
-materializations, local resource claims, revision checkpoints, repeated
-same-headset run capsules, and extraction-bound promotion reviews without
+The public work-environment release `0.6.0` is the current portable workflow
+baseline. It carries forward the `0.5.0` project/source/build/run isolation
+contracts and adds hash-bound historical adoption, exact publication
+accounting, protected-branch source resolution, and bounded recovery without
 changing the separately governed runtime/module baseline.
 
 ## Current Public Repositories
@@ -18,7 +18,7 @@ changing the separately governed runtime/module baseline.
 | [rusty-morphospace-work-environment](https://github.com/MesmerPrism/rusty-morphospace-work-environment) | Portable onboarding, project composition, feature locks, workspace isolation, and workflow contracts. |
 | [rusty-quest](https://github.com/MesmerPrism/rusty-quest) | Quest/Android/OpenXR/Spatial SDK apps and platform adapters, permissions, packaging, lifecycle, and effective-runtime evidence. |
 | [QuestIonAble File Manager](https://github.com/MesmerPrism/QuestIonAble-File-Manager) | Windows-first exact-serial ADB/file/APK utilities through shared typed CLI, local API, and WPF routes. It owns local execution only for advertised commands and no managed Fleet or Manifold authority. |
-| [rusty-hostess](https://github.com/MesmerPrism/rusty-hostess) | Windows CLI/API and WPF operator routes for install, launch, capture, validation, cleanup, and evidence projection. |
+| [rusty-hostess](https://github.com/MesmerPrism/rusty-hostess) | Windows CLI/API and WPF operator routes for install, launch, capture, validation, cleanup, and evidence projection, including an opaque Meta/MQDH Cinematic presentation adapter. |
 | [rusty-fleet](https://github.com/MesmerPrism/rusty-fleet) | Multi-headset Fleet Hub, Fleet Console, `fleetctl`, operator policy, enrollment/status projections, and no-ADB monitoring. The permission-minimal Quest Fleet Agent producer remains in Rusty Quest. |
 | [rusty-manifold](https://github.com/MesmerPrism/rusty-manifold) | Command, session, stream, host-manifest, admission, and control-transport authority. |
 | [rusty-manifold-packages](https://github.com/MesmerPrism/rusty-manifold-packages) | Product-specific Manifold packages that must not broaden core authority. |
@@ -84,6 +84,12 @@ platform lifecycle and high-rate bytes. Source, processor, route/socket
 provider, codec, sink, display adoption, and cleanup remain explicit owners.
 Do not put frames, depth, meshes, poses, or GPU buffers into settings JSON,
 Android properties, or generic command/status payloads.
+
+An opaque operator-presentation provider is not automatically a Manifold media
+route. Hostess's Meta/MQDH Cinematic adapter supervises a separately installed
+Meta Cast process and receives no frames or generic media packets. Keep its
+presentation, recording, and cleanup observations separate, and do not infer
+input forwarding or arbitrary 2D-panel control from a successful Cast window.
 
 ## Activation And Operator Surfaces
 

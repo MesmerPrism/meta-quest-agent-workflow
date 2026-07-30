@@ -22,6 +22,16 @@ Use a ladder, not one boolean:
 For camera work, `display ready` and `app launch ready` do not imply
 `camera ready`.
 
+Emit lifecycle and configuration markers when the corresponding state
+actually changes. Do not manufacture repeated transition markers from render
+cadence merely to satisfy a watcher. If periodic liveness is needed, expose it
+as a separately named heartbeat or advancing counter.
+
+For Quest/Quest or Quest/PC streaming, keep topology, socket ownership,
+control/session, media transfer, decode/import, and final render adoption as
+separate readiness layers. Use
+`quest-streaming-and-direct-link-gates.md` before promoting a route.
+
 ## Good Screenshot Timing
 
 Prefer readiness-timed capture:

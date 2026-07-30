@@ -14,7 +14,9 @@ application behavior.
 - `rusty-quest` owns Quest/Android/OpenXR/Spatial SDK platform adapters,
   packaging, permissions, lifecycle, and effective-runtime receipts.
 - `rusty-hostess` owns Windows CLI/API and WPF operator workflows for install,
-  launch, capture, validation, cleanup, and evidence projection.
+  launch, capture, validation, cleanup, and evidence projection, including the
+  opaque Meta/MQDH Cinematic presentation adapter. That adapter does not become
+  a generic Quest or Manifold media source.
 - `rusty-fleet` owns multi-headset Hub, Console, `fleetctl`, operator policy,
   enrollment/status projections, and no-ADB fleet monitoring. Its Quest Fleet
   Agent producer remains in the Rusty Quest platform lane.
@@ -73,6 +75,10 @@ remove rather than maintain a competing tracked skill entrypoint.
 - Preserve owner-issued evidence byte-for-byte. A workflow wrapper may bind its
   schema and SHA-256 with a sanitized outcome, but must not add fields under the
   owner's schema or create an authority claim.
+- Keep opaque operator-presentation evidence separate from owned media-plane
+  evidence. A successful Hostess/MQDH Cinematic window may prove supervised
+  presentation only; it does not prove recording, input forwarding, arbitrary
+  2D-panel control, Meta device-session cleanup, or FOV restoration.
 - Add MCP only after an owning application's typed CLI/local API registry is
   stable. Never expose raw shell, generic ADB arguments, arbitrary Android
   components/intents/paths/properties/processes, or caller-supplied authority.

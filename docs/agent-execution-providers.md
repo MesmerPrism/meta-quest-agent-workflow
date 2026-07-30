@@ -18,9 +18,10 @@ Choose a provider per operation, not once for an entire run:
 | Operation | Preferred provider | Required confirmation |
 | --- | --- | --- |
 | Inspect an APK, install it on one ADB-authorized headset, resolve its launcher, or collect bounded package/foreground/process state | QuestIonAble File Manager typed CLI or local API | Artifact digest and identity, exact current target, installed package/version/signer readback, and operation-specific state |
-| Execute an approved operation across managed enrolled headsets | Rusty Fleet | Immutable target snapshot, current Manifold decision/lease/revision, effect-owner receipt, and separate cleanup |
+| Execute an approved operation across managed enrolled headsets | Rusty Fleet | Immutable target snapshot, the current Manifold authorization state required by the owner-issued registered contract for the selected command, effect-owner receipt, and separate cleanup |
 | Prove OpenXR, Spatial SDK, renderer, source, or app-owned effective state | The participating Quest app | App-owned current-run receipt or marker |
 | Search or control Kiosk-owned catalog/foreground behavior | Rusty Kiosk through its bounded provider or Fleet adapter | Kiosk-owned receipt and effective state |
+| Present a supervised Meta/MQDH Cinematic Cast window | Rusty Hostess typed Meta Quest casting CLI | Pinned provider compatibility, independently observed presentation/Cinematic state, separate recording state, owned-host exit, and explicit unresolved Meta device/FOV cleanup |
 | Inspect Meta tooling state, capture, or performance evidence | Meta Horizon MCP, Meta VR CLI, or `hzdb` | Provider-specific readback and artifact provenance |
 | Investigate a missing provider feature or recover a broken development route | Explicit serial-scoped ADB fallback | Transport facts only, unless an owning consumer independently confirms the effect |
 
@@ -94,9 +95,12 @@ Fleet work.
 3. A File Manager operation binds one exact current serial, one inspected
    artifact digest, one-use operation identity, closed install/launch policy,
    local approval, fresh readback, and cleanup.
-4. A Fleet operation binds an immutable Fleet target snapshot, current
-   Manifold decision/lease/revision/epoch/revocation state, authenticated
-   effect-owner delivery, owner receipts, and separate terminal cleanup.
+4. A Fleet operation binds an immutable Fleet target snapshot, the current
+   Manifold authorization state declared by the owner-issued registered
+   contract for the selected command, authenticated effect-owner delivery,
+   owner receipts, and separate terminal cleanup. Bind lease, epoch, and
+   revocation state only when that command contract requires them; current
+   lease-free commands must not invent lease evidence.
 5. The portable workflow wrapper records only the owner schema, evidence hash,
    sanitized result, claim class, and limitations. It never augments or
    relabels the owner-issued evidence.
