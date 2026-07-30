@@ -41,8 +41,12 @@ the public repo-family map. Keep historical attribution in `NOTICE.md`.
 - Treat Accessibility foreground monitoring as a privacy-minimized,
   user-enabled diagnostic capability, never HOME interception or kiosk policy.
 - Prefer owning-application typed commands for repeatable operations they fully
-  support. Keep local File Manager execution and managed Fleet execution on
-  disjoint executable contracts, and label raw ADB as diagnostic fallback.
+  support. Default routine local work to File Manager inspected deployment,
+  Kiosk launch/foreground control when applicable, and app-owned runtime
+  evidence. Default managed target-set work to Fleet with current authority
+  and effect-owner receipts. Keep local File Manager and managed Fleet
+  execution on disjoint contracts, and gate raw ADB as bootstrap,
+  provider-gap, diagnostic, or recovery fallback.
 - Keep provider capability discovery descriptive and inert. It may identify
   typed actions, contract versions, effect owners, receipt schemas, placement,
   short-lived descriptor availability, authentication requirements, and

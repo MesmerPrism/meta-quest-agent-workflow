@@ -11,6 +11,11 @@ Do not relabel fallback output as File Manager, Fleet, Manifold, or
 application-owned evidence. See
 [Agent Execution Providers](agent-execution-providers.md).
 
+For the complete build -> File Manager -> Kiosk -> app-evidence sequence, use
+[Rusty Morphospace Default Device Loop](rusty-morphospace-default-device-loop.md).
+The ADB commands in this document are not the default routine Morphospace
+deployment path.
+
 This playbook is for development APKs on a Quest headset with Developer Mode
 and ADB authorization already active.
 

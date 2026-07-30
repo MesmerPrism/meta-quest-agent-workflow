@@ -18,6 +18,9 @@ side effects are split from read-only inspection.
 - A current [Rusty Morphospace repo-routing map](docs/rusty-morphospace-repo-routing.md)
   that keeps device workflow, Quest runtime, Hostess orchestration, Manifold
   authority, and reusable core contracts separate.
+- A [default Rusty Morphospace device loop](docs/rusty-morphospace-default-device-loop.md)
+  that routes local work through File Manager and Kiosk, managed work through
+  Fleet and effect owners, and raw ADB only through an explicit fallback gate.
 - ADB install, grant, launch, logcat, screenshot, and artifact collection
   workflows.
 - Quest camera metadata collection through ADB and optional broker-style
@@ -82,15 +85,24 @@ Use the meta-quest-workflow skill before touching a Quest headset, ADB,
 APK install/launch, logcat, screenshots, Perfetto, or Meta Horizon MCP tools.
 ```
 
-For a direct terminal workflow:
+For routine Rusty Morphospace work, start with the product loop:
 
 ```powershell
-adb devices -l
-adb -s <serial> shell getprop ro.product.model
-adb -s <serial> install -r -d -g <path-to.apk>
-adb -s <serial> shell am start -n <package>/<activity>
-adb -s <serial> logcat -d -v threadtime > artifacts/logcat.txt
+$FileManager = "<file-manager-cli>"
+& $FileManager apk inspect --file <path-to.apk> --json
+& $FileManager apk install --serial <serial> --file <path-to.apk> --json
+& $FileManager kiosk status --serial <serial> --json
+& $FileManager apk observe --serial <serial> --file <path-to.apk> --json
 ```
+
+Use Kiosk's typed launch route when the app participates in its catalog. Use
+File Manager's resolved `apk launch` route otherwise. For managed targets, use
+Fleet's approved target-snapshot operation instead of translating local
+arguments. See
+[Rusty Morphospace Default Device Loop](docs/rusty-morphospace-default-device-loop.md).
+
+The ADB examples in the focused playbooks are bootstrap, provider-gap,
+diagnostic, or recovery fallbacks. Record the gap before using them.
 
 For camera metadata collection:
 
@@ -150,9 +162,13 @@ pwsh -NoProfile -ExecutionPolicy Bypass `
 16. Treat Accessibility foreground monitoring as a special user-enabled
     capability: disable UI-tree retrieval, separate refocus from escape
     counting, and revalidate Meta-shell signals after Horizon updates.
-17. Prefer an owning application's typed CLI or local API for repeatable
-    operations it fully supports. Preserve raw serial-scoped ADB as an
-    explicitly labeled diagnostic fallback, not equivalent owner evidence.
+17. Default routine local work to File Manager inspected deployment, Kiosk
+    launch/foreground control when applicable, and app-owned runtime evidence.
+    Default managed target-set work to Fleet with current authority and
+    effect-owner receipts.
+18. Preserve raw serial-scoped ADB only as an explicitly labeled bootstrap,
+    provider-gap, diagnostic, or recovery fallback, not equivalent owner
+    evidence.
 
 ## Provider Model
 
@@ -160,8 +176,9 @@ Use the narrowest provider that answers the question:
 
 | Provider | Good for | Notes |
 | --- | --- | --- |
-| App/Manifold-adapter status endpoint | App-owned health, clock, stream state | Requires the app or service to be running; the endpoint does not replace Manifold authority. |
 | QuestIonAble File Manager typed CLI/local API | Exact-serial artifact inspection, inspected install, resolved launch, bounded package/foreground/process observation, and reviewed local device utilities | Preferred local provider only for advertised typed commands with fresh operation-specific readback. It owns no Fleet or Manifold authority. |
+| Rusty Kiosk typed provider | Catalog, selected app, normal or guarded launch, foreground guard, and return-to-Kiosk state | Kiosk owns these effects even when File Manager or Fleet transports the request. |
+| App/Manifold-adapter status endpoint | App-owned health, clock, stream state | Requires the app or service to be running; the endpoint does not replace Manifold authority. |
 | Rusty Fleet | Approved operations over immutable managed target snapshots | Requires current Manifold command/lease authority and effect-owner receipts. Local ADB requests and Fleet requests are deliberately different contracts. |
 | Meta Horizon MCP / Meta VR CLI / `hzdb` | Quest-specific docs, device status, logcat, screenshots, Perfetto, assets | Optional provider; prefer `npx -y metavr` for new manual setup and record the selected route. |
 | ADB fallback | Novel diagnostics, provider-gap investigation, and recovery | Developer Mode and user authorization required. Label the fallback; transport readback cannot be relabeled as app, File Manager, Fleet, or Manifold acceptance. |
@@ -216,6 +233,7 @@ docs/accessibility-foreground-watchdogs.md
 docs/apk-install-launch.md
 docs/artifact-and-evidence-discipline.md
 docs/broker-style-localhost-probes.md
+docs/rusty-morphospace-default-device-loop.md
 docs/rusty-morphospace-repo-routing.md
 docs/camera-metadata-collection.md
 docs/capture-source-taxonomy.md
