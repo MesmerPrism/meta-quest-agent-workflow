@@ -143,6 +143,11 @@ condition, cleanup, and suggested owner-product improvement.
   Manager, Kiosk, and Fleet according to the loop above. Preserve raw
   serial-scoped ADB as a labeled bootstrap, provider-gap, diagnostic, or
   recovery fallback and do not relabel its results as owner acceptance.
+- When a machine-local wrapper composes multiple File Manager steps, require
+  one exact provider hash and read-locked content-addressed provider/APK copies
+  for the complete run. Retain typed failures and stop before launch unless
+  installed-byte readback is confirmed; never switch to an ambient repository
+  build output between steps.
 - When an owner projects
   `rusty.quest.workflow.provider_capability_discovery.v1`, require an exact
   schema, provider version, capability, action, and contract-version match.
@@ -215,6 +220,9 @@ Use File Manager's current inspected-deployment commands and Kiosk routes from
 `docs/rusty-morphospace-default-device-loop.md`. Require exact artifact,
 serial, installed-byte, resolved-launcher, foreground, and owner-state
 readback. Confirm runtime truth through the participating app.
+An installed-byte observe may pass while a Guardian, lock-screen, or Home
+Activity keeps foreground/resumed/process state false; keep that launch
+blocker as a separate claim.
 
 ## Raw ADB Fallback Shape
 

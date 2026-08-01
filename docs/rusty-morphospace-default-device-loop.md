@@ -66,6 +66,12 @@ Capability discovery describes a registry. It does not:
 
 If the selected File Manager version does not expose the inspected deployment
 routes, stop before install and record that version/capability mismatch.
+When the machine-local work environment supplies a File Manager deployment
+wrapper, prefer it over reconstructing a multi-step sequence. The wrapper must
+resolve one exact provider hash and source revision, retain read-locked
+content-addressed copies of both provider and APK for the whole device
+transaction, and preserve each typed result in a private run directory. It may
+not turn provider discovery into device authority.
 
 ## 3. Inspect And Install Locally
 
@@ -88,6 +94,13 @@ $FileManager = "<file-manager-cli>"
 The accepted local receipt must bind the exact retained artifact digest and
 identity, exact serial, installed base APK hash and size, and fresh installed
 state. An ADB exit code alone is not equivalent confirmation.
+
+A machine-local wrapper may expose inspect-only, read-only observe,
+install-only, and non-Kiosk deploy modes over these same closed routes. Install
+or deploy must stop before launch when the mutation receipt is absent,
+`pending`, failed, or does not repeat the exact inspected and installed byte
+evidence. It must not resolve one executable and later run a different ambient
+build from a repository output folder.
 
 For a managed target set, do not translate these arguments into a Fleet
 request. Use Fleet's current typed registry and bind:
@@ -156,6 +169,10 @@ File Manager may confirm matching installed bytes, foreground state, resumed
 component, and process IDs. It does not prove OpenXR session state, renderer
 frames, selected source, feature-lock adoption, or application settings.
 Require the participating app's current-run marker or receipt for those facts.
+Read-only observe remains useful when Home, Guardian, a lock screen, or another
+system Activity prevents launch: matching installed bytes can pass while
+foreground, resumed, and process facts honestly remain false. Record the
+separate launch blocker instead of weakening either claim.
 
 Treat Kiosk foreground readback, File Manager Android observation, and
 app-owned readiness as separate evidence rows. A complete run may need all
@@ -218,6 +235,7 @@ The default loop is also a product-integration probe. Classify friction as:
 | Finding | Route |
 | --- | --- |
 | Repeated manual argument or parsing step | Add or refine a closed typed command in the owning product |
+| Ambient executable or artifact drift between typed steps | Resolve one exact hash, make run-owned read-locked copies, and bind every step to them |
 | Missing exact-target or effective readback | Strengthen the owner's receipt before expanding automation |
 | Local action incorrectly requires managed authority | Correct the File Manager/Fleet contract boundary |
 | Managed action bypasses policy or effect-owner evidence | Correct Fleet/Manifold/effect-owner admission |

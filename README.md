@@ -106,6 +106,9 @@ File Manager's resolved `apk launch` route otherwise. For managed targets, use
 Fleet's approved target-snapshot operation instead of translating local
 arguments. See
 [Rusty Morphospace Default Device Loop](docs/rusty-morphospace-default-device-loop.md).
+When the machine-local work environment supplies a deployment wrapper, prefer
+its immutable provider/APK staging and fail-closed receipt checks over manually
+reconstructing this sequence or using an ambient repository build output.
 
 The ADB examples in the focused playbooks are bootstrap, provider-gap,
 diagnostic, or recovery fallbacks. Record the gap before using them.
