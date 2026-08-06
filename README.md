@@ -1,8 +1,9 @@
 # Meta Quest Agent Workflow
 
 Portable agent workflow notes for Meta Quest development, ADB validation,
-Quest APK install/launch loops, Camera2 metadata collection, capture-source
-taxonomy, and Meta Horizon MCP / `hzdb` usage.
+Quest APK install/launch loops, OpenXR SDK and API-layer boundaries, Camera2
+metadata collection, capture-source taxonomy, and Meta Horizon MCP / `hzdb`
+usage.
 Current public Meta docs name this tool family Meta VR CLI and use `metavr`
 for new manual `npx` setup; `hzdb` remains a compatibility name for older
 MQDH/editor bundles and historical traces.
@@ -67,7 +68,8 @@ side effects are split from read-only inspection.
   owner surfaces without granting execution or exposing invocation details,
   paths, endpoints, targets, credentials, raw arguments, shell access, or MCP
   execution, with a reusable structural-plus-semantic descriptor validator.
-- OpenXR tracking and ADB shell-helper boundaries.
+- OpenXR app, co-resident native-bridge, loader API-layer, bounded input
+  interposition, Android packaging, Termux-client, and ADB helper boundaries.
 - Reusable PowerShell scripts under `examples/`.
 
 ## What Is Not Included
@@ -106,6 +108,9 @@ File Manager's resolved `apk launch` route otherwise. For managed targets, use
 Fleet's approved target-snapshot operation instead of translating local
 arguments. See
 [Rusty Morphospace Default Device Loop](docs/rusty-morphospace-default-device-loop.md).
+When the machine-local work environment supplies a deployment wrapper, prefer
+its immutable provider/APK staging and fail-closed receipt checks over manually
+reconstructing this sequence or using an ambient repository build output.
 
 The ADB examples in the focused playbooks are bootstrap, provider-gap,
 diagnostic, or recovery fallbacks. Record the gap before using them.

@@ -148,6 +148,14 @@ For every operation:
 Never present a raw ADB fallback result as accepted File Manager, Fleet,
 Manifold, Kiosk, or app-owned evidence.
 
+For a local multi-step File Manager transaction, the machine wrapper must not
+re-resolve or trust an ambient build output between steps. Stage read-locked,
+content-addressed copies of the resolved provider and inspected APK, verify the
+provider hash around every invocation, retain typed failure output, and stop a
+deployment before launch unless installed-byte readback is confirmed. Keep
+serials, paths, provider resolution, and the retained copies in private run
+evidence.
+
 ## Resource Coordination
 
 Machine-local coordination can prevent agents from colliding on the same
