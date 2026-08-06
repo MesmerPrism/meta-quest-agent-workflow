@@ -8,6 +8,28 @@ same tool family as Horizon Debug Bridge (`hzdb`), and some local notes may
 shorten that to "hdb". Use `metavr` for new manual setup examples; keep `hzdb`
 as a compatibility name for installed bundles and historical traces.
 
+## Meta XR Operator Is A Separate Surface
+
+Meta XR Operator is not another name for Meta VR CLI. Meta documentation
+reviewed on 2026-08-06 describes Operator as an experimental OpenXR API layer
+distributed in the Meta XR Core SDK and as standalone prebuilt binaries. It
+runs a local MCP server inside the target app process; the optional proxy or a
+direct SSE client calls its built-in tools. The reviewed documentation did not
+identify a separate supported C or JNI entrypoint for invoking those built-ins
+without the MCP server.
+
+On Quest, Meta's standalone instructions package the Operator `.so` and API-
+layer manifest into the target APK. That is an app-integrated development
+route, not system-wide access to arbitrary installed XR apps. Treat Operator
+as optional experimental tooling and a black-box behavior reference, not as
+production authority or proof that its proprietary native implementation is
+available to a custom integration.
+
+For an MCP-free design, implement the required bounded behavior in an app-
+owned native bridge or custom OpenXR API layer and use the owning typed local
+API, Binder, or authenticated localhost adapter. See
+[OpenXR SDK, API Layer, And Tracking Boundary](openxr-tracking-boundary.md).
+
 ## Current Baseline
 
 Public Meta docs checked on 2026-06-16 describe:

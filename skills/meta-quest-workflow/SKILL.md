@@ -1,13 +1,13 @@
 ---
 name: meta-quest-workflow
-description: 'Use for Meta Quest device work through Rusty Morphospace File Manager, Kiosk, or Fleet defaults, with serial-scoped ADB fallback, APK validation, capture, diagnostics, sidecars, app-owned probes, and Meta tooling.'
+description: 'Use for Meta Quest device work through Rusty Morphospace File Manager, Kiosk, or Fleet defaults, with serial-scoped ADB fallback, APK validation, OpenXR/API-layer inspection, capture, diagnostics, sidecars, app-owned probes, and Meta tooling.'
 ---
 
 # Meta Quest Workflow
 
 Use this skill before touching a Meta Quest headset, ADB transport, APK
 install/launch, screenshots, screenrecord, logcat, Perfetto, camera metadata,
-MediaProjection, Wi-Fi ADB, or Quest-specific MCP tooling.
+MediaProjection, Wi-Fi ADB, OpenXR API layers, or Quest-specific MCP tooling.
 
 This is a public, portable device-operation skill. It does not own application
 composition, runtime features, command/session/stream authority, or a specific
@@ -78,8 +78,11 @@ Read only the playbooks needed for the task:
    `docs/capture-source-taxonomy.md` for capture tasks
 13. `docs/quest-streaming-and-direct-link-gates.md` for Quest/Quest or
    Quest/PC streaming, direct links, and multi-layer promotion evidence
-14. `docs/termux-linux-sidecars.md` when Termux or Wi-Fi ADB is involved
-15. `docs/meta-horizon-mcp-and-hzdb.md` for Meta VR CLI/MCP
+14. `docs/openxr-tracking-boundary.md` for native OpenXR bridges, API-layer
+    inspection or interposition, bounded input synthesis, or Spatial SDK and
+    OpenXR integration work
+15. `docs/termux-linux-sidecars.md` when Termux or Wi-Fi ADB is involved
+16. `docs/meta-horizon-mcp-and-hzdb.md` for Meta VR CLI/MCP or Meta XR Operator
 
 When this skill is installed without the repo docs, use the public
 `MesmerPrism/meta-quest-agent-workflow` repository as the playbook source.
@@ -130,6 +133,13 @@ condition, cleanup, and suggested owner-product improvement.
 - Do not treat screenshots, casting, screenrecord, or MediaProjection as raw
   camera access.
 - Keep fused HMD/controller tracking inside the active app's OpenXR session.
+- Distinguish app-owned OpenXR, a co-resident native bridge that reuses an
+  engine-owned instance/session, and an OpenXR API layer that intercepts the
+  loader call chain. Do not start a competing frame loop.
+- On Android, treat an app-packaged API layer as part of that target APK's
+  explicit feature and permission closure. Do not claim that Termux or an
+  ordinary app can attach it to an existing session or inject it into an
+  arbitrary installed app.
 - Keep high-rate camera, depth, mesh, pose, and video bytes out of JSON
   settings, Android properties, and generic command/status channels.
 - Treat an Accessibility foreground watchdog as a user-enabled diagnostic
@@ -301,6 +311,10 @@ Manifold command/status payloads.
 - A Quest-local HTTP/WebSocket service is an app or Manifold adapter. It may
   expose bounded status and acknowledgements; it does not own another app's
   OpenXR frame loop or create parallel command/session/stream authority.
+- Termux may be a client of an authenticated typed adapter for an API layer
+  already packaged in the foreground XR app. It does not load, attach, or own
+  that layer, and raw OpenXR handles or generic injection commands must not be
+  exposed through the sidecar.
 
 ## Cleanup And Evidence
 

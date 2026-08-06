@@ -35,6 +35,30 @@ policy engine, not as an XR runtime authority, and not as a hidden watchdog.
   shell services, graphics acceleration, and LAN-visible VNC all require
   separate gates.
 
+## OpenXR API Layer Client Boundary
+
+Termux may act as a client of a custom OpenXR API layer only when the target XR
+APK already packages and activates that layer and exposes a bounded,
+authenticated adapter. A safe shape is:
+
+```text
+Termux typed client
+  -> authenticated localhost or Binder adapter
+  -> accepted low-rate action state
+  -> API layer already loaded in the foreground app
+  -> app-visible OpenXR readback
+```
+
+Termux cannot attach a layer after the target created its OpenXR instance,
+install a system layer with ordinary app privileges, or inject one into an
+arbitrary Store app. Do not expose raw OpenXR function names, handles, generic
+controller injection, or high-rate poses through a sidecar. Keep command
+admission with the owning app or Manifold and require an explicit synthetic-
+input release and cleanup receipt.
+
+Use [OpenXR SDK, API Layer, And Tracking Boundary](openxr-tracking-boundary.md)
+for the capability and Android packaging model.
+
 ## Classic TCP Loopback ADB Install/Update
 
 Only after an operator or external workflow explicitly enables the classic

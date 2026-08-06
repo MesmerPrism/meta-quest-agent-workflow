@@ -82,6 +82,12 @@ remove rather than maintain a competing tracked skill entrypoint.
 - Add MCP only after an owning application's typed CLI/local API registry is
   stable. Never expose raw shell, generic ADB arguments, arbitrary Android
   components/intents/paths/properties/processes, or caller-supplied authority.
+- Distinguish app-owned OpenXR, co-resident native bridges over engine-owned
+  handles, and loader API layers. API layers belong to the Quest adapter and
+  target package; they do not expose engine semantics or authorize commands.
+- Treat ordinary Android API layers as target-APK composition. Do not describe
+  Termux or an unprivileged app as able to attach a layer to an existing
+  session or inject one into arbitrary installed XR apps.
 - Prefer primary Android, OpenXR, and Meta sources for platform claims.
 - Use `pwsh` for repository scripts; Windows PowerShell 5.1 is not the current
   workflow host.
