@@ -1,0 +1,61 @@
+{
+  "schema": "rusty.quest.workflow.meta_tooling_diagnostic_receipt.v1",
+  "run_id": "synthetic-frame-pacing-001",
+  "profile_id": "xr-frame-pacing",
+  "registry_sha256": "835821fffdb1b554da008c7fcf2ff5621a06dc82c998e83e6e3848abf314539a",
+  "provider": {
+    "id": "meta-vr-cli-pinned",
+    "npm_package": "metavr",
+    "npm_package_version": "1.3.2",
+    "observed_cli_version": "metavr 1.3.2.2.2",
+    "package_integrity_sri": "sha512-J3V0F+0e48Jd6Huxtcim6881Iw5kgLEBK+n4mamsG6LMBOE9ScEMomjHhKphtMkIsf6ViyI4PmrwtdG6SmZvFQ==",
+    "capability_reference_sha256": "47b98fc99a544216975d7614b568ce41b5195b2a4c7d4a8f9a3ea6cac266e366"
+  },
+  "config_sha256": "804f9eaa49131ba72c61a94cc62398e7b8c69d58cb3f301f75fb3a3f634c8bdf",
+  "started_at_utc": "2026-08-03T11:40:00Z",
+  "finished_at_utc": "2026-08-03T11:40:14Z",
+  "requested_duration_ms": 10000,
+  "observed_duration_ms": 14000,
+  "status": "passed",
+  "claim_class": "diagnostic-only",
+  "artifacts": [
+    {
+      "kind": "perfetto-trace",
+      "relative_path": "artifacts/meta-tooling/synthetic-frame-pacing-001/xr-frame-pacing/xr-frame-pacing.pftrace",
+      "status": "present",
+      "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "size_bytes": 4096
+    },
+    {
+      "kind": "metric-summary",
+      "relative_path": "artifacts/meta-tooling/synthetic-frame-pacing-001/xr-frame-pacing/frames-summary.json",
+      "status": "present",
+      "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "size_bytes": 512
+    }
+  ],
+  "metrics": [
+    { "id": "provider-exit-code", "unit": "count", "status": "reported", "value": 0 },
+    { "id": "capture-duration-ms", "unit": "milliseconds", "status": "reported", "value": 10000 },
+    { "id": "frame-slice-count", "unit": "count", "status": "reported", "value": 720 },
+    { "id": "missed-frame-count", "unit": "count", "status": "reported", "value": 3 },
+    { "id": "app-frame-time-p50-ms", "unit": "milliseconds", "status": "reported", "value": 11.1 },
+    { "id": "app-frame-time-p95-ms", "unit": "milliseconds", "status": "not-reported" }
+  ],
+  "cleanup_receipt": {
+    "required": true,
+    "status": "passed",
+    "checked_at_utc": "2026-08-03T11:40:15Z",
+    "checks": [
+      { "id": "provider-process-exited", "status": "passed" },
+      { "id": "trace-capture-inactive", "status": "passed" },
+      { "id": "no-run-owned-forward", "status": "not-applicable" },
+      { "id": "no-run-owned-device-file", "status": "passed" }
+    ],
+    "limitations": []
+  },
+  "limitations": [
+    "Synthetic fixture only; it contains no device evidence.",
+    "Frame metrics are diagnostic and do not replace an app-owned current-run receipt."
+  ]
+}

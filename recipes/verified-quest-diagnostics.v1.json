@@ -1,0 +1,17 @@
+{
+  "schema": "rusty.quest.workflow.diagnostic_recipe_registry.v1",
+  "provider": {
+    "id": "meta-vr-cli-pinned",
+    "package": "metavr",
+    "package_version": "1.3.2",
+    "observed_cli_version": "metavr 1.3.2.2.2"
+  },
+  "recipes": [
+    { "id": "health", "effect": "observe", "authority": "transport-observed", "output_kind": "json" },
+    { "id": "foreground", "effect": "observe", "authority": "transport-observed", "output_kind": "json" },
+    { "id": "logcat-clear", "effect": "diagnostic-buffer-reset", "authority": "diagnostic-only", "output_kind": "text" },
+    { "id": "logcat", "effect": "observe", "authority": "diagnostic-only", "output_kind": "text" },
+    { "id": "screenshot", "effect": "capture", "authority": "diagnostic-only", "output_kind": "png" },
+    { "id": "perfetto-vr", "effect": "capture", "authority": "diagnostic-only", "output_kind": "perfetto-trace" }
+  ]
+}

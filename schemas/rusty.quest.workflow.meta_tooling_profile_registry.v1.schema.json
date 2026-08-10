@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MesmerPrism/meta-quest-agent-workflow/schemas/rusty.quest.workflow.meta_tooling_profile_registry.v1.schema.json",
+  "title": "Meta tooling evidence profile registry v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "profile_set_id", "provider", "verification", "operator_scope", "profiles"],
+  "properties": {
+    "schema": { "const": "rusty.quest.workflow.meta_tooling_profile_registry.v1" },
+    "profile_set_id": { "const": "meta-vr-cli-evidence-profiles-20260803" },
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "npm_package", "npm_package_version", "observed_cli_version", "package_integrity_sri", "package_dist_shasum_sha1", "capability_reference"],
+      "properties": {
+        "id": { "const": "meta-vr-cli-pinned" },
+        "npm_package": { "const": "metavr" },
+        "npm_package_version": { "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "observed_cli_version": { "pattern": "^metavr [0-9]+\\.[0-9]+\\.[0-9]+(?:\\.[0-9]+)*$" },
+        "package_integrity_sri": { "pattern": "^sha512-[A-Za-z0-9+/]+={0,2}$" },
+        "package_dist_shasum_sha1": { "pattern": "^[0-9a-f]{40}$" },
+        "capability_reference": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "line_endings", "terminal_newline", "sha256", "size_bytes"],
+          "properties": {
+            "kind": { "const": "normalized-markdown-help" },
+            "line_endings": { "const": "lf" },
+            "terminal_newline": { "const": true },
+            "sha256": { "pattern": "^[0-9a-f]{64}$" },
+            "size_bytes": { "type": "integer", "minimum": 1 }
+          }
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checked_at_utc", "state", "device_used", "sources"],
+      "properties": {
+        "checked_at_utc": { "type": "string", "format": "date-time" },
+        "state": { "const": "tooling-surface-verified" },
+        "device_used": { "const": false },
+        "sources": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": { "type": "string", "format": "uri", "pattern": "^https://" }
+        }
+      }
+    },
+    "operator_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "generic_device_oracle", "production_authority", "requires_target_app_integration", "claim_class"],
+      "properties": {
+        "classification": { "const": "optional-app-scoped-instrumentation" },
+        "generic_device_oracle": { "const": false },
+        "production_authority": { "const": false },
+        "requires_target_app_integration": { "const": true },
+        "claim_class": { "const": "app-diagnostic-only" }
+      }
+    },
+    "profiles": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": { "$ref": "#/$defs/profile" }
+    }
+  },
+  "$defs": {
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "provider_recipe_id", "authority", "config", "config_canonical_json", "config_sha256", "artifact_paths", "metric_summary", "cleanup", "claim_limits"],
+      "properties": {
+        "id": { "enum": ["health", "logcat", "screenshot", "xr-frame-pacing"] },
+        "provider_recipe_id": { "enum": ["health", "logcat", "screenshot", "perfetto-vr"] },
+        "authority": { "enum": ["transport-observed", "diagnostic-only"] },
+        "config": { "type": "object", "minProperties": 3, "maxProperties": 8 },
+        "config_canonical_json": { "type": "string", "minLength": 2, "maxLength": 1024, "pattern": "^\\{.*\\}$" },
+        "config_sha256": { "pattern": "^[0-9a-f]{64}$" },
+        "artifact_paths": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^artifacts/meta-tooling/<run-id>/[a-z0-9][a-z0-9./-]*$" }
+        },
+        "metric_summary": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "unit", "required"],
+            "properties": {
+              "id": { "pattern": "^[a-z][a-z0-9-]{1,63}$" },
+              "unit": { "enum": ["boolean", "bytes", "count", "milliseconds", "percent", "pixels", "state"] },
+              "required": { "type": "boolean" }
+            }
+          }
+        },
+        "cleanup": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["required", "receipt_status", "checks"],
+          "properties": {
+            "required": { "type": "boolean" },
+            "receipt_status": { "enum": ["not-required", "required"] },
+            "checks": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": { "pattern": "^[a-z][a-z0-9-]{1,63}$" }
+            }
+          }
+        },
+        "claim_limits": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 12, "maxLength": 300 }
+        }
+      }
+    }
+  }
+}

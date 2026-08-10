@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MesmerPrism/meta-quest-agent-workflow/schemas/rusty.quest.workflow.meta_tooling_diagnostic_receipt.v1.schema.json",
+  "title": "Meta tooling diagnostic receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "run_id", "profile_id", "registry_sha256", "provider", "config_sha256", "started_at_utc", "finished_at_utc", "requested_duration_ms", "observed_duration_ms", "status", "claim_class", "artifacts", "metrics", "cleanup_receipt", "limitations"],
+  "properties": {
+    "schema": { "const": "rusty.quest.workflow.meta_tooling_diagnostic_receipt.v1" },
+    "run_id": { "pattern": "^[a-z0-9][a-z0-9-]{7,79}$" },
+    "profile_id": { "enum": ["health", "logcat", "screenshot", "xr-frame-pacing"] },
+    "registry_sha256": { "pattern": "^[0-9a-f]{64}$" },
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "npm_package", "npm_package_version", "observed_cli_version", "package_integrity_sri", "capability_reference_sha256"],
+      "properties": {
+        "id": { "const": "meta-vr-cli-pinned" },
+        "npm_package": { "const": "metavr" },
+        "npm_package_version": { "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "observed_cli_version": { "pattern": "^metavr [0-9]+\\.[0-9]+\\.[0-9]+(?:\\.[0-9]+)*$" },
+        "package_integrity_sri": { "pattern": "^sha512-[A-Za-z0-9+/]+={0,2}$" },
+        "capability_reference_sha256": { "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "config_sha256": { "pattern": "^[0-9a-f]{64}$" },
+    "started_at_utc": { "type": "string", "format": "date-time" },
+    "finished_at_utc": { "type": "string", "format": "date-time" },
+    "requested_duration_ms": { "type": "integer", "minimum": 0, "maximum": 30000 },
+    "observed_duration_ms": { "type": "integer", "minimum": 0, "maximum": 180000 },
+    "status": { "enum": ["passed", "failed", "timed-out", "cleanup-incomplete"] },
+    "claim_class": { "enum": ["transport-observed", "diagnostic-only"] },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "relative_path", "status"],
+        "properties": {
+          "kind": { "enum": ["provider-json", "logcat-text", "png", "perfetto-trace", "metric-summary", "stderr"] },
+          "relative_path": { "type": "string", "pattern": "^artifacts/meta-tooling/[a-z0-9][a-z0-9-]{7,79}/[a-z0-9][a-z0-9./-]*$" },
+          "status": { "enum": ["present", "absent", "invalid"] },
+          "sha256": { "pattern": "^[0-9a-f]{64}$" },
+          "size_bytes": { "type": "integer", "minimum": 0 }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "status": { "const": "present" } } },
+            "then": { "required": ["sha256", "size_bytes"] }
+          }
+        ]
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "unit", "status"],
+        "properties": {
+          "id": { "pattern": "^[a-z][a-z0-9-]{1,63}$" },
+          "unit": { "enum": ["boolean", "bytes", "count", "milliseconds", "percent", "pixels", "state"] },
+          "status": { "enum": ["reported", "not-reported", "invalid"] },
+          "value": { "type": ["boolean", "integer", "number", "string"] }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "status": { "const": "reported" } } },
+            "then": { "required": ["value"] }
+          }
+        ]
+      }
+    },
+    "cleanup_receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "status", "checked_at_utc", "checks", "limitations"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "status": { "enum": ["not-required", "passed", "failed"] },
+        "checked_at_utc": { "type": "string", "format": "date-time" },
+        "checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "status"],
+            "properties": {
+              "id": { "pattern": "^[a-z][a-z0-9-]{1,63}$" },
+              "status": { "enum": ["passed", "failed", "not-applicable", "unknown"] }
+            }
+          }
+        },
+        "limitations": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 300 } }
+      }
+    },
+    "limitations": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1, "maxLength": 300 } }
+  }
+}
