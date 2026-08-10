@@ -61,6 +61,10 @@ remove rather than maintain a competing tracked skill entrypoint.
   exclusions, but must not contain invocations, paths, targets, endpoints,
   credentials, coordination records, raw arguments, shell access, MCP
   execution, or an execution grant.
+- Keep reviewed Meta tooling profiles closed and hash-bound. Pin the npm
+  package/version and distribution integrity, bind a normalized help-surface
+  digest plus exact config digest, enforce bounded duration/output paths, and
+  require metric and cleanup receipts without exposing raw CLI/MCP arguments.
 - Treat JSON Schema validation as structural. Descriptor consumers must also
   enforce unique capability/action IDs, exact `TimeSpan`-tick timestamp/max-age
   correspondence, a 600-second maximum, zero future-observation skew, current
@@ -100,6 +104,7 @@ Before publishing documentation changes, run:
 pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-public-safe.ps1
 pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-rusty-morphospace-routing.ps1
 pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-AgentExecutionContracts.ps1
+pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-MetaToolingEvidenceProfiles.ps1
 pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-MetaQuestWorkflowSkill.ps1
 git diff --check
 ```

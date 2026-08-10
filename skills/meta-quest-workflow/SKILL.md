@@ -83,6 +83,8 @@ Read only the playbooks needed for the task:
     OpenXR integration work
 15. `docs/termux-linux-sidecars.md` when Termux or Wi-Fi ADB is involved
 16. `docs/meta-horizon-mcp-and-hzdb.md` for Meta VR CLI/MCP or Meta XR Operator
+17. `docs/meta-vr-cli-evidence-profiles.md` for pinned Meta health, bounded
+    logcat, screenshot, or XR frame-pacing Perfetto evidence
 
 When this skill is installed without the repo docs, use the public
 `MesmerPrism/meta-quest-agent-workflow` repository as the playbook source.
@@ -223,6 +225,11 @@ to broaden another provider's authority.
 Label the selected provider and version. Choose per operation, not once per
 run. Do not substitute one capture or authority source for another without
 saying so.
+
+For unattended Meta tooling diagnostics, require the reviewed profile's npm
+package/version, distribution integrity, normalized help digest, exact config
+digest, bounded artifact paths, metric summary, and cleanup receipt. Do not
+project the broader Meta VR CLI or MCP surface through that profile.
 
 ## Default Local Product Shape
 

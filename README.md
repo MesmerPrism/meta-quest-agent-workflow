@@ -60,6 +60,9 @@ side effects are split from read-only inspection.
   render adoption, cleanup, and bounded fatal evidence separate.
 - Meta Horizon MCP / Meta VR CLI setup notes and `hzdb` compatibility
   boundaries.
+- Hash-bound Meta VR CLI evidence profiles for health, bounded logcat, still
+  screenshots, and XR frame-pacing Perfetto capture, with normalized metrics
+  and cleanup receipts.
 - Managed Individual/Shared Mode Store checks, attended paid-entitlement
   validation, and launcher task/process boundaries.
 - Host-to-headset mutation receipts that distinguish command dispatch from
@@ -197,6 +200,10 @@ Use the narrowest provider that answers the question:
 | App-private diagnostics | Camera/source metadata, renderer counters, probe payloads | Pull with `run-as` only when the app is debuggable. |
 | Manual headset action | Permissions, MediaProjection consent, protected prompts, real controllers | Record the user action in the evidence. |
 
+For unattended Meta tooling diagnostics, use the pinned
+[evidence profiles](docs/meta-vr-cli-evidence-profiles.md). Treat broader CLI
+and MCP routes as unreviewed until they receive their own bounded profile.
+
 See [Agent Execution Providers](docs/agent-execution-providers.md) for the
 provider-selection algorithm, deliberately disjoint local/Fleet contracts,
 portable non-executable intent, sanitized evidence wrapper, and MCP boundary.
@@ -262,6 +269,7 @@ docs/long-running-watchdogs.md
 docs/termux-linux-sidecars.md
 docs/xr-questionnaire-panel-handoff.md
 docs/meta-horizon-mcp-and-hzdb.md
+docs/meta-vr-cli-evidence-profiles.md
 docs/managed-device-store-apps.md
 docs/host-headset-mutation-confirmation.md
 docs/permissions-and-distribution-boundary.md
@@ -279,9 +287,14 @@ examples/mcp-config-example.json
 scripts/check-public-safe.ps1
 scripts/check-rusty-morphospace-routing.ps1
 scripts/Test-AgentExecutionContracts.ps1
+scripts/Test-MetaToolingEvidenceProfiles.ps1
 scripts/Test-MetaQuestWorkflowSkill.ps1
 schemas/rusty.quest.workflow.intent.v1.schema.json
 schemas/rusty.quest.workflow.evidence_wrapper.v1.schema.json
+schemas/rusty.quest.workflow.meta_tooling_profile_registry.v1.schema.json
+schemas/rusty.quest.workflow.meta_tooling_diagnostic_receipt.v1.schema.json
+recipes/meta-vr-cli-evidence-profiles.v1.json
+examples/meta-tooling-diagnostic-receipt.synthetic.json
 ```
 
 ## Historical Lineage

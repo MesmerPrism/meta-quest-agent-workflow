@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MesmerPrism/meta-quest-agent-workflow/schemas/rusty.quest.workflow.diagnostic_recipe_registry.v1.schema.json",
+  "title": "Verified Quest diagnostic recipe registry v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "provider", "recipes"],
+  "properties": {
+    "schema": { "const": "rusty.quest.workflow.diagnostic_recipe_registry.v1" },
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "package", "package_version", "observed_cli_version"],
+      "properties": {
+        "id": { "const": "meta-vr-cli-pinned" },
+        "package": { "const": "metavr" },
+        "package_version": { "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "observed_cli_version": { "pattern": "^metavr [0-9]+\\.[0-9]+\\.[0-9]+(?:\\.[0-9]+)*$" }
+      }
+    },
+    "recipes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "effect", "authority", "output_kind"],
+        "properties": {
+          "id": { "enum": ["health", "foreground", "logcat-clear", "logcat", "screenshot", "perfetto-vr"] },
+          "effect": { "enum": ["observe", "diagnostic-buffer-reset", "capture"] },
+          "authority": { "enum": ["transport-observed", "diagnostic-only"] },
+          "output_kind": { "enum": ["json", "text", "png", "perfetto-trace"] }
+        }
+      }
+    }
+  }
+}
