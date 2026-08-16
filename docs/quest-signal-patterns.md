@@ -12,6 +12,7 @@ Use a ladder, not one boolean:
 | --- | --- | --- |
 | ADB reachable | Host can talk to the headset. | `adb devices -l`, basic `getprop`. |
 | Display ready | Headset appears awake/display-on. | `dumpsys power`, screenshot non-empty. |
+| Post-reboot wearer gate | Physical sensor lock and protected Shell blockers are cleared. | Wearer confirmation, no `SensorLockActivity`/VR lockscreen/Guardian focus, wakefulness remains `Awake`. |
 | App launch ready | Target can be foregrounded. | `am start` success, focused window. |
 | Broker/service ready | Local status endpoint responds. | `/status`, `/clock/now`, command ack. |
 | OpenXR ready | Immersive app has session/frame loop. | lifecycle logs, `READY`/`FOCUSED`, frame counter. |
@@ -115,6 +116,34 @@ RequestExitSession
 
 Treat these as power/session contamination until the run proves recovery and
 re-establishes readiness.
+
+## Post-Reboot Sensor Lock And Volumetric Placement
+
+Do not equate ADB reconnect or `sys.boot_completed=1` with headset readiness.
+After a Quest reboot, assume a wearer must press the physical power button and
+clear sensor lock, the VR lock screen, or Guardian before an immersive launch
+can be validated. ADB wake and synthetic key events may wake the display only
+temporarily; stop and request physical interaction if the headset returns to
+sleep.
+
+Interpret the platform sequence in process order:
+
+```text
+ActivityTaskManager: START ... result code=0
+Shell: Launch is blocked because: a Guardian dialog is currently showing
+VolumetricWindowManagerServiceImpl: Timeout while requesting window placement
+```
+
+The first line proves dispatch, not placement. The timeout means Meta's
+Volumetric Window Manager did not finish creating/placing the app's spatial
+window. When Shell cached the launch behind Guardian or sensor lock, the app
+never reached a comparable foreground/OpenXR state; exclude the sample rather
+than attributing its behavior to APK performance.
+
+Bind cadence evidence to its process. A `VrApi` line from Meta Shell at 72 Hz
+describes the Shell path, not a target app that requested 90 Hz but was never
+placed. Require the target PID to own the OpenXR state, advancing frames, and
+VrApi/clock confirmation before accepting refresh-rate or performance claims.
 
 ## Warning Signals
 

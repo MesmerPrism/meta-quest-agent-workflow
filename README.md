@@ -66,7 +66,8 @@ side effects are split from read-only inspection.
 - Managed Individual/Shared Mode Store checks, attended paid-entitlement
   validation, and launcher task/process boundaries.
 - Host-to-headset mutation receipts that distinguish command dispatch from
-  pending wearer/device work and confirmation by effective-state readback.
+  pending wearer/device work and confirmation by effective-state readback,
+  including the physical post-reboot sensor-lock gate before XR work resumes.
 - Target-free, short-lived provider capability discovery that describes typed
   owner surfaces without granting execution or exposing invocation details,
   paths, endpoints, targets, credentials, raw arguments, shell access, or MCP
@@ -183,6 +184,11 @@ pwsh -NoProfile -ExecutionPolicy Bypass `
 18. Preserve raw serial-scoped ADB only as an explicitly labeled bootstrap,
     provider-gap, diagnostic, or recovery fallback, not equivalent owner
     evidence.
+19. Treat Quest reboot as attended recovery. ADB reconnect and Android boot
+    completion are insufficient: require a physical power-button/wearer gate,
+    stable awake/display state, no lock or Guardian placement blocker, valid
+    advancing Shell vsync, and target-owned requested-rate OpenXR readiness
+    before resuming a run.
 
 ## Provider Model
 

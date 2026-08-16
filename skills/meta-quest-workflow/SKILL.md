@@ -129,6 +129,10 @@ condition, cleanup, and suggested owner-product improvement.
   fresh route-specific headset readback matches.
 - Treat command exit zero, request admission, and a visible permission prompt
   as dispatch evidence, not confirmation.
+- Treat every Quest reboot as an attended recovery boundary. Before issuing
+  one, warn that a wearer must be available afterward. ADB reachability and
+  Android boot completion do not make the headset ready for app launch,
+  OpenXR, capture, or performance work.
 - Keep generated APKs, screenshots, captures, traces, logs, serials, package
   identities, signing material, and raw device evidence out of public commits.
 - Do not treat ADB synthetic input as Meta Touch/OpenXR controller parity.
@@ -240,6 +244,29 @@ readback. Confirm runtime truth through the participating app.
 An installed-byte observe may pass while a Guardian, lock-screen, or Home
 Activity keeps foreground/resumed/process state false; keep that launch
 blocker as a separate claim.
+
+## Quest Reboot Is Attended
+
+Assume that a rebooted Quest requires physical interaction before immersive
+automation can resume. Keep the reboot receipt `pending` after ADB reconnects
+and `sys.boot_completed=1`. Ask the wearer to press the physical power button
+and clear `SensorLockActivity`, the VR lock screen, or Guardian as needed. Do
+not treat ADB wake or key-event injection as a substitute; it may turn the
+display on briefly while sensor lock returns the headset to sleep.
+
+Resume only after fresh readback proves all selected prerequisites:
+
+- wakefulness is `Awake` and the physical display is on;
+- no sensor-lock, VR-lockscreen, or Guardian surface blocks placement;
+- Meta Shell has a valid, advancing vsync; and
+- after placement, the target process owns the OpenXR focused/frame-loop
+  evidence and any requested refresh-rate or CPU/GPU confirmation used by the
+  run.
+
+`mStayOn=true`, ADB connectivity, Android boot completion, or a Shell-owned
+VrApi line is insufficient. If the headset returns to sleep, reports invalid
+vsync, or logs a volumetric-window placement timeout, stop launch retries and
+request the physical action. Exclude the attempt from performance acceptance.
 
 ## Raw ADB Fallback Shape
 
