@@ -45,6 +45,11 @@ remove rather than maintain a competing tracked skill entrypoint.
 - Keep state-changing operations distinct from read-only inspection, and
   require effective headset readback before calling a dispatched mutation
   confirmed.
+- Treat Quest reboot as an attended recovery boundary. ADB reconnect and
+  Android boot completion prove transport/OS state only; require the physical
+  power-button/wearer gate, cleared sensor-lock/Guardian state, valid advancing
+  Shell vsync, and target-owned requested-rate OpenXR readiness before
+  continued XR work.
 - Keep high-rate media out of generic JSON control/status channels.
 - Treat Accessibility foreground monitoring as a privacy-minimized,
   user-enabled diagnostic capability, never HOME interception or kiosk policy.

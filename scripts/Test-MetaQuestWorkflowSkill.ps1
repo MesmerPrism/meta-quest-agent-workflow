@@ -12,8 +12,12 @@ $skillRoot = Join-Path $RepoRoot "skills\meta-quest-workflow"
 $skillPath = Join-Path $skillRoot "SKILL.md"
 $agentPath = Join-Path $skillRoot "agents\openai.yaml"
 $locatorPath = Join-Path $skillRoot "references\local-work-environment.json"
+$readmePath = Join-Path $RepoRoot "README.md"
+$agentsPath = Join-Path $RepoRoot "AGENTS.md"
+$mutationPath = Join-Path $RepoRoot "docs\host-headset-mutation-confirmation.md"
+$signalsPath = Join-Path $RepoRoot "docs\quest-signal-patterns.md"
 
-foreach ($path in @($skillPath, $agentPath)) {
+foreach ($path in @($skillPath, $agentPath, $readmePath, $agentsPath, $mutationPath, $signalsPath)) {
     if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
         throw "Canonical Meta Quest skill file is missing: $path"
     }
@@ -77,6 +81,10 @@ $requiredSkillTokens = @(
     "canonical skill",
     "cannot override this repository's",
     "never guess a machine path",
+    "Quest Reboot Is Attended",
+    "physical power button",
+    "SensorLockActivity",
+    "target process owns the OpenXR",
     "File Manager inspected deployment",
     "Fleet approved execution",
     "Kiosk"
@@ -84,6 +92,21 @@ $requiredSkillTokens = @(
 foreach ($token in $requiredSkillTokens) {
     if (-not $skill.Contains($token, [System.StringComparison]::Ordinal)) {
         throw "Canonical Meta Quest skill is missing required token: $token"
+    }
+}
+
+$requiredSynchronizedTokens = [ordered]@{
+    $readmePath = @("Treat Quest reboot as attended recovery", "target-owned requested-rate OpenXR readiness")
+    $agentsPath = @("Quest reboot as an attended recovery boundary", "power-button/wearer gate")
+    $mutationPath = @("Reboot is an attended boundary", "sys.boot_completed=1", "VolumetricWindowManagerServiceImpl")
+    $signalsPath = @("Post-Reboot Sensor Lock And Volumetric Placement", 'A `VrApi` line from Meta Shell at 72 Hz', "Require the target PID")
+}
+foreach ($entry in $requiredSynchronizedTokens.GetEnumerator()) {
+    $content = Get-Content -Raw -LiteralPath $entry.Key
+    foreach ($token in $entry.Value) {
+        if (-not $content.Contains($token, [System.StringComparison]::Ordinal)) {
+            throw "Synchronized Quest reboot guidance is missing required token '$token' from $($entry.Key)"
+        }
     }
 }
 
