@@ -32,6 +32,10 @@ exactly one final LF. Two consecutive probes produced the same SHA-256. The
 help surface confirmed `device health-check`, bounded `log`, `capture screenshot`, `perf
 capture --mode vr --duration`, and `perf analyze-trace --focus frames`.
 
+The profile-registry digest bound by synthetic and runtime receipts uses the
+same text normalization. Git checkout line endings therefore cannot change the
+registry identity or make an otherwise exact receipt platform-dependent.
+
 The package integrity and help digest prove the selected distribution and
 advertised interface. They do not prove a connected target, provider health,
 Horizon OS compatibility, or any device-side effect.

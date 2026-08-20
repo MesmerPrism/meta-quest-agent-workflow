@@ -16,6 +16,12 @@ function Get-TextSha256 {
     return -join ($hash | ForEach-Object { $_.ToString("x2") })
 }
 
+function ConvertTo-CanonicalText {
+    param([Parameter(Mandatory)][string]$Text)
+    $normalized = $Text.Replace("`r`n", "`n").Replace("`r", "`n")
+    return $normalized.TrimEnd("`n") + "`n"
+}
+
 function Invoke-Captured {
     param(
         [Parameter(Mandatory)][string]$Executable,
@@ -109,7 +115,14 @@ if ($frameProfile.Count -ne 1 -or
     throw "xr-frame-pacing bounds or cleanup contract drifted."
 }
 
-$registryHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $registryPath).Hash.ToLowerInvariant()
+$registryCanonicalText = ConvertTo-CanonicalText -Text $registryText
+$registryHash = Get-TextSha256 -Text $registryCanonicalText
+$registryCrlfHash = Get-TextSha256 -Text (
+    ConvertTo-CanonicalText -Text $registryCanonicalText.Replace("`n", "`r`n")
+)
+if ($registryCrlfHash -cne $registryHash) {
+    throw "Profile registry hash depends on checkout line endings."
+}
 if ([string]$receipt.registry_sha256 -cne $registryHash) {
     throw "Synthetic receipt does not bind the current profile registry."
 }
