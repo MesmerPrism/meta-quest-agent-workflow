@@ -31,6 +31,9 @@ installed provenance commit rather than floating `main`. See
 - A [default Rusty Morphospace device loop](docs/rusty-morphospace-default-device-loop.md)
   that routes local work through File Manager and Kiosk, managed work through
   Fleet and effect owners, and raw ADB only through an explicit fallback gate.
+- A [two-lane Quest APK build procedure](docs/quest-apk-build-lanes.md) that
+  separates stable warm iteration intermediates from frozen,
+  content-addressed Candidate and publication evidence.
 - ADB install, grant, launch, logcat, screenshot, and artifact collection
   workflows.
 - Quest camera metadata collection through ADB and optional broker-style
@@ -119,6 +122,10 @@ File Manager's resolved `apk launch` route otherwise. For managed targets, use
 Fleet's approved target-snapshot operation instead of translating local
 arguments. See
 [Rusty Morphospace Default Device Loop](docs/rusty-morphospace-default-device-loop.md).
+Choose the APK build lane first: ordinary edits reuse stable project- and
+lane-scoped intermediates, while Candidate/publication work freezes exact clean
+inputs and immutable outputs. Both paths inspect and retain the exact APK; see
+[Quest APK Build Lanes](docs/quest-apk-build-lanes.md).
 When the machine-local work environment supplies a deployment wrapper, prefer
 its immutable provider/APK staging and fail-closed receipt checks over manually
 reconstructing this sequence or using an ambient repository build output.
@@ -170,28 +177,31 @@ pwsh -NoProfile -ExecutionPolicy Bypass `
    forwarding, and Perfetto capture with an explicit operator decision.
 11. Record provider, command goal, fallback, foreground before/after, and
     artifact paths for every device-facing run.
-12. Keep topology proof separate from Wireless ADB proof. A Quest-owned Wi-Fi
+12. Keep mutable build intermediates stable and project/lane scoped; keep final
+    APKs and evidence content addressed. Label comparable cold/warm timings and
+    do not present an observed fast build as a portable SLA.
+13. Keep topology proof separate from Wireless ADB proof. A Quest-owned Wi-Fi
     Direct group or local-only hotspot can provide local networking while the
     tested Horizon OS build still refuses to start its TLS ADB listener.
-13. Treat paid Store purchases as attended account-holder actions. Automation
+14. Treat paid Store purchases as attended account-holder actions. Automation
     may inspect or open the Store but must not choose, buy, enter a Store PIN,
     or provide payment.
-14. Distinguish a fresh Android task from a fresh process. Do not force-stop
+15. Distinguish a fresh Android task from a fresh process. Do not force-stop
     arbitrary Store apps merely to clean normal background tasks.
-15. Model every state-changing PC command as `sent -> pending -> confirmed`.
+16. Model every state-changing PC command as `sent -> pending -> confirmed`.
     Confirm only from fresh route-specific headset readback; a prompt request
     or zero process exit code is not confirmation.
-16. Treat Accessibility foreground monitoring as a special user-enabled
+17. Treat Accessibility foreground monitoring as a special user-enabled
     capability: disable UI-tree retrieval, separate refocus from escape
     counting, and revalidate Meta-shell signals after Horizon updates.
-17. Default routine local work to File Manager inspected deployment, Kiosk
+18. Default routine local work to File Manager inspected deployment, Kiosk
     launch/foreground control when applicable, and app-owned runtime evidence.
     Default managed target-set work to Fleet with current authority and
     effect-owner receipts.
-18. Preserve raw serial-scoped ADB only as an explicitly labeled bootstrap,
+19. Preserve raw serial-scoped ADB only as an explicitly labeled bootstrap,
     provider-gap, diagnostic, or recovery fallback, not equivalent owner
     evidence.
-19. Treat Quest reboot as attended recovery. ADB reconnect and Android boot
+20. Treat Quest reboot as attended recovery. ADB reconnect and Android boot
     completion are insufficient: require a physical power-button/wearer gate,
     stable awake/display state, no lock or Guardian placement blocker, valid
     advancing Shell vsync, and target-owned requested-rate OpenXR readiness
@@ -270,6 +280,7 @@ docs/adb-basics.md
 docs/accessibility-foreground-watchdogs.md
 docs/apk-install-launch.md
 docs/artifact-and-evidence-discipline.md
+docs/quest-apk-build-lanes.md
 docs/broker-style-localhost-probes.md
 docs/rusty-morphospace-default-device-loop.md
 docs/rusty-morphospace-repo-routing.md

@@ -2,6 +2,19 @@
 
 Quest validation is only useful when the artifacts say exactly what was tested.
 
+## Build Evidence Boundary
+
+Keep reusable Cargo, Gradle, Android-shell, and product intermediates outside
+the run evidence directory. Their cache hits can explain performance but are
+not accepted artifacts. The build receipt should name the selected lane,
+cold/warm state, exact APK digest, source and tool identities, invalidation
+reasons, and phase timings. See
+[Quest APK Build Lanes](quest-apk-build-lanes.md).
+
+A content-addressed final APK does not require a content-addressed compiler
+cache. Preserve the final APK, manifest, inspection report, and candidate
+evidence immutably; describe mutable-cache use separately.
+
 ## Run Directory
 
 Use a short directory outside source control:

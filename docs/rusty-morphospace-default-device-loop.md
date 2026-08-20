@@ -33,11 +33,24 @@ authority, or multi-headset coordination is part of the operation.
 File Manager, Fleet, and Kiosk are adapters and products around those owners;
 none of them becomes build or application-runtime authority.
 
+## 0. Choose And Complete The Build Lane
+
+Before entering a device transaction, follow
+[Quest APK Build Lanes](quest-apk-build-lanes.md). Use the warm iteration lane
+for ordinary edits and the frozen Candidate/publication lane for handoff or
+reproducibility claims.
+
+Both lanes must hand this loop one exact, inspected, content-addressed APK and
+run capsule. That device invariant does not require warm compiler intermediates
+to be content-addressed and does not turn a live iteration checkout into a
+clean-source claim. Do not acquire a headset merely to compile an APK.
+
 ## 1. Declare The Run
 
 Before resolving a machine path or target, create or review:
 
-- the exact project source and build revisions;
+- the declared project source observation and build lane, including exact
+  clean revisions when the selected lane requires them;
 - the selected feature lock and effective runtime input;
 - the content-addressed APK and run capsule;
 - a `rusty.quest.workflow.intent.v1` record for each materially different

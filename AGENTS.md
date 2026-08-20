@@ -90,6 +90,11 @@ locator files remain untracked local metadata and grant no execution authority.
 - Preserve owner-issued evidence byte-for-byte. A workflow wrapper may bind its
   schema and SHA-256 with a sanitized outcome, but must not add fields under the
   owner's schema or create an authority claim.
+- Keep ordinary APK iteration and Candidate/publication assembly as explicit
+  lanes. Mutable Cargo/Gradle/build intermediates may be stable, short, and
+  project/lane scoped; final APKs and evidence remain content addressed. Require
+  explicit invalidation plus comparable cold/warm phase receipts before making
+  performance claims.
 - Keep opaque operator-presentation evidence separate from owned media-plane
   evidence. A successful Hostess/MQDH Cinematic window may prove supervised
   presentation only; it does not prove recording, input forwarding, arbitrary

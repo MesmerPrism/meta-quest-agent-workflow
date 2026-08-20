@@ -86,27 +86,29 @@ Read only the playbooks needed for the task:
 1. `README.md`
 2. `docs/playbook-index.md` when choosing a focused playbook or locating an
    application-owned command, status, receipt, or cleanup contract
-3. `docs/rusty-morphospace-default-device-loop.md` for routine Rusty
+3. `docs/quest-apk-build-lanes.md` for APK iteration, cache invalidation,
+   Candidate assembly, or build-timing work
+4. `docs/rusty-morphospace-default-device-loop.md` for routine Rusty
    Morphospace build/deploy/launch/validate work
-4. `docs/agent-execution-providers.md`
-5. `docs/adb-basics.md` only for bootstrap, diagnostics, or fallback
-6. `docs/apk-install-launch.md`
-7. `docs/artifact-and-evidence-discipline.md`
-8. `docs/quest-signal-patterns.md`
-9. `docs/accessibility-foreground-watchdogs.md` for attended foreground
+5. `docs/agent-execution-providers.md`
+6. `docs/adb-basics.md` only for bootstrap, diagnostics, or fallback
+7. `docs/apk-install-launch.md`
+8. `docs/artifact-and-evidence-discipline.md`
+9. `docs/quest-signal-patterns.md`
+10. `docs/accessibility-foreground-watchdogs.md` for attended foreground
    monitoring, Meta Home transitions, or special Accessibility enablement
-10. `docs/host-headset-mutation-confirmation.md` for state changes
-11. `docs/managed-device-store-apps.md` for managed modes or Store apps
-12. `docs/quest-capture-stack-notes.md` and
+11. `docs/host-headset-mutation-confirmation.md` for state changes
+12. `docs/managed-device-store-apps.md` for managed modes or Store apps
+13. `docs/quest-capture-stack-notes.md` and
    `docs/capture-source-taxonomy.md` for capture tasks
-13. `docs/quest-streaming-and-direct-link-gates.md` for Quest/Quest or
+14. `docs/quest-streaming-and-direct-link-gates.md` for Quest/Quest or
    Quest/PC streaming, direct links, and multi-layer promotion evidence
-14. `docs/openxr-tracking-boundary.md` for native OpenXR bridges, API-layer
+15. `docs/openxr-tracking-boundary.md` for native OpenXR bridges, API-layer
     inspection or interposition, bounded input synthesis, or Spatial SDK and
     OpenXR integration work
-15. `docs/termux-linux-sidecars.md` when Termux or Wi-Fi ADB is involved
-16. `docs/meta-horizon-mcp-and-hzdb.md` for Meta VR CLI/MCP or Meta XR Operator
-17. `docs/meta-vr-cli-evidence-profiles.md` for pinned Meta health, bounded
+16. `docs/termux-linux-sidecars.md` when Termux or Wi-Fi ADB is involved
+17. `docs/meta-horizon-mcp-and-hzdb.md` for Meta VR CLI/MCP or Meta XR Operator
+18. `docs/meta-vr-cli-evidence-profiles.md` for pinned Meta health, bounded
     logcat, screenshot, or XR frame-pacing Perfetto evidence
 
 When this skill is installed without the repo docs, use only the validated
@@ -135,6 +137,14 @@ Resolve executable paths, targets, aliases, approvals, credentials, and
 coordination privately. For routine intents set `raw_fallback_allowed=false`.
 Before using raw ADB, record the provider gap, bounded fallback goal, stop
 condition, cleanup, and suggested owner-product improvement.
+
+For APK work, choose the build lane before the device loop. Warm iteration may
+reuse stable short project/lane-scoped Cargo, Gradle, shell, and product
+intermediates; Candidate/publication freezes clean inputs and immutable output
+evidence. Both lanes inspect and retain the exact APK. Keep separate
+native/shell/package invalidation identities, write generated inputs only when
+their bytes change, and label comparable cold/warm phase timings. A cache is
+not acceptance evidence, and an observed sub-minute result is not an SLA.
 
 ## Core Rules
 
