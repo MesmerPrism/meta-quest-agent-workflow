@@ -56,6 +56,29 @@ device-operation procedure, select a target, authorize a mutation, or supply
 credentials. If the locator is absent, use a repository explicitly named by
 the user or ask for its location; never guess a machine path.
 
+## Playbook Source Resolution
+
+The installed skill is a portable router; repository-level playbooks are not
+duplicated into the installation. In the canonical source checkout, use the
+adjacent `README.md` and `docs/playbook-index.md` directly. Otherwise run:
+
+```powershell
+pwsh -NoProfile -File `
+  .\scripts\Resolve-PlaybookSource.ps1 -Json
+```
+
+The resolver validates `.morphospace-skill-source.json` and, when present,
+`references/local-meta-quest-playbooks.json`. Use a returned local source only
+when `mode` is `local`; that means its repository, commit, Git tree, clean
+status, and playbook paths all matched. If local validation fails, use the
+returned `pinned-public` URLs. They are bound to the installed source commit,
+never floating `main`.
+
+The locator and resolver choose documentation bytes only. They do not select
+a device or executable, authorize a mutation, or override an owning app's
+command, receipt, or cleanup contract. See
+`docs/local-playbook-resolution.md` in the source repository.
+
 ## First Read
 
 Read only the playbooks needed for the task:
@@ -86,8 +109,8 @@ Read only the playbooks needed for the task:
 17. `docs/meta-vr-cli-evidence-profiles.md` for pinned Meta health, bounded
     logcat, screenshot, or XR frame-pacing Perfetto evidence
 
-When this skill is installed without the repo docs, use the public
-`MesmerPrism/meta-quest-agent-workflow` repository as the playbook source.
+When this skill is installed without the repo docs, use only the validated
+local or commit-pinned public source returned by the resolver.
 
 ## Default Rusty Morphospace Ecosystem Loop
 

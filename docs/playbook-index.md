@@ -11,6 +11,7 @@ evidence. Recheck the current device/tool build before treating them as current.
 
 | Task | Meta workflow playbook | Application or protocol owner |
 | --- | --- | --- |
+| Resolve repository playbooks from an installed router skill | [Local playbook resolution](local-playbook-resolution.md) | Installed provenance and the exact canonical Meta Quest workflow commit own the documentation identity; the locator grants no runtime authority |
 | Routine build, deploy, launch, validate, and cleanup | [Default device loop](rusty-morphospace-default-device-loop.md) | [QFM inspected deployment](https://github.com/MesmerPrism/QuestIonAble-File-Manager/blob/main/docs/inspected-deployment.md), [Kiosk CLI](https://github.com/MesmerPrism/Rusty-Kiosk/blob/main/docs/CLI.md), [Fleet workflow](https://github.com/MesmerPrism/rusty-fleet/blob/main/docs/WORKFLOW.md) |
 | Repository, composition, and public/private routing | [Repository routing](rusty-morphospace-repo-routing.md) | [Work Environment repository lanes](https://github.com/MesmerPrism/rusty-morphospace-work-environment/blob/main/docs/REPO_LANES.md) |
 | Choose File Manager, Kiosk, Fleet, Meta tooling, ADB, or app evidence | [Agent execution providers](agent-execution-providers.md) | [QFM CLI parity](https://github.com/MesmerPrism/QuestIonAble-File-Manager/blob/main/docs/operator-cli-parity.md), [Kiosk direct operator](https://github.com/MesmerPrism/Rusty-Kiosk/blob/main/docs/DIRECT_OPERATOR.md), [Fleet provider catalog](https://github.com/MesmerPrism/rusty-fleet/blob/main/docs/PROVIDER_CAPABILITY_CATALOG.md) |

@@ -12,12 +12,28 @@ $skillRoot = Join-Path $RepoRoot "skills\meta-quest-workflow"
 $skillPath = Join-Path $skillRoot "SKILL.md"
 $agentPath = Join-Path $skillRoot "agents\openai.yaml"
 $locatorPath = Join-Path $skillRoot "references\local-work-environment.json"
+$playbookLocatorPath = Join-Path $skillRoot "references\local-meta-quest-playbooks.json"
+$resolverPath = Join-Path $skillRoot "scripts\Resolve-PlaybookSource.ps1"
 $readmePath = Join-Path $RepoRoot "README.md"
 $agentsPath = Join-Path $RepoRoot "AGENTS.md"
+$playbookResolutionPath = Join-Path $RepoRoot "docs\local-playbook-resolution.md"
+$playbookIndexPath = Join-Path $RepoRoot "docs\playbook-index.md"
+$resolverTestPath = Join-Path $RepoRoot "scripts\Test-PlaybookSourceResolver.ps1"
 $mutationPath = Join-Path $RepoRoot "docs\host-headset-mutation-confirmation.md"
 $signalsPath = Join-Path $RepoRoot "docs\quest-signal-patterns.md"
 
-foreach ($path in @($skillPath, $agentPath, $readmePath, $agentsPath, $mutationPath, $signalsPath)) {
+foreach ($path in @(
+    $skillPath,
+    $agentPath,
+    $resolverPath,
+    $readmePath,
+    $agentsPath,
+    $playbookResolutionPath,
+    $playbookIndexPath,
+    $resolverTestPath,
+    $mutationPath,
+    $signalsPath
+)) {
     if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
         throw "Canonical Meta Quest skill file is missing: $path"
     }
@@ -68,12 +84,19 @@ if ([string]::IsNullOrWhiteSpace($displayName)) {
 if (Test-Path -LiteralPath $locatorPath) {
     throw "The canonical skill source must not track generated local-work-environment metadata."
 }
+if (Test-Path -LiteralPath $playbookLocatorPath) {
+    throw "The canonical skill source must not track generated local playbook metadata."
+}
 
 $skill = Get-Content -Raw -LiteralPath $skillPath
 $agent = Get-Content -Raw -LiteralPath $agentPath
 $requiredSkillTokens = @(
     "name: meta-quest-workflow",
     "references/local-work-environment.json",
+    "references/local-meta-quest-playbooks.json",
+    "Resolve-PlaybookSource.ps1",
+    "pinned-public",
+    'never floating `main`',
     "docs/QUEST_APK_WORKFLOW.md",
     "docs/PROJECT_ISOLATION.md",
     "docs/PUBLIC_PRIVATE_BOUNDARY.md",
@@ -96,8 +119,10 @@ foreach ($token in $requiredSkillTokens) {
 }
 
 $requiredSynchronizedTokens = [ordered]@{
-    $readmePath = @("Treat Quest reboot as attended recovery", "target-owned requested-rate OpenXR readiness")
-    $agentsPath = @("Quest reboot as an attended recovery boundary", "power-button/wearer gate")
+    $readmePath = @("Treat Quest reboot as attended recovery", "target-owned requested-rate OpenXR readiness", "local playbook locator")
+    $agentsPath = @("Quest reboot as an attended recovery boundary", "power-button/wearer gate", "installed provenance commit")
+    $playbookResolutionPath = @("portable router", "source_status_fingerprint", 'floating `main`')
+    $playbookIndexPath = @("Local playbook resolution", "locator grants no runtime authority")
     $mutationPath = @("Reboot is an attended boundary", "sys.boot_completed=1", "VolumetricWindowManagerServiceImpl")
     $signalsPath = @("Post-Reboot Sensor Lock And Volumetric Placement", 'A `VrApi` line from Meta Shell at 72 Hz', "Require the target PID")
 }
@@ -131,5 +156,7 @@ if ($skill -match '(?im)(?:[A-Z]:\\|/Users/|/home/|private-planning|device seria
 if ($agent -match '(?im)(?:[A-Z]:\\|/Users/|/home/|private-planning|device serial\s*[:=])') {
     throw "Canonical Meta Quest agent manifest contains a local or private identity."
 }
+
+& $resolverTestPath -RepoRoot $RepoRoot
 
 Write-Host "Canonical Meta Quest workflow skill validation passed."

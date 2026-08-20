@@ -38,6 +38,12 @@ installer may copy those exact bytes, record this repository and commit as
 skill-source provenance, and generate separate local locator metadata. It must
 remove rather than maintain a competing tracked skill entrypoint.
 
+The local playbook locator must bind this repository's exact root, commit, Git
+tree, clean status fingerprint, and docs paths. The installed resolver may use
+that checkout only after live validation; otherwise it must use public files
+pinned to the installed provenance commit, never floating `main`. Generated
+locator files remain untracked local metadata and grant no execution authority.
+
 ## Documentation Rules
 
 - Use placeholders such as `<serial>`, `<package>`, `<activity>`, `<path-to.apk>`,
@@ -110,6 +116,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-public-safe.ps1
 pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-rusty-morphospace-routing.ps1
 pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-AgentExecutionContracts.ps1
 pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-MetaToolingEvidenceProfiles.ps1
+pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-PlaybookSourceResolver.ps1
 pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-MetaQuestWorkflowSkill.ps1
 git diff --check
 ```

@@ -13,6 +13,13 @@ used by the Rusty Morphospace repo family. It is intentionally generic:
 commands use placeholders, generated artifacts stay out of source control, and
 side effects are split from read-only inspection.
 
+The installable skill remains a lightweight portable router. A downstream
+installer may generate an exact local playbook locator; the skill validates
+that repository, commit, Git tree, clean status, and docs root before using it.
+If validation fails, its resolver returns public playbook URLs pinned to the
+installed provenance commit rather than floating `main`. See
+[`docs/local-playbook-resolution.md`](docs/local-playbook-resolution.md).
+
 ## What Is Included
 
 - The canonical Codex-style skill and agent manifest under
