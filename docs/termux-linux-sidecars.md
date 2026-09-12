@@ -147,6 +147,32 @@ Do not require inbound ADB, a public headset listener, or shared LAN reachabilit
 for the normal trigger path. Use direct external ADB only for local setup and
 recovery.
 
+## Saved-source Wi-Fi control boundary
+
+An active Wi-Fi ADB transport and `uid=2000(shell)` can support serial-scoped
+observation and a supervised helper, but they do not by themselves prove that a
+saved-source transition works. A guarded consumer-device probe stopped while
+reflecting a supposed selection-reason field named
+`NETWORK_SELECTION_ENABLE`. Source review corrected that diagnosis: in AOSP
+Android 14, `NETWORK_SELECTION_ENABLED` is the enabled-status field,
+`DISABLED_NONE` is the no-disable-reason field, and
+`NETWORK_SELECTION_ENABLE` is a diagnostic/persisted label rather than a field.
+The stopped probe therefore did not establish a privilege limitation or an
+absent target member. A later read-only probe on an API 34 Quest build resolved
+`NETWORK_SELECTION_ENABLED` and `DISABLED_NONE` to `0`, resolved the disable-
+reason accessor, and confirmed that reflecting `NETWORK_SELECTION_ENABLE`
+throws `NoSuchFieldException`; connectivity remained unchanged. This verifies
+the target API names, not saved-source switching. Transition behavior still
+requires effective-state readback.
+
+Treat a saved-source transition as admissible only when each target-build
+member used by its exact baseline predicate is present and the final readback
+still matches. Distinguish a wrong reflective name from a field that is truly
+unavailable. Do not substitute a guessed numeric constant, accept a partial
+predicate, or treat BLE as evidence that the transition works. Use an attended,
+user-visible, or separately authorized management route when that proof is
+unavailable.
+
 ## Outbound Remote Operations
 
 Use `quest-termux-lab` for public-safe remote-operations schemas, the

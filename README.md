@@ -49,7 +49,15 @@ installed provenance commit rather than floating `main`. See
   runtime ownership, including the bounded loopback WiFi ADB case after normal
   user authorization, the tested infrastructure-network requirement for
   modern TLS Wireless Debugging, and the visible helper restart case for a
-  stopped Termux fleet agent.
+  stopped Termux fleet agent. A live shell lease does not itself prove a
+  saved-source Wi-Fi transition, and a reflective lookup failure must first be
+  checked against the target framework's actual field names.
+- A focused [APK-to-shell capability playbook](docs/apk-shell-capability-playbook.md)
+  covering Android shell identity and attribution, tested Binder/TCP/Unix-socket
+  boundaries, control versus FD bulk paths, lifecycle, and evidence limits.
+- A [collaborator handoff](docs/offline-hotspot-shell-ble-handoff.md) for the
+  tested offline Windows hotspot, on-headset TLS startup, and retained-shell
+  Bluetooth control, with pinned source locations and reproduction guidance.
 - Cross-package XR questionnaire panel handoff guidance for validating a
   foreground XR app launching a reusable 2D panel app and returning to the same
   XR app, with a caller-owned `content://` result URI for answers and no ADB,

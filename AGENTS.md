@@ -51,6 +51,19 @@ locator files remain untracked local metadata and grant no execution authority.
 - Keep state-changing operations distinct from read-only inspection, and
   require effective headset readback before calling a dispatched mutation
   confirmed.
+- Treat an ADB `uid=2000(shell)` lease as transport, not proof that a saved-source
+  Wi-Fi transition is supported. Verify reflective member names against the
+  target framework before classifying a lookup failure as missing authority. In
+  AOSP Android 14, `NETWORK_SELECTION_ENABLED` is the enabled-status field,
+  `DISABLED_NONE` is the no-disable-reason field, and
+  `NETWORK_SELECTION_ENABLE` is a diagnostic label rather than a field. Require
+  target readback before claiming that a transition works.
+- For APK-to-shell work, use
+  `docs/apk-shell-capability-playbook.md`. Keep Windows administrator, Android
+  shell, and Android root identities separate; diagnose attribution, transport,
+  API authority, effect, and cleanup as distinct layers.
+  For the tested offline-hotspot and BLE composition and pinned source map, use
+  `docs/offline-hotspot-shell-ble-handoff.md`.
 - Treat Quest reboot as an attended recovery boundary. ADB reconnect and
   Android boot completion prove transport/OS state only; require the physical
   power-button/wearer gate, cleared sensor-lock/Guardian state, valid advancing
