@@ -415,9 +415,10 @@ Merge status and source ancestry were checked against GitHub and each remote
 `main`. The original candidate checks and retained device results remain
 separate from merge acceptance and any subsequent main-branch checks.
 
-Fresh required Static admission checks passed for the exact Quest and Hostess
-candidates before ordinary merge commits were made. All three Termux candidate
-jobs passed. The Quest supplementary formatting failure described above was
+Fresh Static admission checks passed for the exact Quest and Hostess candidates
+before ordinary merge commits were made; Quest required this check through its
+branch rules. All three Termux candidate jobs passed. The Quest supplementary
+formatting failure described above was
 retained; it was not a required merge check, and the failing files are unchanged
 from its base. No force push or administrator merge bypass was used.
 
