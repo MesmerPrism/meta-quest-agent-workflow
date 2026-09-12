@@ -44,9 +44,9 @@ that a later `main` contains exactly the same implementation.
 | Repository / revision | Start here | Purpose |
 | --- | --- | --- |
 | `MesmerPrism/meta-quest-agent-workflow` | This document; [APK-to-shell playbook](apk-shell-capability-playbook.md); [Termux sidecars](termux-linux-sidecars.md) | Reusable operational procedure, evidence, and limits; canonical `meta-quest-workflow` skill |
-| `MesmerPrism/rusty-hostess` at `1467db7d3372ef1f6b08bd98727ee84155ddadbb` | [Windows provider](https://github.com/MesmerPrism/rusty-hostess/tree/1467db7d3372ef1f6b08bd98727ee84155ddadbb/tools/connectivity_probe/b11_wifi_direct_legacy_go) | Windows autonomous Wi-Fi Direct group owner, local nonce listener, isolation observations, Status/Stop and cleanup |
-| `MesmerPrism/rusty-quest` at `e24d761438606d6a405d0aca5a7993387532f32e` | [Shell/APK diagnostic](https://github.com/MesmerPrism/rusty-quest/tree/e24d761438606d6a405d0aca5a7993387532f32e/tools/diagnostics/quest-shell-capabilities); [offline handoff](https://github.com/MesmerPrism/rusty-quest/tree/e24d761438606d6a405d0aca5a7993387532f32e/tools/diagnostics/quest-offline-hotspot-handoff) | Android shell attribution, APK/Binder/FD/BLE code, Wi-Fi radio commands, temporary-network handoff and guardians |
-| `MesmerPrism/quest-termux-lab` at `3fca97ad5e2ba6309fec2067d085a7b01b3fb6be` | [Recovery helper](https://github.com/MesmerPrism/quest-termux-lab/tree/3fca97ad5e2ba6309fec2067d085a7b01b3fb6be/examples/wireless-adb-recovery-helper); [results](https://github.com/MesmerPrism/quest-termux-lab/blob/3fca97ad5e2ba6309fec2067d085a7b01b3fb6be/docs/QUEST_RESULTS_PUBLIC.md) | On-headset ADB client, Android NSD discovery, visible recovery/pairing flow, topology probes, and lab results |
+| `MesmerPrism/rusty-hostess` at `208e33a84d9c0ff2ec6caf8be9e87263e6dd9b19` | [Windows provider](https://github.com/MesmerPrism/rusty-hostess/tree/208e33a84d9c0ff2ec6caf8be9e87263e6dd9b19/tools/connectivity_probe/b11_wifi_direct_legacy_go) | Windows autonomous Wi-Fi Direct group owner, local nonce listener, isolation observations, Status/Stop and cleanup |
+| `MesmerPrism/rusty-quest` at `03b5f2a46c89ff9ba3fc38b429fc620e7ba4a2bd` | [Shell/APK diagnostic](https://github.com/MesmerPrism/rusty-quest/tree/03b5f2a46c89ff9ba3fc38b429fc620e7ba4a2bd/tools/diagnostics/quest-shell-capabilities); [offline handoff](https://github.com/MesmerPrism/rusty-quest/tree/03b5f2a46c89ff9ba3fc38b429fc620e7ba4a2bd/tools/diagnostics/quest-offline-hotspot-handoff) | Android shell attribution, APK/Binder/FD/BLE code, Wi-Fi radio commands, temporary-network handoff and guardians |
+| `MesmerPrism/quest-termux-lab` at `3701e821bfe8e7b7e4759904cf5b77d079df1075` | [Recovery helper](https://github.com/MesmerPrism/quest-termux-lab/tree/3701e821bfe8e7b7e4759904cf5b77d079df1075/examples/wireless-adb-recovery-helper); [results](https://github.com/MesmerPrism/quest-termux-lab/blob/3701e821bfe8e7b7e4759904cf5b77d079df1075/docs/QUEST_RESULTS_PUBLIC.md) | On-headset ADB client, Android NSD discovery, visible recovery/pairing flow, topology probes, and lab results |
 
 Use `git clone` for the selected owner and `git checkout <full revision>` to
 inspect this snapshot. Build outputs, signing keys, pairing records, network
@@ -121,7 +121,7 @@ is not an exhaustive network-isolation or firewall certification.
 The Windows provider's `Program.cs` contains the advertisement, request
 validation, status/control loop, lifecycle and cleanup. `Invoke-Elevated.ps1`
 contains the hash checks and temporary firewall-rule wrapper. Read the
-provider's [focused guide](https://github.com/MesmerPrism/rusty-hostess/blob/1467db7d3372ef1f6b08bd98727ee84155ddadbb/docs/WINDOWS_LOCAL_ONLY_WIFI_DIRECT_GO.md)
+provider's [focused guide](https://github.com/MesmerPrism/rusty-hostess/blob/208e33a84d9c0ff2ec6caf8be9e87263e6dd9b19/docs/WINDOWS_LOCAL_ONLY_WIFI_DIRECT_GO.md)
 for the current request schema and the standard-user Status
 and Stop commands; do not substitute Windows Mobile Hotspot/ICS commands or
 invent request fields from this summary.
@@ -379,8 +379,11 @@ diagnostics intentionally do not answer those questions by assumption.
 
 ## Publication and validation status
 
-The source links above refer to published development branches with draft pull
-requests, not merged releases. The Windows snapshot passed its Release build
+The three implementation pull requests are merged into their repositories'
+`main` branches. The source links above pin those observed merge commits;
+their diagnostic runtime files match the published candidates. Merging does
+not turn these lab diagnostics into a released product feature or add new
+device evidence. The Windows snapshot passed its Release build
 and 17 production-loop self-tests. The Termux snapshot passed its public
 boundary check, compilation/parsing checks, and 16 recovery tests. The Quest
 snapshot passed both focused source suites, its pure-Java BLE protocol test,
@@ -399,3 +402,24 @@ summarize their findings and limitations without publishing headset identifiers,
 network credentials, ADB key material or captured device output. A collaborator
 can reproduce the source and tests, but should not mistake this sanitized
 handoff for possession of the original raw evidence bundle.
+
+## Merged implementation revisions
+
+| Component | Merged pull request | Commit on main |
+| --- | --- | --- |
+| MesmerPrism/rusty-hostess | [PR #33](https://github.com/MesmerPrism/rusty-hostess/pull/33) | `208e33a84d9c0ff2ec6caf8be9e87263e6dd9b19` |
+| MesmerPrism/rusty-quest | [PR #80](https://github.com/MesmerPrism/rusty-quest/pull/80) | `03b5f2a46c89ff9ba3fc38b429fc620e7ba4a2bd` |
+| MesmerPrism/quest-termux-lab | [PR #8](https://github.com/MesmerPrism/quest-termux-lab/pull/8) | `3701e821bfe8e7b7e4759904cf5b77d079df1075` |
+
+Merge status and source ancestry were checked against GitHub and each remote
+`main`. The original candidate checks and retained device results remain
+separate from merge acceptance and any subsequent main-branch checks.
+
+Fresh required Static admission checks passed for the exact Quest and Hostess
+candidates before ordinary merge commits were made. All three Termux candidate
+jobs passed. The Quest supplementary formatting failure described above was
+retained; it was not a required merge check, and the failing files are unchanged
+from its base. No force push or administrator merge bypass was used.
+
+The workflow documentation and this handoff are tracked in
+[workflow PR #12](https://github.com/MesmerPrism/meta-quest-agent-workflow/pull/12).
