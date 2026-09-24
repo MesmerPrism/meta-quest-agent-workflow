@@ -275,9 +275,10 @@ project the broader Meta VR CLI or MCP surface through that profile.
 ## Default Local Product Shape
 
 Use File Manager's current inspected-deployment commands and Kiosk routes from
-`docs/rusty-morphospace-default-device-loop.md`. Require exact artifact,
-serial, installed-byte, resolved-launcher, foreground, and owner-state
-readback. Confirm runtime truth through the participating app.
+`docs/rusty-morphospace-default-device-loop.md`. Bind the exact artifact and,
+for device operations, the exact serial. Confirm installed bytes for an install
+claim, resolved launcher and foreground for a launch claim, and the
+participating app's owner-state readback for a runtime claim.
 An installed-byte observe may pass while a Guardian, lock-screen, or Home
 Activity keeps foreground/resumed/process state false; keep that launch
 blocker as a separate claim.
