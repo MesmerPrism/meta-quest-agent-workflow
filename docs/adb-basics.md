@@ -133,6 +133,36 @@ adb -s <serial> exec-out run-as <package> cat files/<name>.json > <out-dir>\<nam
 `run-as` works only for debuggable apps whose package data is accessible to
 that user. Failure is normal for release builds.
 
+## Retain Mutable State Before Reset
+
+A `files`/`shared_prefs` archive covers only those directories. Resolve the
+selected application's storage contract before a data clear, uninstall, or
+identity reset: identity, enrollment and replay/cleanup journals may live in
+`no_backup`, databases or other owner-declared storage. Android's
+[`getNoBackupFilesDir()`](https://developer.android.com/reference/android/content/Context#getNoBackupFilesDir())
+excludes its files from automatic remote backup; that is not evidence that the
+files are disposable or that an ordinary backup retained them.
+
+Use the application's typed export/archive operation when available. A
+serial-scoped `run-as` fallback is limited to an accessible debuggable package;
+retain the owner-selected mutable paths, directory inventory, archive size and
+digest, command exit/status and stderr privately. Record absent or inaccessible
+paths explicitly. Verify the required identity/journal entries in the archive
+before describing the declared coverage as retained. Follow
+[Artifact And Evidence Discipline](artifact-and-evidence-discipline.md#mutable-app-state).
+
+Exclude immutable media only when its exact content identity and independent
+retention/reconstruction route are already bound. Do not recopy it for every
+mutable-state snapshot. A live file copy is not an atomic or restorable snapshot:
+use the owner's consistency procedure where supported, otherwise state that
+limitation. Do not force-stop or reset merely to improve archive consistency.
+
+Use existing authorization, including explicit standing delegation, for the
+selected archive/reset operation; ask only for missing scope. Archiving grants
+no reset, replay or restore authority. Restoring old identity or replay data
+requires the owner's compatibility and identity rules; a retained journal does
+not prove its recorded cleanup is terminal.
+
 ## Port Forwarding
 
 Host to Quest service:
