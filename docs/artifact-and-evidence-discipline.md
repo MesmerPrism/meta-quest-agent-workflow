@@ -36,6 +36,16 @@ Do not commit:
 - generated diagnostic JSON from a private device
 - zip bundles
 
+## Mutable App State
+
+For [pre-reset archives](adb-basics.md#retain-mutable-state-before-reset), bind the
+exact package/user and installed artifact, observation interval, selected paths,
+missing/inaccessible paths, archive byte count/digest and verified entry inventory.
+Label a live copy as non-atomic unless an owner consistency receipt proves more.
+Keep identity, enrollment, replay data and private paths out of public summaries.
+Record excluded immutable content by its retained digest/reference. An archive
+is evidence retention; restoration and terminal cleanup remain owner claims.
+
 ## PowerShell Runner Safety
 
 PowerShell parameter and variable names are case-insensitive. Do not create a

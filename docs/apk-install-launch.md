@@ -85,6 +85,15 @@ adb -s <serial> shell am start -n <package>/<activity>
 Treat `force-stop` as an app lifecycle operation. It may change immersive
 state, background services, and any broker or companion surfaces.
 
+## Data Reset Boundary
+
+Before an authorized data clear, uninstall or identity reset, retain the
+owner-declared mutable state using [the archive procedure](adb-basics.md#retain-mutable-state-before-reset).
+Cold-process force-stop, data reset and reinstall are distinct operations.
+Retain unresolved owner receipts; reset completion does not prove camera,
+renderer, GPU or session cleanup. Use the selected owner's reset route and
+fresh effective-state readback within the existing authorization.
+
 ## Tasks, Processes, And Launcher Handoffs
 
 Leaving an app normally stops its Activity and backgrounds its task. Android
