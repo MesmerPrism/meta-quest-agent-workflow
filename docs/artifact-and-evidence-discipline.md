@@ -63,6 +63,30 @@ stdout, stderr, and exit code through the repository-owned runner or an
 equivalent bounded capture helper. Do not let PowerShell's
 `NativeCommandError` wrapper replace the command's own report.
 
+## Adapting A Helper For The Next Caller
+
+For a changed launcher, collector or archive helper, bind its inputs and output
+claims to the exact current invocation or installed-owner receipt. Derive
+create-new logs, probes and receipts from that identity instead of replacing
+ordinal names in copied scripts. Archive current installed state; a future APK
+is not an archive prerequisite. Preserve the prior run and its unresolved state.
+
+Exercise the actual next caller shape in a small focused case before selecting
+the changed helper: include its real argument form, inherited environment and
+resource boundary, producer stdout/stderr, consumer parsing and output claims.
+A quoted absolute `-File` fixture alone misses an unquoted relative caller.
+Native or `Console.Error` output can bypass in-process PowerShell redirection;
+verify the owning runner's actual host-stream capture, not a matching log label.
+Use the existing owner runner and resource contract; this pattern creates no
+new executor, universal suite or APK gate.
+
+Report prepared inputs, focused fixture proof, actual invocation, installed
+source and device result separately. A helper labelled ready is not qualification.
+Reuse unchanged hash-bound evidence; repeat only the affected caller case when
+its arguments, environment, source or output contract changes. Record missed
+process phases honestly; neither a later receipt nor a synthetic process fixture
+fills a missing live observation or proves exhaustive capture.
+
 ## Minimum Run Manifest
 
 Record at least:
