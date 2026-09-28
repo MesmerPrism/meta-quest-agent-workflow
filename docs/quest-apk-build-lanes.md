@@ -108,6 +108,11 @@ Candidate evidence does not prove that an empty-cache rebuild is fast. Warm
 evidence does not prove that a candidate is reproducible. Report them
 separately.
 
+When adapting iteration helpers, follow
+[Next Caller Evidence](artifact-and-evidence-discipline.md#adapting-a-helper-for-the-next-caller):
+keep invocation-owned evidence separate from reusable intermediates and qualify
+the changed caller rather than copying a previous run's readiness label.
+
 ## Timing Evidence
 
 Record wall time for the whole build and owner-defined phases such as native
