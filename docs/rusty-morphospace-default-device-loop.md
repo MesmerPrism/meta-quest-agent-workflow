@@ -125,6 +125,22 @@ request. Use Fleet's current typed registry and bind:
 - the effect-owner request and receipt;
 - terminal cleanup or reconciliation for each target.
 
+Use the app's existing prerequisites, build/run profile and supported receipts.
+Before a new launch, check required manifest declarations, effective permission
+grants and applicable app-op facts against the exact installed APK and target.
+Resolve missing requirements only through an authorized app/platform operation
+or recorded provider gap with fresh readback. In an already launched diagnostic
+run, perform this check before bootstrap or media work and label it post-launch.
+
+Scene construction and scene/OpenXR readiness remain app-owned. Permission
+grants, Android focus and process liveness do not establish those facts. Check
+for protected system tutorial or setup gates before continued runtime work;
+a provider's pending launch is not confirmed launch or app readiness. Required
+protected-system interaction belongs to the wearer and must not be dismissed
+or automated through an app or shell workaround. After wearer completion,
+require fresh typed launch confirmation and app-owned readiness readback before
+expensive runtime validation.
+
 ## 4. Use Kiosk As The Launch Front Door
 
 When the app participates in the Kiosk catalog or foreground-control workflow,
