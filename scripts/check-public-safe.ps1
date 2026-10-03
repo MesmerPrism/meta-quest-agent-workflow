@@ -1,5 +1,5 @@
 param(
-    [string]$Root = "."
+    [string]$Root = (Split-Path -Parent $PSScriptRoot)
 )
 
 $ErrorActionPreference = "Stop"
@@ -38,7 +38,36 @@ $warnAllowlist = @{
     )
 }
 
-$files = Get-ChildItem -LiteralPath $resolvedRoot -Recurse -File -Force |
+$inventory = if (Test-Path -LiteralPath (Join-Path $resolvedRoot '.git')) {
+    # Check prospective public files, including untracked additions and force-tracked
+    # ignored paths. Private ignored run evidence is not a publication input.
+    $git = @(Get-Command git -CommandType Application -ErrorAction Stop)[0].Source
+    $start = [Diagnostics.ProcessStartInfo]::new($git)
+    $start.UseShellExecute = $false
+    $start.RedirectStandardOutput = $true
+    $start.RedirectStandardError = $true
+    foreach ($argument in @('-C', $resolvedRoot, 'ls-files', '-z', '--cached', '--others', '--exclude-standard')) {
+        $start.ArgumentList.Add($argument)
+    }
+    $process = [Diagnostics.Process]::Start($start)
+    try {
+        $names = $process.StandardOutput.ReadToEnd()
+        $errorText = $process.StandardError.ReadToEnd()
+        $process.WaitForExit()
+        if ($process.ExitCode -ne 0) { throw "Cannot inventory public files: $errorText" }
+    } finally { $process.Dispose() }
+    $seen = [Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+    foreach ($name in $names.Split([char]0, [StringSplitOptions]::RemoveEmptyEntries)) {
+        if ($seen.Add($name)) {
+            $path = Join-Path $resolvedRoot $name
+            if (Test-Path -LiteralPath $path -PathType Leaf) { Get-Item -LiteralPath $path -Force }
+        }
+    }
+} else {
+    # Exported source archives remain usable without Git metadata.
+    Get-ChildItem -LiteralPath $resolvedRoot -Recurse -File -Force
+}
+$files = $inventory |
     Where-Object {
         $_.FullName -notmatch "[\\/]\.git(?:[\\/]|$)" -and
         $_.FullName -notmatch "[\\/]artifacts[\\/]" -and
@@ -51,7 +80,7 @@ $warnings = New-Object System.Collections.Generic.List[object]
 foreach ($file in $files) {
     $text = ""
     try {
-        $text = Get-Content -Raw -LiteralPath $file.FullName -ErrorAction Stop
+        $text = (Get-Content -Raw -LiteralPath $file.FullName -ErrorAction Stop) ?? ''
     }
     catch {
         continue
@@ -92,7 +121,7 @@ if ($failures.Count -gt 0) {
 }
 
 $termuxSidecarPath = Join-Path $resolvedRoot "docs\termux-linux-sidecars.md"
-$termuxSidecar = Get-Content -Raw -LiteralPath $termuxSidecarPath
+$termuxSidecar = (Get-Content -Raw -LiteralPath $termuxSidecarPath) ?? ''
 foreach ($requiredBoundary in @(
     "classic TCP ADB lab route",
     "current dynamically assigned TLS connect",
@@ -112,13 +141,14 @@ if ($termuxSidecar.Contains(
     exit 1
 }
 
-$markdownFiles = Get-ChildItem -LiteralPath $resolvedRoot -Recurse -File -Filter "*.md" |
+$markdownFiles = $inventory |
     Where-Object {
+        $_.Extension -ieq '.md' -and
         $_.FullName -notmatch "[\\/]\.git(?:[\\/]|$)" -and
         $_.FullName -notmatch "[\\/]artifacts[\\/]"
     }
 foreach ($markdownFile in $markdownFiles) {
-    $markdownText = Get-Content -Raw -LiteralPath $markdownFile.FullName
+    $markdownText = (Get-Content -Raw -LiteralPath $markdownFile.FullName) ?? ''
     if (
         $markdownFile.FullName -ine $termuxSidecarPath -and
         $markdownText.Contains("127.0.0.1:5555", [StringComparison]::Ordinal)
