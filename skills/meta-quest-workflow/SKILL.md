@@ -423,3 +423,8 @@ captures, or publishing device-derived/private artifacts.
 When durable device, capture, evidence, or repo-routing rules change,
 synchronize this skill, the repo `AGENTS.md`, README, and nearest focused
 playbook. Keep long recipes in those playbooks rather than expanding this file.
+
+For BLE/WebSocket app-control qualification, use the canonical playbook
+`docs/broker-style-localhost-probes.md#ble-and-websocket-control-carriers`.
+It routes public session/credential handling, causal receipt joins and bounded
+transport cleanup to the Quest adapter and Manifold authority contracts.

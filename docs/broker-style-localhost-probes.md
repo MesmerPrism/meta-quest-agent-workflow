@@ -141,3 +141,25 @@ app/package foreground before and after if relevant
 clock/timebase response when available
 logcat window around the command
 ```
+
+## BLE and WebSocket control carriers
+
+A BLE-to-loopback bridge carries the selected Hub protocol; it does not grant
+controller authority or turn a browser into a topology/group member. Before
+qualifying a carrier, read the current
+[Rusty Quest Hub adapter contract](https://github.com/MesmerPrism/rusty-quest/blob/main/apps/manifold-broker-android/README.md#carrier-receipt-and-deadline-discipline)
+and [Manifold Hub authority](https://github.com/MesmerPrism/rusty-manifold/blob/main/docs/CONNECTION_HUB_AUTHORITY.md#interpreting-adapter-receipts).
+Use actual producer-shaped fixtures: example vectors can lag receipt status or
+sequence behavior. Distinguish the public typed session receipt from an opaque
+authentication cookie; never log the latter. Join request/listener/epoch and
+current projection before interpreting an outcome. A denied request may keep
+its sequence, and a transport acknowledgement is not provider completion.
+
+Use one absolute transport budget through connect, read, write and reserved
+disconnect, distinct from the owner's session/lease expiry. In a bounded
+45-second diagnostic profile, 42 seconds of actions plus 3 seconds of cleanup
+does not authorize a new session or renew authority. A helper's 900-second
+foreground scope likewise does not extend the selected debug diagnostic
+policy's 60-second controller or 15-second session expiry. Preserve uncertainty and cleanup failures; do not retry an
+uncertain effect. Host fixtures and rendered browser checks are separate from
+physical BLE, current session, provider and GPU qualification.
