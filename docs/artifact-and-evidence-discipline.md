@@ -46,6 +46,30 @@ Keep identity, enrollment, replay data and private paths out of public summaries
 Record excluded immutable content by its retained digest/reference. An archive
 is evidence retention; restoration and terminal cleanup remain owner claims.
 
+### Binary Identity And Restore Contracts
+
+Whole native-library equality and serialized restore-contract compatibility are
+different claims. Inspect the exact owner restore predicate and snapshot checks;
+compare their declared schema, product/lock, source and policy inputs. A native
+library or build-validator digest is provenance unless that predicate explicitly
+compares it. Changed loaded-code bytes remain real drift: do not call them
+debug-only, semantically equivalent or safe merely because config bytes match.
+
+If a build succeeds but a stricter wrapper rejects binary equality, preserve
+the failed wrapper, native streams and absent completion as-is. A separately
+reviewed, create-new existing-artifact qualification may bind the actual build,
+signature/body audit, exact source and equal static restore-contract inputs.
+Record changed binaries explicitly; never synthesize wrapper success, repack or
+repeat the build solely to conceal that denial. Qualification must follow the
+owner-supported successor route, not bypass the original gate.
+
+Static contract equality does not prove inaccessible ciphertext/snapshot
+compatibility, current admission/replay validity or physical recovery. Keep
+those claims unavailable until actual owner readback; retain live source, epoch,
+authority and cleanup guards. Any admitted update and cold restore observation
+need separate receipts. Rejected or unknown restore must remain failed/unknown,
+without reset, forgotten grants or a recovery claim from an idle status alone.
+
 ## PowerShell Runner Safety
 
 PowerShell parameter and variable names are case-insensitive. Do not create a
