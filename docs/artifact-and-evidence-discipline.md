@@ -80,6 +80,16 @@ verify the owning runner's actual host-stream capture, not a matching log label.
 Use the existing owner runner and resource contract; this pattern creates no
 new executor, universal suite or APK gate.
 
+For producer/consumer helpers, include a real fresh child process with no
+previously imported helper functions. Authenticate dependencies at the consuming
+boundary; a successful invocation in a populated parent session can hide missing
+imports or scope ordering. Preserve the failed caller and test its successor.
+
+Retain identity timestamps as strings when parsing JSON, then compare normalized
+UTC instants using the capture API's actual precision. Windows process APIs may
+expose different precision for the same birth; capture and recheck with the same
+API rather than relaxing the identity guard to a time tolerance.
+
 Report prepared inputs, focused fixture proof, actual invocation, installed
 source and device result separately. A helper labelled ready is not qualification.
 Reuse unchanged hash-bound evidence; repeat only the affected caller case when

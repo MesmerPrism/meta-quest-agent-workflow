@@ -92,6 +92,20 @@ must belong to the same current run and, when the selected contract defines
 one, epoch. Reject stale or cross-run evidence instead of combining it into a
 stronger claim.
 
+For Own/Peer selection, exercise both symmetric choices and each mixed choice
+when the feature promises them. A same-camera-feed claim joins the producer's
+actual source and stream identity across consumers, beyond matching selector
+labels. Repeated switching and simultaneous source blending are separate tests;
+blend acceptance needs actual adopted controls and pixel evidence through the
+selected processing stack. Preserve a failed blend diagnostic while testing an
+independently supported stability path.
+
+An authenticated Bluetooth role hint or WebSocket command acknowledgement does
+not establish a formed Wi-Fi group or rendered policy. Consume current app-owned
+group, boot, role and address observations and bind callbacks to the current
+connection. A late retired connection cannot publish live readiness. Report
+each headset's applied outcome independently when pair control is not atomic.
+
 Preserve a separate owner-issued receipt for every selected effect. A portable
 workflow wrapper may hash-bind those receipts and state sanitized limitations;
 it must not manufacture, augment, or relabel a promotion receipt.

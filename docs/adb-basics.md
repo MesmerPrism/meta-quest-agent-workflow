@@ -44,6 +44,18 @@ can compete for the same USB interfaces. Use a separate server port only when
 it owns a deliberately isolated transport; use a VM or another host when USB
 ownership must be truly separate.
 
+USB and Wi-Fi selectors can refer to the same headset. Bind the chosen selector
+to its actual canonical serial and boot identity before effects, and retain
+that transport in the run inputs. Moving administration to USB can preserve the
+media network, but it does not silently migrate an already reviewed Wi-Fi run.
+
+For an authorized awake watchdog, preserve the user's polling cadence and end
+condition. Supervise only the task-owned worker, identified by executable,
+arguments and birth observation; refresh a bounded hold before it expires.
+During topology changes, pause that worker without releasing its device hold,
+then resume after the intended transport/network is observed and a healthy
+heartbeat arrives. Awake/display readback does not prove camera or XR readiness.
+
 Display basics:
 
 ```powershell
