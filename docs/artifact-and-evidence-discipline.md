@@ -135,6 +135,29 @@ its arguments, environment, source or output contract changes. Record missed
 process phases honestly; neither a later receipt nor a synthetic process fixture
 fills a missing live observation or proves exhaustive capture.
 
+## Short Admission Windows
+
+A one-shot device admission can expire before the dispatched action even when
+the helper remains alive. Keep that dispatch window separate from helper
+lifetime, controller/session authority expiry, and cleanup reserve. Stage
+unchanged static verification before requesting admission. Start a conservative
+host monotonic timer before the admission request is sent, including its read
+latency; check the bound after all live guards, immediately before dispatch.
+
+Count the complete guard call path, including probes triggered by other probes.
+If the owner route supports grouping, use one nonrecursive fresh observation
+group with source, transport and canonical identity brackets. Retain every
+required artifact, process, incarnation, permission and admission check; read
+final effect-owner posture after the other facts. Do not reuse the group across
+effects or extend an expired admission to make preparation fit.
+
+Exercise the production guard path with retained raw facts and separately
+labelled modeled time: admission-read latency, drift during the final bracket,
+late posture changes, and deadline denial must prevent dispatch. Preserve
+individual command outcomes and closed failure labels. A shorter modeled call
+path is not measured speed or device readiness; record actual elapsed time and
+effective readback before making either claim.
+
 ## Minimum Run Manifest
 
 Record at least:
