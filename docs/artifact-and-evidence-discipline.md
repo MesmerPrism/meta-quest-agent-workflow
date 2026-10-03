@@ -85,6 +85,20 @@ previously imported helper functions. Authenticate dependencies at the consuming
 boundary; a successful invocation in a populated parent session can hide missing
 imports or scope ordering. Preserve the failed caller and test its successor.
 
+When adapting a command receipt, use that command's actual producer shape.
+Install and stop responses from the same CLI may place success and mutation
+fields differently. Exercise retained raw output or the actual source-owned
+producer through the parser; handwritten JSON alone can miss this boundary.
+For text projections, retain observed line endings and test the affected parser
+against those bytes. Reuse existing evidence when its producer is unchanged;
+collecting a fixture does not justify another installation or build.
+
+If parsing fails after a mutation, preserve the native completion and reconcile
+the exact target's current state before continuing. A confirmed installed body
+can support a continuation that skips that installation; an unknown result
+cannot. Give the continuation a new output namespace and reject dispatch of any
+already-confirmed action. Keep the original parser failure as failed evidence.
+
 Retain identity timestamps as strings when parsing JSON, then compare normalized
 UTC instants using the capture API's actual precision. Windows process APIs may
 expose different precision for the same birth; capture and recheck with the same
