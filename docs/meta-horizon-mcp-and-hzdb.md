@@ -159,6 +159,15 @@ No sign-in, device tool, forward or daemon lifecycle effect was exercised, and
 the test server exited. This verifies the documentation lookup route alongside
 startup/schema discovery, while device behavior remains unqualified.
 
+After the user's client restart on 2026-10-05, the active chat exposed the
+same 38 Meta MCP tools. Direct chat calls to `metavr_cli_help`,
+`vr_docs_search` and `vr_docs_get_page` succeeded: search returned three
+official documentation results and retrieval returned a complete 20,331-character
+project-setup page from an exact search result path. This supersedes the
+earlier current-chat namespace limitation and qualifies live help/documentation
+access. These calls exercised no device tools or transport changes; device
+provider health and physical effects remain separate qualifications.
+
 Both the older CLI surface and the current official `capture` group checked
 on 2026-10-05 expose only a still screenshot subcommand. A broad group headline
 mentions screen recordings, but it is not an executable recording contract.
