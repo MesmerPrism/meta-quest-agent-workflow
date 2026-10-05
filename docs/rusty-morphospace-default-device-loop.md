@@ -235,6 +235,30 @@ A Fleet run is not terminal until every target is terminal or explicitly
 reconcilable. A local run is not clean merely because the target Activity left
 the foreground.
 
+For interrupted work, retain the actual invocation, owner receipts and
+artifact/runtime identity joins. A later boot or empty session projection does
+not retrospectively close an unknown operation. Use the installed owner's
+supported cleanup, reconciliation or post-boot quarantine route; identify its
+precise missing evidence or executable gap. Do not synthesize historical
+closure, add later feature prerequisites to an accepted historical trial, or
+build a parallel authority ledger to get around an unavailable consumer.
+
+Standing user authorization may already cover bounded owned cleanup. Check
+the actual owner contract before asking again; a local proposal's approval
+field is not itself a new human authorization requirement. Keep a concise
+current blocker and next supported action alongside immutable history so
+continuation does not mistake an old handoff for current execution state.
+
+Prepare immutable source, artifact and historical joins before a short live
+admission window. Reuse unchanged reviewed inputs while preserving mandatory
+live guards. Retain command-specific typed failures, including partial-effect
+readback, before retrying; a timeout is not evidence that nothing happened.
+
+Before a source candidate or publication, inspect a freshly fetched owner
+branch and compose its current changes. Preserve newer channel identities,
+durable provider state and release protections. A stale clean checkout plus
+passing tests does not establish compatibility with current owner source.
+
 ## Raw Fallback Gate
 
 Use direct ADB only when one of these is true:

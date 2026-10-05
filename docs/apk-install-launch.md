@@ -22,14 +22,22 @@ and ADB authorization already active.
 ## Install
 
 ```powershell
-adb -s <serial> install -r -d -g <path-to.apk>
+adb -s <serial> install -r <path-to.apk>
 ```
 
 Flags:
 
 - `-r`: reinstall over existing package.
-- `-d`: allow version-code downgrade for development builds.
-- `-g`: grant declared runtime permissions that Android allows at install time.
+- Add `-d` only for an explicitly selected development downgrade.
+- Add `-g` only when the selected profile requires its declared runtime grants;
+  otherwise grant only the required permissions separately.
+
+For a preserved update, inspect package identity, channel, version code and
+signer continuity before dispatch. Prefer the owner's existing signed release
+pipeline and exact assets. Do not replace a release with a debug signer,
+uninstall or clear data to work around a signature mismatch. Separately
+installed stable and Labs main/helper pairs need channel-specific inspection
+and provisioning. See [boot and helper qualification](boot-wireless-adb-qualification.md).
 
 If installation succeeds but the app does not appear in Unknown Sources, check
 the manifest launcher activity and app label:
@@ -40,6 +48,9 @@ adb -s <serial> shell cmd package resolve-activity --brief <package>
 ```
 
 An APK can be installed without exposing a normal launcher entrypoint.
+This is expected for a setup helper. Confirm its declared fixed receiver or
+service and owning app's control/status route rather than rejecting the
+artifact or inventing a launcher.
 
 ## Permission Grants
 

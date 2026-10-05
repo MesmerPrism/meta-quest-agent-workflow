@@ -69,6 +69,11 @@ locator files remain untracked local metadata and grant no execution authority.
   power-button/wearer gate, cleared sensor-lock/Guardian state, valid advancing
   Shell vsync, and target-owned requested-rate OpenXR readiness before
   continued XR work.
+- For boot Wireless Debugging and channel updates, use
+  `docs/boot-wireless-adb-qualification.md`. Keep helper preference/request,
+  actual TLS readiness, automatic recovery and XR readiness separate. Preserve
+  measured firmware results separately from suspected causes and untested
+  successors; use the linked owner examples without inventing helper authority.
 - Keep high-rate media out of generic JSON control/status channels.
 - Treat Accessibility foreground monitoring as a privacy-minimized,
   user-enabled diagnostic capability, never HOME interception or kiosk policy.

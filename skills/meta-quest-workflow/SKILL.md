@@ -114,6 +114,8 @@ Read only the playbooks needed for the task:
 18. `docs/meta-horizon-mcp-and-hzdb.md` for Meta VR CLI/MCP or Meta XR Operator
 19. `docs/meta-vr-cli-evidence-profiles.md` for pinned Meta health, bounded
     logcat, screenshot, or XR frame-pacing Perfetto evidence
+20. `docs/boot-wireless-adb-qualification.md` for reboot Wi-Fi ADB requests,
+    protected network trust, stable/Labs updates and maintained owner examples
 
 When this skill is installed without the repo docs, use only the validated
 local or commit-pinned public source returned by the resolver.
@@ -285,6 +287,18 @@ blocker as a separate claim.
 
 ## Quest Reboot Is Attended
 
+For boot Wireless Debugging qualification, use
+`docs/boot-wireless-adb-qualification.md`. It links Kiosk helper/autoboot,
+File Manager deployment and Quest platform implementations. Preference,
+request receipt, current TLS listener, shell connection and automatic recovery
+are distinct claims; protected approval and trust survival remain firmware
+boundaries. A boot request may need a bounded Wi-Fi-ready deferral.
+Start with [Kiosk's maintained examples](https://github.com/MesmerPrism/Rusty-Kiosk/blob/main/examples/README.md)
+and [standalone autoboot usage](https://github.com/MesmerPrism/Rusty-Kiosk/tree/main/examples/quest-autoboot);
+the separately provisioned Kiosk setup helper owns secure-settings requests.
+Use the focused playbook's File Manager and Rusty Quest links for deployment
+and platform adapters rather than treating example boot launch as helper authority.
+
 Assume that a rebooted Quest requires physical interaction before immersive
 automation can resume. Keep the reboot receipt `pending` after ADB reconnects
 and `sys.boot_completed=1`. Ask the wearer to press the physical power button
@@ -320,13 +334,17 @@ adb -s <serial> shell dumpsys window | findstr /i "mCurrentFocus mFocusedApp"
 Install and launch only after confirming the target and package:
 
 ```powershell
-adb -s <serial> install -r -d -g <path-to.apk>
+adb -s <serial> install -r <path-to.apk>
 adb -s <serial> shell am start -W -n <package>/<activity>
 ```
 
 Grant only permissions declared by the APK and required by the selected
 profile. Some permissions require manifest declaration or headset UI approval
 and cannot be made effective with `pm grant`.
+Add downgrade or install-time grant flags only when the selected development
+profile explicitly needs them. Preserve package/channel and signer continuity
+for an update; an intentionally non-launchable setup helper is not a failed
+launcher preflight.
 
 For a bounded log/capture window:
 
@@ -415,10 +433,14 @@ recorded, and report anything that could not be restored.
 
 ## Stop And Ask
 
-Require explicit operator approval before disruptive ADB daemon work, Wi-Fi ADB
-setup/recovery, app uninstall or data clearing, device file deletion, power or
-proximity policy changes, paid Store actions, long shared-device builds or
-captures, or publishing device-derived/private artifacts.
+Confirm that the request or standing session authorization covers disruptive
+ADB daemon work, Wi-Fi ADB setup/recovery, uninstall or data clearing, device
+file deletion, power/proximity changes, paid Store actions, long shared-resource
+builds/captures or publication of device-derived/private artifacts. Ask only
+when material intent is missing or the action expands the authorized scope;
+do not ask again for the same already authorized bounded work. This operator
+authorization never substitutes for a protected wearer approval or account
+holder decision that the platform requires.
 
 When durable device, capture, evidence, or repo-routing rules change,
 synchronize this skill, the repo `AGENTS.md`, README, and nearest focused
