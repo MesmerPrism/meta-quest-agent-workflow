@@ -342,3 +342,10 @@ active repo-routing model for new Rusty Morphospace work.
 ## License
 
 MIT. See `LICENSE`.
+
+Development-device work retains authorized device, app and runtime changes by
+default and reports deltas; it assumes no default setup to restore. Baseline
+reads serve identity, measurement, the requested action or correctness.
+Restoration needs a user request, an explicitly temporary experiment or an
+actual owner requirement with a stated reason. Run-owned worker, recorder,
+port, forward, coordination-resource and temporary-artifact cleanup still applies.

@@ -32,7 +32,9 @@ process that ADB creates. Record host elevation and Android identity separately.
 7. For a mutation, record dispatch and fresh effective-state readback. A return
    value or exit code alone is not confirmation.
 8. Prove timeout, peer death, FD closure, provider-lease release, private-state
-   removal, and restoration or unchanged-state evidence.
+   removal, and final-state evidence. Restore settings only for a user request,
+   an explicitly temporary experiment or an actual owner requirement with a
+   stated reason; retain authorized development-device changes otherwise.
 
 Do not classify `SecurityException`, `NoSuchFieldException`, a null service,
 timeout, or connection failure as missing shell authority until the emitting
@@ -148,8 +150,10 @@ not automatic prerequisites for every bounded diagnostic.
 
 ## Bounded BLE-to-shell effect sequence
 
-For a reversible radio check, keep BLE in the ordinary APK and the exact
-framework/shell effect in the UID-2000 helper:
+For an explicitly temporary off/resume radio experiment, keep BLE in the
+ordinary APK and the exact framework/shell effect in the UID-2000 helper. The
+sequence below measures restoration as part of that experiment; its snapshot
+and guardian are not default prerequisites for unrelated device changes:
 
 1. Bind a fresh run token, deadline, expected app UID/signature, request
    sequence, and keyed request/reply authentication to both ends.

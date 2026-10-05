@@ -52,7 +52,10 @@ changes.
 
 Stopping the helper should stop future reapply actions. Restoring normal
 wear-sensor or proximity behavior is a separate operator action because
-different tests intentionally choose different final states.
+different tests intentionally choose different final states. Retain authorized
+development-device changes by default. Record prior values only if needed for
+the effect or an explicitly temporary/owner-required restoration, not as an
+exhaustive rollback snapshot.
 
 Record:
 
@@ -62,8 +65,9 @@ launch command
 desired proximity/wake policy
 duration
 status endpoint snapshots
-baseline and final dumpsys power/vrpowermanager
-restore action or reason for leaving state unchanged
+relevant power/vrpowermanager readback for the requested effect
+final retained state and deltas
+restore action and reason, only if required
 ```
 
 ## Boundary Language

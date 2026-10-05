@@ -104,8 +104,11 @@ restore normal proximity/power behavior
 ```
 
 Never run "restore normal" automatically at the end of a generic validation
-script unless the run explicitly owns that state. A different operator or
-agent may have intentionally started a long-running watchdog.
+script merely because the run changed that state. Restore only when the user
+requests it, an explicitly temporary experiment requires it, or the actual
+owner contract requires it for a stated reason. Retain the requested final
+policy and report it. Stop only run-owned watchdogs whose requested lifetime
+has ended; another operator may intentionally keep one running.
 
 ## Idempotence
 
