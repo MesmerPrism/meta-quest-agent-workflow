@@ -59,6 +59,27 @@ A black screenshot can mean app lifecycle failure, protected compositor
 content, camera source failure, or capture-route limitation. Pair screenshots
 with logs and app status.
 
+## Native Keyboard Closes When An Overlay Takes Focus
+
+When an overlay takes window or VR focus, or a visible panel's Activity pauses,
+distinguish these transient events from an actual stop before dismissing the
+IME or clearing its
+`EditText`. The production [Launcher Lite controller](https://github.com/MesmerPrism/Rusty-Kiosk/blob/1b0b64a710628c9013366f5c87897ae24bc0d225/launcher-lite/src/main/java/io/github/mesmerprism/rustykiosk/launcher/lite/LitePanelController.java)
+and [Spatial Activity](https://github.com/MesmerPrism/Rusty-Kiosk/blob/1b0b64a710628c9013366f5c87897ae24bc0d225/launcher-lite/src/main/java/io/github/mesmerprism/rustykiosk/launcher/lite/RustyLauncherLiteSpatialActivity.kt)
+show this lifecycle separation: preserve editor/IME state through transient
+window-focus loss, VR pause and Activity pause, revoke pending dispatch while
+paused, and clean up the keyboard on Activity stop, presentation switch or
+controller release. Follow the selected application's lifecycle contract;
+preserving an editor does not authorize a paused app to dispatch a launch.
+
+Separate evidence claims. An IME request marker or semantic focus/pause/stop
+regression can establish the application's request and lifecycle behavior;
+it does not establish that Horizon visibly opened the keyboard or accepted
+wearer input. Validate a normal wearer click, visible keyboard and text entry
+on each claimed presentation. The linked Lite revision passed its semantic
+focus and pause/stop regression; physical keyboard acceptance remained pending.
+A flat Activity render also does not establish immersive compositor appearance.
+
 ## Missing Permission
 
 If logs mention a missing `uses-permission`, add it to the manifest. A runtime
