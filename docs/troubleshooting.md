@@ -61,12 +61,12 @@ with logs and app status.
 
 ## Native Keyboard Closes When An Overlay Takes Focus
 
-Horizon native IME overlays can take window or VR focus from a visible panel;
-the Activity can also pause while that panel remains visible. Distinguish these
-transient events from an actual stop before dismissing the IME or clearing its
+When an overlay takes window or VR focus, or a visible panel's Activity pauses,
+distinguish these transient events from an actual stop before dismissing the
+IME or clearing its
 `EditText`. The production [Launcher Lite controller](https://github.com/MesmerPrism/Rusty-Kiosk/blob/1b0b64a710628c9013366f5c87897ae24bc0d225/launcher-lite/src/main/java/io/github/mesmerprism/rustykiosk/launcher/lite/LitePanelController.java)
 and [Spatial Activity](https://github.com/MesmerPrism/Rusty-Kiosk/blob/1b0b64a710628c9013366f5c87897ae24bc0d225/launcher-lite/src/main/java/io/github/mesmerprism/rustykiosk/launcher/lite/RustyLauncherLiteSpatialActivity.kt)
-show one working composition: preserve editor/IME state through transient
+show this lifecycle separation: preserve editor/IME state through transient
 window-focus loss, VR pause and Activity pause, revoke pending dispatch while
 paused, and clean up the keyboard on Activity stop, presentation switch or
 controller release. Follow the selected application's lifecycle contract;
