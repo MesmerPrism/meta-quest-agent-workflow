@@ -40,6 +40,14 @@ The package integrity and help digest prove the selected distribution and
 advertised interface. They do not prove a connected target, provider health,
 Horizon OS compatibility, or any device-side effect.
 
+An inert recheck on 2026-10-05 found cached package version `1.3.2` and
+executable version `1.3.2.2.2`, but its normalized help was `86425` UTF-8 bytes
+with SHA-256 `acd01fad7529b996e1a8e36bb6758c0439562fa89797df34dbdbfb3df2ded798`.
+That does not match the reviewed pin above. Matching a version string alone
+does not admit that executable to these profiles. Keep this mismatch as a
+provider limitation; review a new profile deliberately rather than replacing
+the accepted digest or claiming the old qualification still applies.
+
 ## Closed Profiles
 
 | Profile | Existing provider recipe | Bound | Required evidence |
@@ -96,7 +104,7 @@ claim class; never substitute it silently for one of the profiles above.
 Primary references:
 
 - [Meta Quest Agentic Tools](https://github.com/meta-quest/agentic-tools)
-- [Generated Meta VR CLI reference](https://github.com/meta-quest/agentic-tools/blob/main/docs/hzdb.md)
+- [Generated Meta VR CLI reference](https://github.com/meta-quest/agentic-tools/blob/main/docs/metavr-cli.md)
 - [Meta XR Operator overview](https://developers.meta.com/horizon/documentation/unity/meta-xr-operator/)
 - [Using Meta XR Operator with Meta Quest](https://developers.meta.com/horizon/documentation/unity/meta-xr-operator/quest/)
 

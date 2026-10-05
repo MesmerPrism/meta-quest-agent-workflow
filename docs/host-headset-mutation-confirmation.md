@@ -37,7 +37,7 @@ Use the narrowest independent source that can prove the effect:
 | App launch mode | App-owned selected target and guard state, plus foreground readback when foreground placement is the claim |
 | Accessibility control | The enabled-service setting contains or omits only the intended service |
 | Wi-Fi ADB request | Effective listener/status readback; prompt launch or request admission alone is pending |
-| Wi-Fi ADB connection | The exact endpoint appears in the refreshed ADB device inventory |
+| Wi-Fi ADB connection | Current listener and refreshed exact endpoint, authenticated shell UID, and canonical device/current boot identity; inventory alone is insufficient |
 | Keep awake | Effective power-policy fields such as `mStayOn` or Quest power-manager autosleep state |
 | CPU/GPU override | Fresh `getprop` values match the requested levels, or are empty after restore |
 | Reboot for continued XR work | ADB reconnect and Android boot completion, then an explicit wearer gate, awake/display-on readback, no sensor-lock/Guardian blocker, valid advancing Shell vsync, and target-owned OpenXR readiness at the requested rate |
@@ -110,10 +110,12 @@ returned success or Meta Shell continued emitting its own VrApi statistics.
 
 Wi-Fi ADB remains an explicit wearer-controlled feature. USB ADB can provision
 the narrow helper once, while the headset app requests Meta's visible Wi-Fi ADB
-permission. Re-request after boot is a preference to show that attended gate;
-it is not proof that the listener is active. The PC should continue to report
-pending until effective status changes, and should offer a separate disable
-operation with readback.
+permission. Re-request after boot is a preference to make the fixed request;
+protected approval may recur. It is not proof that the listener is active.
+Confirm the current TLS endpoint and exact-device shell connection separately,
+and offer a separate disable operation with readback. For bounded Wi-Fi-ready
+scheduling, network trust and signed channel updates, use
+[Boot Wireless ADB Qualification](boot-wireless-adb-qualification.md).
 
 When restoring Quest performance overrides through ADB, some builds reject an
 empty value passed as a separate `setprop` argument. Send the fixed command as

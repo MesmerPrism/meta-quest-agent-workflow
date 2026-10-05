@@ -91,6 +91,11 @@ should not become the default app communication or update channel.
 
 ## Modern TLS Wireless Debugging Topology Gate
 
+For reboot qualification, protected network trust and helper scheduling, use
+[Boot Wireless ADB Qualification](boot-wireless-adb-qualification.md). A
+Termux boot client cannot create the protected network approval or infer a
+shell lease from a saved preference or cached endpoint.
+
 Do not infer Wireless ADB availability from the presence of a local interface
 or an Android NSD callback. A live Quest probe tested two headset-owned
 topologies after disconnecting the ordinary infrastructure Wi-Fi association:

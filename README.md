@@ -86,6 +86,10 @@ installed provenance commit rather than floating `main`. See
 - Host-to-headset mutation receipts that distinguish command dispatch from
   pending wearer/device work and confirmation by effective-state readback,
   including the physical post-reboot sensor-lock gate before XR work resumes.
+- [Boot Wireless ADB qualification](docs/boot-wireless-adb-qualification.md),
+  with maintained Kiosk/helper/autoboot and File Manager examples, Wi-Fi-ready
+  scheduling, protected network trust, measured firmware limits and signed
+  stable/Labs update boundaries.
 - Target-free, short-lived provider capability discovery that describes typed
   owner surfaces without granting execution or exposing invocation details,
   paths, endpoints, targets, credentials, raw arguments, shell access, or MCP
