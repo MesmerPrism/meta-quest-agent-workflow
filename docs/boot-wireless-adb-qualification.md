@@ -58,6 +58,9 @@ NSD endpoint, or a protected approval Activity as an active listener. Keep
 classic TCP ADB on port `5555` separate from modern dynamic-port TLS Wireless
 Debugging. A host `tcpip` command after reboot invalidates the automatic
 device-owned recovery claim for that attempt.
+An empty TLS-port property alone also does not prove absence: qualify the
+actual socket/endpoint and authenticated shell, since a tested Quest TLS route
+could be live without that property populated.
 
 ## Boot And Network Admission
 
@@ -181,6 +184,37 @@ port, advertisement and shell identity rather than using "Wi-Fi ADB" as if
 it named one authorization mechanism. Android documents both the modern
 Wireless Debugging route and USB-initiated `adb tcpip` networking in
 [its ADB Wi-Fi instructions](https://developer.android.com/tools/adb#connect-to-a-device-over-wi-fi).
+
+### Can An Autobooter Reproduce The Classic Host Toggle?
+
+The inspected MQDH 6.5.2 handler sends `adb tcpip` through the selected host
+ADB transport and then connects. Android handles that protocol request inside
+adbd, whose [restart service](https://android.googlesource.com/platform/packages/modules/adb/+/refs/heads/android14-release/daemon/restart_service.cpp)
+writes `service.adb.tcp.port`. The ordinary helper's
+`WRITE_SECURE_SETTINGS` grant neither supplies adbd's process/SELinux identity
+nor grants `MANAGE_DEBUGGING`. The inspected helper setting path requests
+modern TLS; no supported fixed classic switch under its existing grant was
+verified. An OEM-entitled route remains a separate possibility to verify,
+not a capability inherited from boot delivery or a previous connection.
+
+Creating a hotspot, discovering a service or running an ADB client does not
+create a missing listener. The maintained
+[Termux Lab recovery helper](https://github.com/MesmerPrism/quest-termux-lab/tree/3701e821bfe8e7b7e4759904cf5b77d079df1075/examples/wireless-adb-recovery-helper)
+reads state and connects to an existing TLS endpoint; it does not fall back
+to `5555`. Its [published results](https://github.com/MesmerPrism/quest-termux-lab/blob/3701e821bfe8e7b7e4759904cf5b77d079df1075/docs/QUEST_RESULTS_PUBLIC.md)
+separate working local topology from negative TLS startup. Two tested
+Android 14 AP-free timing orderings did not establish an authorized shell;
+this does not rule out every firmware or future entitled mechanism.
+
+Likewise, the [shell/BLE handoff](offline-hotspot-shell-ble-handoff.md) retains
+a UID-2000 process launched through already authorized ADB, with bounded
+lifetime. Surviving link loss is not surviving OS reboot or creating fresh
+shell authority. The current [Rusty Quest shell-capability examples](https://github.com/MesmerPrism/rusty-quest/tree/5f0800b3987e46adc43196ba884d71c12d5178af/tools/diagnostics/quest-shell-capabilities)
+retain that bootstrap/lifetime boundary. Use those owner examples for the behavior they prove. A
+new cold-boot experiment needs a concrete supported actor that starts the
+listener without relying on the listener it is meant to create; no such route
+was verified in these audits. Do not count another client or topology trial
+as evidence that this startup dependency has been resolved.
 
 Primary boundaries:
 
