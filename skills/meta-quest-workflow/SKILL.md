@@ -427,9 +427,22 @@ For each device-facing run, record:
 - readiness, status, logcat, capture, and artifact types;
 - result, uncertainty, and cleanup readback.
 
-Restore only state owned by the run. Stop only the target package/process,
-remove only run-owned forwards/files, restore exact prior values where
-recorded, and report anything that could not be restored.
+On development devices, retain authorized device, app and runtime changes by
+default and report the resulting deltas. There is no assumed default setup to
+restore. Read a baseline only as needed for identity, measurement, the requested
+action or correctness; do not collect exhaustive snapshots just for rollback.
+
+Restore settings only when the user requests it, the experiment explicitly
+makes the change temporary, or an actual owner contract requires restoration
+for a stated reason. Ownership of a mutation alone is not a reason to undo it;
+do not infer a restoration requirement that overrides the user's intended
+final state. When restoration is required, record the relevant prior/desired
+values, confirm the restore effect and report any unresolved state.
+
+Cleanup still applies to run-owned live workers, recorders, forwards, ports,
+coordination leases and temporary artifacts. Stop only those resources covered
+by the task; retain requested app/runtime state and ongoing sessions unless
+their actual completion contract calls for stopping them.
 
 ## Stop And Ask
 

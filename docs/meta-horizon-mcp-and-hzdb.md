@@ -297,5 +297,8 @@ Always verify this against the selected CLI's `device proximity --help` on the
 machine that will run it.
 
 Do not leave a headset in altered proximity or stay-awake state by accident.
-Record the requested duration, final power/proximity readback, and restore
-instructions.
+Record the requested duration and final power/proximity readback. Retain the
+authorized development-device policy by default; record restore instructions
+only for an explicitly temporary experiment, a user request or an actual
+owner requirement with a stated reason. A bounded helper's own expiry/cleanup
+contract remains applicable.

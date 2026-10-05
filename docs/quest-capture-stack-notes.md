@@ -415,8 +415,11 @@ recorder to close and for file size and modification time to stabilize, and
 only then copy and hash it. A stale, reused, or still-growing file is not
 current-run evidence.
 
-Restore temporary recorder settings and `PROJECT_MEDIA` only when the run owns
-those mutations, and verify the restored state separately. Keep historical
+Restore recorder settings and `PROJECT_MEDIA` only when the run owns those
+mutations and restoration was explicitly required by the temporary experiment,
+the user or an actual owner contract. Otherwise retain the authorized settings
+and report deltas. Stop run-owned recorders and verify required cleanup or
+restoration separately. Keep historical
 frame-rate, bitrate, selector, or product-version observations dated; do not
 promote them into a current recorder contract without a fresh exact-version
 run.

@@ -223,12 +223,18 @@ profiles, and executable-resolution records outside public source.
 
 ## 7. Cleanup And Reconcile
 
-Restore only state owned by the run:
+Retain authorized development-device, app and runtime changes by default and
+report final deltas. There is no assumed default setup. Read only the baseline
+needed for identity, measurement, the requested action or correctness.
 
-- stop only the target app or Kiosk action covered by the run;
-- restore exact prior runtime properties and device settings;
-- remove only run-owned forwards and staged files;
-- obtain File Manager, Kiosk, app, and Fleet cleanup readback as applicable;
+- stop run-owned live workers/recorders and release their ports, forwards and
+  coordination resources when their task is complete;
+- retain the requested target app/runtime state unless its actual completion
+  contract calls for stopping it;
+- restore settings only for an explicitly temporary experiment, a user request,
+  or an actual owner requirement with a stated reason; mutation ownership alone
+  does not require restoration;
+- remove run-owned temporary staged files and obtain cleanup readback as needed;
 - preserve partial or failed owner receipts for later reconciliation.
 
 A Fleet run is not terminal until every target is terminal or explicitly

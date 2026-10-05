@@ -138,7 +138,9 @@ OS updates.
 - `confirmed` is impossible without a fresh matching device readback.
 - A wearer prompt can remain pending and later reconcile to confirmed.
 - A mismatch, timeout, or command error never produces false confirmation.
-- Restore operations have their own receipts and confirm the original state.
+- When restoration is requested or explicitly required, its own receipt
+  confirms the specified final state; mutation ownership alone does not require
+  undoing an authorized development-device change.
 - Reboot receipts cannot become XR-ready from ADB reconnect or Android boot
   completion alone; they retain the physical wearer gate and target-owned
   readiness evidence.

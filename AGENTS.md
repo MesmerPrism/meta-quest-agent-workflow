@@ -48,6 +48,13 @@ locator files remain untracked local metadata and grant no execution authority.
 
 - Use placeholders such as `<serial>`, `<package>`, `<activity>`, `<path-to.apk>`,
   and `<out-dir>`.
+- On development devices, retain authorized device/app/runtime changes by
+  default and report deltas. There is no assumed default setup. Read baselines
+  only for identity, measurement, the requested action or correctness. Restore
+  only on user request, for an explicitly temporary experiment, or for an actual
+  owner requirement with a stated reason; mutation ownership alone is not a
+  restoration requirement. Continue cleanup of run-owned live workers,
+  recorders, ports, forwards, coordination resources and temporary artifacts.
 - Keep state-changing operations distinct from read-only inspection, and
   require effective headset readback before calling a dispatched mutation
   confirmed.
