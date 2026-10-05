@@ -185,6 +185,35 @@ it named one authorization mechanism. Android documents both the modern
 Wireless Debugging route and USB-initiated `adb tcpip` networking in
 [its ADB Wi-Fi instructions](https://developer.android.com/tools/adb#connect-to-a-device-over-wi-fi).
 
+### Later Attended Boot Approval Result
+
+A separate attended trial on 2026-10-05 retained the same signed Labs
+`v0.6.6-alpha.10` pair and verified modern TLS before one real reboot. On new
+boot count 57, the device-owned deferred job observed boot at elapsed `17518`
+ms and dispatched at `18545` ms with connected Wi-Fi and outcome `requested`.
+Meta's protected network approval prompt appeared without a second Kiosk
+request, host enable, pairing or host `adb tcpip` action after reboot.
+
+Before approval, saved network trust had again changed from one matching entry
+to zero on the independently verified same BSSID; two host-key entries remained.
+Wireless Debugging was off, no selected-headset TLS endpoint was discovered,
+and the classic TCP property was empty. A socket diagnostic reported a
+permission error, so its output does not prove universal socket absence.
+The wearer accepted the existing boot-generated prompt with **Always allow on
+this network**. Discovery and connection then reached a dynamic modern TLS
+endpoint whose authenticated shell matched canonical headset identity, the
+new boot and `uid=2000(shell)`. Readback showed Wireless Debugging enabled,
+one matching saved network entry, two unchanged host-key entries and no
+protected prompt. The classic TCP property remained empty.
+
+This verifies real reboot, Wi-Fi-ready boot request, attended approval and
+modern network shell in one sequence. It closes the previously untested
+post-boot approval stage without changing boot 56's cancelled trial or its
+failed unattended window. The USB cable remained attached. USB-free startup,
+prompt-free recovery, corrected firmware and XR readiness remain unqualified;
+the reproduced same-network trust loss and qualified parser hypothesis remain
+separate findings.
+
 ### Can An Autobooter Reproduce The Classic Host Toggle?
 
 The inspected MQDH 6.5.2 handler sends `adb tcpip` through the selected host
