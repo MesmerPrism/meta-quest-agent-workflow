@@ -349,3 +349,7 @@ reads serve identity, measurement, the requested action or correctness.
 Restoration needs a user request, an explicitly temporary experiment or an
 actual owner requirement with a stated reason. Run-owned worker, recorder,
 port, forward, coordination-resource and temporary-artifact cleanup still applies.
+
+For changes to device procedure, provider or evidence contracts, use the
+[focused maintainer contracts](docs/maintainer-contracts.md) linked from
+`AGENTS.md`; ordinary tasks select only their relevant playbooks.
