@@ -11,6 +11,7 @@ evidence. Recheck the current device/tool build before treating them as current.
 
 | Task | Meta workflow playbook | Application or protocol owner |
 | --- | --- | --- |
+| Exact conditional provider, reboot, fallback, capture, sidecar and cleanup details | [Device operation contracts](skill-operation-contracts.md) | Selected operation owner retains effective-state and execution authority; read only the applicable section |
 | Resolve repository playbooks from an installed router skill | [Local playbook resolution](local-playbook-resolution.md) | Installed provenance and the exact canonical Meta Quest workflow commit own the documentation identity; the locator grants no runtime authority |
 | Routine build, deploy, launch, validate, and cleanup | [Default device loop](rusty-morphospace-default-device-loop.md) | [QFM inspected deployment](https://github.com/MesmerPrism/QuestIonAble-File-Manager/blob/main/docs/inspected-deployment.md), [Kiosk CLI](https://github.com/MesmerPrism/Rusty-Kiosk/blob/main/docs/CLI.md), [Fleet workflow](https://github.com/MesmerPrism/rusty-fleet/blob/main/docs/WORKFLOW.md) |
 | Fast APK iteration, cache invalidation, candidate assembly, or build timing | [Quest APK build lanes](quest-apk-build-lanes.md) | The work environment owns composition and lane isolation; the app shell or Rusty Quest owns the Android build adapter and final APK inspection |
