@@ -17,9 +17,15 @@ stdout, native completion and denials through the existing
 
 Read Native Heap, Java Heap and Graphics separately. In `dumpsys meminfo -d`,
 the detailed Native Heap PSS column is proportional resident accounting; Heap
-Alloc reports allocator accounting. App Summary Native Heap can use Private Dirty accounting in some output
-formats; use the reported headings and Android version, never substitute it
-for detailed PSS. PSS apportions shared pages, RSS counts resident pages,
+Alloc reports allocator accounting. Retain the displayed summary headers and
+Android version, but check the summary accounting implementation as well:
+[AOSP Debug.MemoryInfo](https://android.googlesource.com/platform/frameworks/base/+/aml_uwb_330810010/core/java/android/os/Debug.java)
+returns native Private Dirty for the Native Heap summary and combines Dalvik
+Private Dirty with ART private memory for Java Heap. A summary displayed under
+a PSS heading therefore need not equal the detailed Native Heap PSS. Use that
+detailed PSS field for a native PSS slope; keep Heap Alloc and summary values
+separate. These AOSP definitions do not identify an unverified Quest firmware
+implementation. PSS apportions shared pages, RSS counts resident pages,
 and USS concerns uniquely owned resident pages; Private Dirty alone is not USS.
 Keep parser labels and table headings with values. A larger allocation counter,
 resident footprint or graphics summary answers a different question.
