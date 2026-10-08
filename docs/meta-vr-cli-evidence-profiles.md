@@ -87,6 +87,70 @@ These metrics are diagnostic evidence. They do not replace app-owned frame and
 decode counters, current OpenXR session state, a wearer-visible oracle, or an
 accepted Hostess/Kiosk/Manifold receipt.
 
+## Conditional Exploration Of Newer CLI Capabilities
+
+An isolated evaluation on 2026-10-08 inspected npm `metavr@1.8.1` and its
+selected Windows native executable `metavr 1.8.0.17.10`. This is contextual
+capability guidance, not adoption into the closed profiles above or a new
+runtime, radio, controller, performance, or recenter qualification.
+
+The evaluated executable was 61,544,696 bytes with SHA-256
+`f00ad6599714f7421616b3014b73fefcc8410e15e3a77605fce72bd576363d80`.
+Its normalized markdown help was 131,017 UTF-8 bytes with SHA-256
+`f3c128d26c8e3fbe03fed39df0ff4828a05cdfdaeb12fbd1a436d74bba9bda4e`;
+normalization also removed a leading BOM. An earlier observation of identical
+executable bytes reported a different help digest. Bind the actual help/schema
+and configuration context as well as the executable: version or binary hash
+alone does not establish the effective interface. The cause of the difference
+was not established. Preserve the accepted 1.3.2 pin and its later mismatch.
+
+Local diagnostics worked with an isolated child configuration and no login,
+`init`, global profile edit, skill installation, or MCP installation. Windows
+configuration discovery also needed child-local `APPDATA` and `LOCALAPPDATA`,
+not only `USERPROFILE`; retain the actual resolved configuration identity.
+The inspected npm postinstall can append PowerShell profile/completion content,
+so package acquisition is distinct from executing that installer.
+
+The selected executable accepted `HZDB_ADB_PATH` pointing to an existing SDK
+ADB and used its CLI backend. This avoided the automatic daemon-management
+behavior encountered with the default backend in that evaluation. This is a
+backend-specific observation, not a guarantee that future invocations cannot
+start a missing server. Existing daemon identity and explicitly selected target
+remain relevant operation evidence; backend selection grants no lifecycle
+permission.
+
+| Capability | Observed limit and conditional use |
+| --- | --- |
+| Local observation and documentation | Device info/battery, bounded logs, fixed read-only shell queries and official-doc search worked. `doctor --json` still emitted human text. Exit zero alone does not establish the requested output or effective target state. |
+| Screenshot | Explicit `--method screencap` produced 3664×1920 PNGs despite requested 1024×1024 dimensions. It created a remote screenshot file, pulled through a host temporary file and saved the requested output. Preserve actual dimensions/artifacts and file cleanup scope; this does not conform to the old no-mutation 1024×1024 profile. Default MetaCam was not evaluated. A file-backed fallback remains an explicit capture source, not raw camera or pose evidence. |
+| Input | Native `input key home --longpress` rejected the option before ADB. Android's built-in `input keyevent --longpress` uses its configured long-press timeout, not an arbitrary physical hold. The wearer reported recenter failure despite a UI reaction. A separately reviewed custom 2500ms experiment returned false on initial DOWN and never reached its hold. Neither result establishes physical Meta Touch system-button parity. |
+| Performance | Help documents that `perf capture --launch` force-stops and launches the app. Omit that effect when observing a retained application state; trace capture/analysis still has its own artifact and terminal cleanup behavior. No live performance qualification was added. |
+| MCP discovery | Inert discovery listed 38 tools; the broad `metavr_run` catchall exposed 154 command paths. This describes the advertised surface and does not admit generic autonomous shell, input, settings, package, transport, or lifecycle execution. |
+
+Process-only telemetry suppression flags and MCP `--no-telemetry` did not
+prevent essential consent lookup and event upload in the actual verbose logs.
+Do not infer network silence or offline execution from those flags. No global
+telemetry or account-consent setting was changed by the evaluation.
+
+For the custom input failure, retained raw ADB stdout contained the worker's
+terminal JSON even though the outer CLI omitted it on failure. There was one
+DOWN attempt returning false, no repeat/UP attempt and no `SecurityException`.
+AOSP distinguishes permission denial by exception from native injection
+failure/timeout returning false. Its built-in initial event uses the same
+virtual keyboard/source/unspecified-display construction; the built-in waits
+for finish whereas the custom worker waited for result. That difference is not
+an evidenced fix. Do not label the boolean false definitive missing permission
+or silently retry with different sources, device IDs, displays, or settings.
+Capture and wearer/app-owned pose evidence remain separate from dispatch.
+
+Primary implementation references for those distinctions:
+
+- [AOSP Android 14 InputShellCommand](https://android.googlesource.com/platform/frameworks/base/+/refs/heads/android14-release/services/core/java/com/android/server/input/InputShellCommand.java)
+- [AOSP Android 14 InputManagerService](https://android.googlesource.com/platform/frameworks/base/+/refs/heads/android14-release/services/core/java/com/android/server/input/InputManagerService.java)
+- [AOSP Android 14 InputDispatcher](https://android.googlesource.com/platform/frameworks/native/+/refs/heads/android14-release/services/inputflinger/dispatcher/InputDispatcher.cpp)
+- [Official Meta VR CLI installation](https://developers.meta.com/vr/essentials/metavr-install/)
+- [Scoped Meta VR CLI npm distribution](https://www.npmjs.com/package/@meta-quest/metavr)
+
 ## Meta XR Operator Boundary
 
 Meta XR Operator is optional app-scoped instrumentation. It is an experimental
