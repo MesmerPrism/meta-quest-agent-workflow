@@ -40,6 +40,7 @@ evidence. Recheck the current device/tool build before treating them as current.
 | Reproduce the offline Windows hotspot, Termux TLS startup, or no-USB BLE shell test | [Collaborator handoff and pinned source map](offline-hotspot-shell-ble-handoff.md) | Hostess owns the Windows provider; Rusty Quest owns shell/APK and network diagnostics; the Termux lab owns its visible recovery helper |
 | Long-run awake/proximity stability and watchdog cleanup | [Long-running watchdogs](long-running-watchdogs.md) | [QFM awake control](https://github.com/MesmerPrism/QuestIonAble-File-Manager/blob/main/docs/quest-awake-control.md) or [Fleet awake control](https://github.com/MesmerPrism/rusty-fleet/blob/main/docs/QUEST_AWAKE_CONTROL.md) when selected |
 | Questionnaire-panel handoff | [XR questionnaire handoff](xr-questionnaire-panel-handoff.md) | The concrete caller/callee app contracts remain authoritative |
+| Memory growth, heap profiling or allocation churn | [Quest memory profiling](quest-memory-profiling.md) | Selected app/build eligibility and runtime workload remain authoritative |
 | Failure triage | [Troubleshooting](troubleshooting.md) | Follow the symptom to the focused playbook and selected owner; do not substitute a generic command |
 
 ## Distribution Rule
