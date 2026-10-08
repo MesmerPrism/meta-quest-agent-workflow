@@ -41,6 +41,7 @@ requirement to load every procedure before ordinary work.
 | Capture, streaming or OpenXR integration | `docs/capture-source-taxonomy.md`; `docs/quest-streaming-and-direct-link-gates.md`; `docs/openxr-tracking-boundary.md` |
 | Evidence, retained state and cleanup | `docs/artifact-and-evidence-discipline.md` |
 | Boot Wireless ADB, protected trust and helper updates | `docs/boot-wireless-adb-qualification.md` |
+| Memory growth or native allocation profiling | `docs/quest-memory-profiling.md` |
 | Meta diagnostic tooling | `docs/meta-vr-cli-evidence-profiles.md` |
 | Store, Accessibility, sidecars or BLE/WebSocket control | Select the corresponding focused playbook in `docs/playbook-index.md` |
 

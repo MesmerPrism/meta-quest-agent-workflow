@@ -143,3 +143,19 @@ Makepad command surface, generated wrapper layout, or crate schema.
 When importing another build system's optimization, reproduce comparable cold
 and warm measurements, inspect the final APK, and implement the result in the
 current Android build owner.
+
+## Diagnose a cold successor before changing the lane
+
+A fresh dependency checkout may force native recompilation even when the
+application edit is small. Separate checkout/materialization, prerequisite
+cache resolution, native compile/link, Android shell, assembly and inspection
+costs before attributing the elapsed time to one subsystem. Keep verified
+download archives and source-owned prerequisite bindings available to the new
+lane; do not weaken cache verification after a missing-cache failure.
+
+Same-path warm builds can reuse intermediates when their effective identities
+remain valid. Record actual compiled units and Android task/cache outcomes;
+a no-change warm measurement does not predict the next real native edit.
+Keep tool, dependency, checkout and cache state with empirical timing claims.
+Use the existing warm/candidate lane contract above instead of introducing a
+second cache framework or making profiling an APK-build prerequisite.
