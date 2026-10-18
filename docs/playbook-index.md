@@ -11,6 +11,11 @@ evidence. Recheck the current device/tool build before treating them as current.
 
 | Task | Meta workflow playbook | Application or protocol owner |
 | --- | --- | --- |
+| Shader/asset hotload and economical developer feedback | [Development feedback loops](quest-development-feedback-loops.md) | Selected Quest app's actual shader/asset ABI and reload contract |
+| Meta XR Operator hands, controllers and original UI effects | [Input automation](meta-xr-operator-input-automation.md) | Target APK layer composition and app-owned action handlers |
+| Guardian, tracking, app functions and other shell capabilities | [Shell capability investigation](quest-shell-capability-investigation.md) | Actual caller and selected firmware service; APK and shell identities stay separate |
+| Compositor/camera source experiments, effects and wearer artifacts | [Compositor lessons](quest-compositor-experiment-lessons.md) | Selected source/processor/output and cleanup owners |
+| Extract reusable APK components and Hostess/Kiosk adapters | [Learning integration](quest-learning-integration.md) | Quest platform modules, Hostess operator/evidence, selected product and core contract owners |
 | Exact conditional provider, reboot, fallback, capture, sidecar and cleanup details | [Device operation contracts](skill-operation-contracts.md) | Selected operation owner retains effective-state and execution authority; read only the applicable section |
 | Resolve repository playbooks from an installed router skill | [Local playbook resolution](local-playbook-resolution.md) | Installed provenance and the exact canonical Meta Quest workflow commit own the documentation identity; the locator grants no runtime authority |
 | Routine build, deploy, launch, validate, and cleanup | [Default device loop](rusty-morphospace-default-device-loop.md) | [QFM inspected deployment](https://github.com/MesmerPrism/QuestIonAble-File-Manager/blob/main/docs/inspected-deployment.md), [Kiosk CLI](https://github.com/MesmerPrism/Rusty-Kiosk/blob/main/docs/CLI.md), [Fleet workflow](https://github.com/MesmerPrism/rusty-fleet/blob/main/docs/WORKFLOW.md) |

@@ -36,13 +36,15 @@ requirement to load every procedure before ordinary work.
 | Operation | Source playbook |
 | --- | --- |
 | Build, deploy, launch, validate | `docs/rusty-morphospace-default-device-loop.md`; APK iteration uses `docs/quest-apk-build-lanes.md` |
+| Shader/asset iteration or hotloading | `docs/quest-development-feedback-loops.md`; the selected Quest app owns its reload contract |
 | Select a typed provider or labeled ADB fallback | `docs/agent-execution-providers.md`; `docs/adb-basics.md` |
 | Confirm mutation, foreground and effective readiness | `docs/host-headset-mutation-confirmation.md`; `docs/quest-signal-patterns.md` |
 | Capture, streaming or OpenXR integration | `docs/capture-source-taxonomy.md`; `docs/quest-streaming-and-direct-link-gates.md`; `docs/openxr-tracking-boundary.md` |
 | Evidence, retained state and cleanup | `docs/artifact-and-evidence-discipline.md` |
 | Boot Wireless ADB, protected trust and helper updates | `docs/boot-wireless-adb-qualification.md` |
 | Memory growth or native allocation profiling | `docs/quest-memory-profiling.md` |
-| Meta diagnostic tooling | `docs/meta-vr-cli-evidence-profiles.md` |
+| Meta diagnostic tooling or simulated hands/controllers | `docs/meta-vr-cli-evidence-profiles.md`; `docs/meta-xr-operator-input-automation.md` |
+| Shell/Guardian investigation, compositor experiments or reusable-module routing | `docs/quest-shell-capability-investigation.md`; `docs/quest-compositor-experiment-lessons.md`; `docs/quest-learning-integration.md` |
 | Store, Accessibility, sidecars or BLE/WebSocket control | Select the corresponding focused playbook in `docs/playbook-index.md` |
 
 ## Default execution and boundaries
