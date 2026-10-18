@@ -7,6 +7,23 @@ instrumentation effect, distinct from read-only memory counters.
 
 ## Establish comparable observations
 
+For repeated Activity/app-scene recreation, count the finished instances as
+well as process memory and compare equivalent warmed states. Verify a requested
+GC actually ran before using surviving Java objects as retention evidence.
+A completed investigation combined retained finished Activities, managed root
+paths, native JNI acquisition stacks and exact current-library disassembly to
+identify a missed JNI local-reference release in a lifecycle path. That is
+stronger evidence than a small PSS slope; it does not establish that the
+platform defect was fixed. Preserve the actual reference root and native
+library/build-ID/module-relative offset attribution, and distinguish app cleanup from SDK/runtime
+ownership. Source and shader reload cannot release an unrelated JNI root.
+
+An inspection command can itself request GC; check its actual implementation
+before describing a series as no-GC. A process-local JNI/JVMTI tracer may also
+change runtime policy beyond its visible table pointers. Record that observer
+effect and retire the exact traced process when complete restoration is not
+established; restoring a function pointer alone is insufficient.
+
 Bracket bounded samples with exact serial, boot identity, PID and process birth.
 A PID change ends that series; do not stitch replacement actors into one slope.
 Keep workload, APK, lifecycle, foreground state and sampling schedule comparable

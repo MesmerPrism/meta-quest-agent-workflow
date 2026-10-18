@@ -22,6 +22,13 @@ installed provenance commit rather than floating `main`. See
 
 ## What Is Included
 
+- Focused learned routes for [shader/asset feedback loops](docs/quest-development-feedback-loops.md),
+  [Meta XR Operator interaction](docs/meta-xr-operator-input-automation.md),
+  [shell/Guardian investigation](docs/quest-shell-capability-investigation.md)
+  and [compositor experiments](docs/quest-compositor-experiment-lessons.md),
+  with an [integration map](docs/quest-learning-integration.md) for Hostess,
+  Quest components and Kiosk/product consumers. Experimental access is kept
+  separate from ordinary app capabilities and distribution eligibility.
 - The canonical Codex-style skill and agent manifest under
   `skills/meta-quest-workflow/`. Downstream installers may add local locator
   metadata, but do not own a competing tracked copy.

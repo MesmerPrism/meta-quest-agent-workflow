@@ -46,6 +46,11 @@ locator files remain untracked local metadata and grant no execution authority.
 
 ## Work from the applicable contract
 
+For learned developer routes, use the playbook index entries for graphics
+feedback loops, Meta XR Operator, shell/Guardian and compositor investigation.
+The integration guide maps reusable Quest components to Hostess adapters and
+Kiosk/product consumers; it does not expand a provider's execution authority.
+
 Use [the playbook index](docs/playbook-index.md) to select the task's procedure.
 For bounded documentation edits, read the relevant playbook and existing checks;
 for device/provider policy changes, also read the affected section of
