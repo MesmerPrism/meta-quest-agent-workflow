@@ -48,6 +48,13 @@ state. A broadcast return code or a cancellation request is not proof of
 execution, reversal or service termination. Reconcile a pending original call
 before another mutation.
 
+For the fixed recenter operation, use the maintained Quest adapter and its
+source-pinned host provider through Hostess or the Kiosk developer utility;
+see [shared shell recenter usage](quest-learning-integration.md#shared-shell-recenter-operation).
+Keep private serial/boot-specific diagnostic wrappers as historical evidence.
+Neither a historical successful command nor a new profile grants current
+device custody or an ordinary APK the shell caller's privilege.
+
 ## Physical and lifecycle tests
 
 Confirm which device the wearer is actually using. Earlier physical negatives

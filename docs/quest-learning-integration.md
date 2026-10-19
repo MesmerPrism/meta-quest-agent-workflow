@@ -37,6 +37,34 @@ Keep high-rate video, poses and GPU data out of generic control/status.
 
 ## Useful extraction slices
 
+### Shared shell recenter operation
+
+Rusty Quest's [shell recenter module](https://github.com/MesmerPrism/rusty-quest/blob/de777c105e400828011d0f8d97256dd6cf15fc2b/docs/SHELL_RECENTER.md)
+and [local host provider](https://github.com/MesmerPrism/rusty-quest/blob/de777c105e400828011d0f8d97256dd6cf15fc2b/docs/SHELL_RECENTER_HOST.md)
+own the fixed VrShell recenter AppFunction implementation. The
+[Hostess integration](https://github.com/MesmerPrism/rusty-hostess/blob/3b2c86b4003a863a0f8516590b8ddf8a922b9c80/docs/SHELL_RECENTER.md)
+projects its typed companion action through the existing catalog, CLI, report
+and operator UI contracts. Kiosk's
+[developer utility](https://github.com/MesmerPrism/Rusty-Kiosk/blob/45412786b1cc414b1ef38beeac7de3ffa4e56141/examples/quest-shell-recenter/README.md)
+consumes the same source-pinned provider. The utility is an explicit operator path; it
+does not add shell permissions or behavior to ordinary Kiosk or Launcher Lite.
+
+The operator supplies the exact current target/route/boot, firmware source
+hashes, helper artifact, clean Quest revision/tree/source ID and operator
+identity in a private profile. Coordinate custody and calibrated-scene effects
+before running a live readiness check or recenter. Readiness performs no
+recenter; use another fresh request for the deliberate operation. Passive
+status/reconcile observes the saved original and never contacts a headset.
+
+The helper syncs the original intent before its single dispatch. An expired
+observer or returned cancellation never permits retry, deletion or process
+killing. Keep the original through its real callback, durable final, complete
+stream EOF, reap and exact owned-stage cleanup. In-process callers likewise
+create a fresh backend, operation and journal for each original. Preserve an
+original error and code, held/unknown cleanup and late callback separately from
+any independently observed pose or wearer-visible effect. Host and neutral
+consumer conformance do not establish an on-headset recenter result.
+
 1. **Developer shader loop:** reuse the existing graphics preparer, current
    optimized ABI/variant comparison, guarded batch transfer and exact revert.
    A Hostess adapter can expose that owner operation and timing/evidence;
