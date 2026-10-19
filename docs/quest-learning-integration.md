@@ -41,10 +41,12 @@ Keep high-rate video, poses and GPU data out of generic control/status.
 
 Rusty Quest's [shell recenter module](https://github.com/MesmerPrism/rusty-quest/blob/de777c105e400828011d0f8d97256dd6cf15fc2b/docs/SHELL_RECENTER.md)
 and [local host provider](https://github.com/MesmerPrism/rusty-quest/blob/de777c105e400828011d0f8d97256dd6cf15fc2b/docs/SHELL_RECENTER_HOST.md)
-own the fixed VrShell recenter AppFunction implementation. Hostess exposes its
-typed companion action through the existing catalog, CLI, report and operator
-UI contracts. Kiosk's `examples/quest-shell-recenter` developer utility consumes
-the same source-pinned provider. The utility is an explicit operator path; it
+own the fixed VrShell recenter AppFunction implementation. The
+[Hostess integration](https://github.com/MesmerPrism/rusty-hostess/blob/3b2c86b4003a863a0f8516590b8ddf8a922b9c80/docs/SHELL_RECENTER.md)
+projects its typed companion action through the existing catalog, CLI, report
+and operator UI contracts. Kiosk's
+[developer utility](https://github.com/MesmerPrism/Rusty-Kiosk/blob/45412786b1cc414b1ef38beeac7de3ffa4e56141/examples/quest-shell-recenter/README.md)
+consumes the same source-pinned provider. The utility is an explicit operator path; it
 does not add shell permissions or behavior to ordinary Kiosk or Launcher Lite.
 
 The operator supplies the exact current target/route/boot, firmware source
