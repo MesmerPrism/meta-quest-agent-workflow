@@ -39,8 +39,8 @@ Keep high-rate video, poses and GPU data out of generic control/status.
 
 ### Shared shell recenter operation
 
-Rusty Quest's [shell recenter module](https://github.com/MesmerPrism/rusty-quest/blob/c3b0ca54fbc613bbf67acc32464ce7497f54f811/docs/SHELL_RECENTER.md)
-and [local host provider](https://github.com/MesmerPrism/rusty-quest/blob/c3b0ca54fbc613bbf67acc32464ce7497f54f811/docs/SHELL_RECENTER_HOST.md)
+Rusty Quest's [shell recenter module](https://github.com/MesmerPrism/rusty-quest/blob/de777c105e400828011d0f8d97256dd6cf15fc2b/docs/SHELL_RECENTER.md)
+and [local host provider](https://github.com/MesmerPrism/rusty-quest/blob/de777c105e400828011d0f8d97256dd6cf15fc2b/docs/SHELL_RECENTER_HOST.md)
 own the fixed VrShell recenter AppFunction implementation. Hostess exposes its
 typed companion action through the existing catalog, CLI, report and operator
 UI contracts. Kiosk's `examples/quest-shell-recenter` developer utility consumes
