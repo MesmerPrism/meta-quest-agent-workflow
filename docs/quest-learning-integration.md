@@ -37,6 +37,32 @@ Keep high-rate video, poses and GPU data out of generic control/status.
 
 ## Useful extraction slices
 
+### Shared shell recenter operation
+
+Rusty Quest's [shell recenter module](https://github.com/MesmerPrism/rusty-quest/blob/c3b0ca54fbc613bbf67acc32464ce7497f54f811/docs/SHELL_RECENTER.md)
+and [local host provider](https://github.com/MesmerPrism/rusty-quest/blob/c3b0ca54fbc613bbf67acc32464ce7497f54f811/docs/SHELL_RECENTER_HOST.md)
+own the fixed VrShell recenter AppFunction implementation. Hostess exposes its
+typed companion action through the existing catalog, CLI, report and operator
+UI contracts. Kiosk's `examples/quest-shell-recenter` developer utility consumes
+the same source-pinned provider. The utility is an explicit operator path; it
+does not add shell permissions or behavior to ordinary Kiosk or Launcher Lite.
+
+The operator supplies the exact current target/route/boot, firmware source
+hashes, helper artifact, clean Quest revision/tree/source ID and operator
+identity in a private profile. Coordinate custody and calibrated-scene effects
+before running a live readiness check or recenter. Readiness performs no
+recenter; use another fresh request for the deliberate operation. Passive
+status/reconcile observes the saved original and never contacts a headset.
+
+The helper syncs the original intent before its single dispatch. An expired
+observer or returned cancellation never permits retry, deletion or process
+killing. Keep the original through its real callback, durable final, complete
+stream EOF, reap and exact owned-stage cleanup. In-process callers likewise
+create a fresh backend, operation and journal for each original. Preserve an
+original error and code, held/unknown cleanup and late callback separately from
+any independently observed pose or wearer-visible effect. Host and neutral
+consumer conformance do not establish an on-headset recenter result.
+
 1. **Developer shader loop:** reuse the existing graphics preparer, current
    optimized ABI/variant comparison, guarded batch transfer and exact revert.
    A Hostess adapter can expose that owner operation and timing/evidence;
