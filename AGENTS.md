@@ -46,8 +46,11 @@ locator files remain untracked local metadata and grant no execution authority.
 
 ## Work from the applicable contract
 
-For learned developer routes, use the playbook index entries for graphics
-feedback loops, Meta XR Operator, shell/Guardian and compositor investigation.
+For Quest hotload/reload/live-edit or avoid-rebuild questions, including
+Java/Kotlin/JNI/Rust, read [development feedback](docs/quest-development-feedback-loops.md)
+and relevant capability evidence before the selected app's loader/ABI/lifetime
+contract. Use the playbook index for Meta XR Operator, shell/Guardian and
+compositor investigation.
 The integration guide maps reusable Quest components to Hostess adapters and
 Kiosk/product consumers; it does not expand a provider's execution authority.
 

@@ -1,5 +1,21 @@
 # Quest development feedback loops
 
+For Quest/Rusty hotload, reload, live-edit or avoid-rebuild questions, including
+Java, Kotlin, Compose, JNI and Rust, consult this guide and the relevant
+capability evidence before the selected app's loader, ABI and lifetime
+contract. A current loader limit is not a universal platform impossibility.
+Keep three states explicit:
+
+- **Supported by the selected installed loader:** use its actual enabled
+  channel, accepted input, ABI and effective adoption evidence.
+- **Demonstrated or documented elsewhere:** name the mechanism, version and
+  evidence; app integration or an enabling build is still needed before
+  claiming support in the selected app.
+- **Extension still to investigate:** retain the legitimate build/restart
+  fallback; a proposed loader is neither installed support nor a proven loop.
+
+This question route adds no mandatory per-build test or documentation gate.
+
 Choose the smallest existing replacement boundary for the change. This guide
 records lessons from device experiments; it does not add a startup checklist or
 require hotloading for ordinary development.
@@ -11,7 +27,38 @@ require hotloading for ordinary development.
 | Compatible SDK vertex/fragment arithmetic | SDK graphics reload after one explicitly enabled developer build |
 | Mapped authored asset | Register the external mapping before first load, replace the selected content and inspect its effect |
 | Explicitly supported compute slot | Use that slot's ABI, activation/fence and state contract; a diagnostic slot is not the private main kernel |
-| Native library, Java/Kotlin/Rust lifecycle, new resources or ABI | Build the affected owner artifact; general code replacement has not been established by graphics reload |
+| Native/JVM/ABI change unsupported by the selected installed loader | Use the affected-owner build/restart fallback; inspect the capability evidence below before treating it as a platform limit |
+
+## Capability and experiment evidence
+
+The retained experiments include SDK graphics and mapped-asset replacement
+with visible adoption and revert. A compute/SPIR-V replacement also reached a
+running pipeline; this does not establish replacement of a native Rust library.
+Parameter or policy reload needs its own supported app handler. Neither a
+settings change nor shader reload can supply missing JVM methods.
+
+Android mechanisms have different boundaries (checked 22 October 2026):
+
+| Mechanism | Evidence and limit to check before app integration |
+| --- | --- |
+| Apply Changes | Eligible debug deployments can update code/resources with process or Activity retention depending on the action. [Android's guide](https://developer.android.com/studio/run#apply-changes) still performs build/deployment work; this is not a no-compilation claim. |
+| Enhanced Apply Changes | [Studio 4.1](https://developer.android.com/studio/releases/past-releases/as-4-1-0-release-notes#apply-changes) documents adding methods on Android 11 Developer Preview 3 or newer. [Studio 4.2](https://developer.android.com/studio/releases/past-releases/as-4-2-0-release-notes#apply-changes) adds static final primitive fields on Android 11+ and resources with Apply Changes and Restart Activity. |
+| Compose Live Edit | Its [own requirements and limits](https://developer.android.com/develop/ui/compose/tooling/iterative-development) cover supported function-body edits in debuggable API 30+ processes, not new methods/signatures or arbitrary structural changes. A first edit in a file resets state. Do not apply these limits to every Android mechanism. |
+| Versioned DEX or native module seam | A prospective app integration, not a demonstrated selected-app route. A resident JNI host and versioned C ABI/Rust module would need explicit activation, state, lifetime and reversal contracts. |
+
+Verify the actual device, toolchain, debuggability and edit shape. Method,
+class, field and resource changes are mechanism/version dependent; do not
+blanket-classify them as requiring reinstall. Apply Changes and Live Edit need
+separate clean sessions because their modified-session states are incompatible.
+For an installed fixed-JNI/process-lifetime owner without a qualified replacement
+seam, the affected-owner build/restart remains the supported fallback.
+
+An earlier retained Compose attempt refused a generated class during compilation,
+before device patch delivery. Later preparation kept 22 class names stable and
+restored compiled bytes, but proved no successful headset patch/revert. A later
+secondary-ADB launch was denied before execution; this is neither device-failure
+evidence nor authority to retry through another route. Preserve compiler-shape,
+transport, activation and runtime observations separately.
 
 ## SDK graphics source reload
 

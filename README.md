@@ -22,7 +22,7 @@ installed provenance commit rather than floating `main`. See
 
 ## What Is Included
 
-- Focused learned routes for [shader/asset feedback loops](docs/quest-development-feedback-loops.md),
+- Focused learned routes for [development feedback and hotload questions](docs/quest-development-feedback-loops.md),
   [Meta XR Operator interaction](docs/meta-xr-operator-input-automation.md),
   [shell/Guardian investigation](docs/quest-shell-capability-investigation.md)
   and [compositor experiments](docs/quest-compositor-experiment-lessons.md),
