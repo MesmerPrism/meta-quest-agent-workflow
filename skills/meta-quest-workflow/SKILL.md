@@ -1,12 +1,12 @@
 ---
 name: meta-quest-workflow
-description: 'Use for Meta Quest device operations, APK deployment, capture, diagnostics, and evidence through owned providers.'
+description: 'Use for Meta Quest device operations or hotload, reload, live-edit, and avoid-rebuild questions, including Java/Kotlin/JNI/Rust.'
 ---
 
 # Meta Quest Workflow
 
-This public, portable skill routes Quest device operations to focused owner
-playbooks. It does not own application composition, runtime features,
+This public, portable skill routes Quest device operations and development
+feedback questions to focused owner playbooks. It does not own application composition, runtime features,
 command/session/stream authority, targets, credentials, or resource locks.
 
 ## Resolve the source, then the operation
@@ -36,7 +36,7 @@ requirement to load every procedure before ordinary work.
 | Operation | Source playbook |
 | --- | --- |
 | Build, deploy, launch, validate | `docs/rusty-morphospace-default-device-loop.md`; APK iteration uses `docs/quest-apk-build-lanes.md` |
-| Shader/asset iteration or hotloading | `docs/quest-development-feedback-loops.md`; the selected Quest app owns its reload contract |
+| Shader/asset iteration; hotload/reload/live-edit or avoid-rebuild questions, including Java/Kotlin/JNI/Rust | `docs/quest-development-feedback-loops.md` and relevant capability evidence first, then the selected app's loader/ABI/lifetime contract |
 | Select a typed provider or labeled ADB fallback | `docs/agent-execution-providers.md`; `docs/adb-basics.md` |
 | Confirm mutation, foreground and effective readiness | `docs/host-headset-mutation-confirmation.md`; `docs/quest-signal-patterns.md` |
 | Capture, streaming or OpenXR integration | `docs/capture-source-taxonomy.md`; `docs/quest-streaming-and-direct-link-gates.md`; `docs/openxr-tracking-boundary.md` |
