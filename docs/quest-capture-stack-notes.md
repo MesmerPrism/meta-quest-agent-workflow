@@ -3,6 +3,13 @@
 This note keeps Quest display-capture routes separate so agents can choose a
 recording path without rediscovering system boundaries.
 
+For the independently authored display encoder, native coherent helper,
+Hostess receiver and QMS browser, use
+[display capture and browser source entrypoints](display-capture-browser-entrypoints.md).
+That source map separates scrcpy, shell mirror, consented MediaProjection,
+native capture and opaque Meta/MQDH presentation, including build instructions
+and the native browser route's separate app-owner integration dependency.
+
 ## Built-In Sharing Recorder
 
 Meta documents headset video capture through the Sharing menu and MQDH UI. In

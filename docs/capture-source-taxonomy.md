@@ -17,6 +17,8 @@ artifact name and report.
 | Built-in Sharing/MQDH recorder | Operator-visible MP4 capture owned by Meta UI/tools | A documented generic ADB video-recording API |
 | ADB `screenrecord` MP4 or stdout H.264 | Shell-captured physical-display output, often as a raw stereo headset view | Raw camera texture data or a polished single-view spectator capture |
 | Casting/scrcpy | Operator-visible presentation over a transport | Raw camera texture data |
+| Independent shell display mirror / AVC MediaProjection producer | Owned encoded display pixels with explicit RMANVID1 framing | A coherent native eye view, raw camera content or a generally privileged APK |
+| Native typed capture-service helper | On its documented firmware profile, selected eye/framing before AVC encoding | Stable public cross-firmware API, calibrated absolute FOV or official Cinematic equivalence |
 | Hostess Meta/MQDH Cinematic adapter | On the reviewed pinned matrix, supervised live Cast presentation with an operator-observed Cinematic 16:9 label and graceful owned-host exit recorded in a sanitized summary | Hostess-owned frames or generic media packets, recording finalization, input forwarding, arbitrary 2D-panel control, Meta device-session cleanup, or FOV restoration |
 | Direct stream frame/status | Frame or metadata pulled from an app, VNC, MJPEG, or an app/Manifold adapter | Proof that the headset display or compositor presented the same content |
 | App-private diagnostics | Internal renderer/camera counters and metadata | User-visible proof unless paired with capture |
@@ -89,6 +91,9 @@ of projection truth. If a test needs screen-space coordinate evidence, render
 fiducials and estimate a local display-eye-UV-to-screenshot mapping.
 
 ## Focused Notes
+
+Use [display capture and browser source entrypoints](display-capture-browser-entrypoints.md)
+for published producer, receiver, browser, build and lifecycle code locations.
 
 See `quest-capture-stack-notes.md` for the current built-in recorder,
 ADB stdout H.264, Metacam App Function, `hzdb capture`, and MediaProjection
