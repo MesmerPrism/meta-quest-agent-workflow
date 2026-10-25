@@ -68,13 +68,54 @@ source/render readiness marker, not after a fixed sleep alone.
 If readiness polling times out, classify the run as `timeout` or `needs
 evidence`. Do not silently treat the fixed timeout as success.
 
+## Finite Observer Readiness And Window
+
+Keep observer startup, application readiness and media-session lifetime
+separate. A fixed startup estimate can warn while a genuine guarded observer
+continues; it is not by itself an expiry, cancellation or failure. The selected
+owner's actual deadlines, signed validity, stop conditions and output bounds
+still apply. A log line or zero exit is not a substitute for the exact READY
+artifact and live reader identity required by that owner.
+
+Publish READY only after the observer's real prerequisites: selected-feature
+[permission readback](permissions-and-distribution-boundary.md#fresh-uid-and-selected-feature-preflight),
+before/after UID/actor guards and the required log clients actually running.
+Bind the parent to that attempt's READY and live PID, not a previous attempt's
+file. Preserve failed attempts and their primary cause. A closed non-effectful
+reader may use a new observer attempt only through its existing owner's route;
+that never retries an entered media Original, once slot, Start or renewal.
+
+Start a bounded log stream with `-T 1` to avoid draining an old backlog before
+observing new events. Record finite duration and per-stream byte limits from
+the selected owner contract. READY proves observer startup, not the beginning
+of a media measurement. Choose an explicit observation anchor that covers the
+intended session event, and budget the entire READY-to-host-preflight-to-Start
+path. A window that expires before media Start cannot prove that Start.
+Where the selected action or measurement contract requires complete observation,
+refuse before the effect if the remaining window is insufficient, or use an
+existing owner-supported observer arm/rearm boundary without replaying media.
+An optional diagnostic window is not a universal media admission gate: retain
+its partial observation and continue only as the actual owner policy permits.
+Do not invent a rearm boundary or extend signed expiry to fit a slow caller.
+Preserve elapsed time, final byte counts, overflow/refusal and both stdout/stderr
+through child exit, EOF and reap. A larger allowance is not evidence that a
+permission or lifecycle failure was repaired. Do not clear a shared log buffer
+merely for convenience.
+
+When the observer window ends, close and reap only its owned log clients and
+record their closure. Do not kill a reader's parent before its child cleanup,
+or mistake closing logcat for stopping a camera/media session. Session Stop,
+consumer/ACK and cleanup remain with their effect owner. An observer window's
+end does not extend signed expiry, reset freshness thresholds, create a new
+lifetime or authorize replay. Bounded logs can show provider readiness without
+proving moving pixels, accepted capture quality or whole-session closure.
+
 ## Logcat Window Ownership
 
 For controlled runs, the harness should own the logcat window:
 
 ```powershell
-adb -s <serial> logcat -c
-adb -s <serial> logcat -v threadtime > <out-dir>\logcat-window.txt
+adb -s <serial> logcat -T 1 -v threadtime > <out-dir>\logcat-window.txt
 ```
 
 When a process reads a log file while ADB is still writing it, the reader must
