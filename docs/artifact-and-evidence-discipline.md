@@ -218,6 +218,44 @@ artifact types, and limitations. The wrapper is not the owner receipt and
 creates no authority. A `raw-adb-fallback` wrapper may claim only
 `transport-observed` or `diagnostic-only`.
 
+## Baseline And Reuse Applicability
+
+Choose the baseline for the question being answered. For an install/update,
+bind the actual installed bytes/UID and selected target artifact. For a source
+change, use the owning accepted baseline and exact affected input delta. For
+performance or freshness, record comparable actor, source/profile, session,
+window and measurement scope. An unrelated default setup or newest checkout
+is not a baseline. Retain authorized current state unless the request or owner
+requires restoration; never reset an identity/session to make a comparison fit.
+
+Reuse immutable proof only through its owning contract. Record the original
+producer, source/artifact hashes, map/profile/configuration, command, result,
+observed interval and limits; establish that every relevant input and consumer
+meaning is unchanged. Equal filenames, Git trees or a cache hit alone do not
+establish applicability when the owner binds a commit, location or invocation.
+Keep the original receipt bytes and source identity; a new reader does not
+relabel an old capture or a focused host proof as fresh runtime acceptance.
+
+| Retained fact | What must still be checked at the next action |
+| --- | --- |
+| Unchanged source, artifact and static/host proof | Exact selected source closure and affected-input applicability under the owner contract |
+| Prepared context or prior care observation | Actual current actor/UID/birth, boot, helper identity, live authority, expiry and effective state required by that action |
+| Prior media outcome | Original/consumer/ACK/Stop state and no replay or new-lifetime claim |
+| Current source publication | Installed source/provenance and project adoption are separate facts |
+
+If an owner supports a current-care continuation over a prepared context, pass
+its explicit original/current evidence and exact executor binding. Revalidate
+both contexts and preserve their stated allowed difference; do not edit old
+lease receipts or silently replace protocol source, methods, actors or results.
+A fresh observation cannot renew an expired signed authority. Missing supported
+continuation means use the owning next route, not a generic cache bypass.
+
+A read-only bounded observer can retain an older media outcome while collecting
+new logs; label each claim by its actual attempt and time. Unchanged proof reuse
+does not imply a new device pass, reduced whole-route cost or complete capture.
+Repeat the affected check when source/input/caller/meaning changes, while
+preserving all mandatory immediate live guards.
+
 ## Re-run After Code Changes
 
 A device pass belongs to the exact app, manifest, scripts, properties, and

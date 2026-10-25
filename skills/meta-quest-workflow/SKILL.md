@@ -38,9 +38,10 @@ requirement to load every procedure before ordinary work.
 | Build, deploy, launch, validate | `docs/rusty-morphospace-default-device-loop.md`; APK iteration uses `docs/quest-apk-build-lanes.md` |
 | Shader/asset iteration; hotload/reload/live-edit or avoid-rebuild questions, including Java/Kotlin/JNI/Rust | `docs/quest-development-feedback-loops.md` and relevant capability evidence first, then the selected app's loader/ABI/lifetime contract |
 | Select a typed provider or labeled ADB fallback | `docs/agent-execution-providers.md`; `docs/adb-basics.md` |
-| Confirm mutation, foreground and effective readiness | `docs/host-headset-mutation-confirmation.md`; `docs/quest-signal-patterns.md` |
+| Confirm mutation, foreground and effective readiness; finite observer READY/window/log bounds | `docs/host-headset-mutation-confirmation.md`; `docs/quest-signal-patterns.md` |
+| Fresh UID and selected camera/depth permission preflight | `docs/permissions-and-distribution-boundary.md` |
 | Capture, streaming or OpenXR integration | `docs/capture-source-taxonomy.md`; `docs/quest-streaming-and-direct-link-gates.md`; `docs/openxr-tracking-boundary.md` |
-| Evidence, retained state and cleanup | `docs/artifact-and-evidence-discipline.md` |
+| Baseline selection, applicable immutable proof reuse, retained state and cleanup | `docs/artifact-and-evidence-discipline.md` |
 | Boot Wireless ADB, protected trust and helper updates | `docs/boot-wireless-adb-qualification.md` |
 | Memory growth or native allocation profiling | `docs/quest-memory-profiling.md` |
 | Meta diagnostic tooling or simulated hands/controllers | `docs/meta-vr-cli-evidence-profiles.md`; `docs/meta-xr-operator-input-automation.md` |
