@@ -91,9 +91,12 @@ the selected owner contract. READY proves observer startup, not the beginning
 of a media measurement. Choose an explicit observation anchor that covers the
 intended session event, and budget the entire READY-to-host-preflight-to-Start
 path. A window that expires before media Start cannot prove that Start.
-Refuse before the effect if the remaining window is insufficient, or use an
+Where the selected action or measurement contract requires complete observation,
+refuse before the effect if the remaining window is insufficient, or use an
 existing owner-supported observer arm/rearm boundary without replaying media.
-Do not invent that boundary or extend signed expiry to fit a slow caller.
+An optional diagnostic window is not a universal media admission gate: retain
+its partial observation and continue only as the actual owner policy permits.
+Do not invent a rearm boundary or extend signed expiry to fit a slow caller.
 Preserve elapsed time, final byte counts, overflow/refusal and both stdout/stderr
 through child exit, EOF and reap. A larger allowance is not evidence that a
 permission or lifecycle failure was repaired. Do not clear a shared log buffer
