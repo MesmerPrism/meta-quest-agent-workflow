@@ -87,11 +87,17 @@ that never retries an entered media Original, once slot, Start or renewal.
 
 Start a bounded log stream with `-T 1` to avoid draining an old backlog before
 observing new events. Record finite duration and per-stream byte limits from
-the selected owner contract. Begin the promised observation interval after
-actual READY, not at the beginning of slow preflight. Preserve elapsed time,
-final byte counts, overflow/refusal and both stdout/stderr through child exit,
-EOF and reap. A larger allowance is not evidence that a permission or lifecycle
-failure was repaired. Do not clear a shared log buffer merely for convenience.
+the selected owner contract. READY proves observer startup, not the beginning
+of a media measurement. Choose an explicit observation anchor that covers the
+intended session event, and budget the entire READY-to-host-preflight-to-Start
+path. A window that expires before media Start cannot prove that Start.
+Refuse before the effect if the remaining window is insufficient, or use an
+existing owner-supported observer arm/rearm boundary without replaying media.
+Do not invent that boundary or extend signed expiry to fit a slow caller.
+Preserve elapsed time, final byte counts, overflow/refusal and both stdout/stderr
+through child exit, EOF and reap. A larger allowance is not evidence that a
+permission or lifecycle failure was repaired. Do not clear a shared log buffer
+merely for convenience.
 
 When the observer window ends, close and reap only its owned log clients and
 record their closure. Do not kill a reader's parent before its child cleanup,

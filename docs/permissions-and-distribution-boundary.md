@@ -58,13 +58,16 @@ its owning platform contract, not every declaration in the manifest:
 
 | Selected dependency | Permission observation |
 | --- | --- |
-| Passthrough camera access requiring both grants | `android.permission.CAMERA` and `horizonos.permission.HEADSET_CAMERA` |
-| Environment depth | The declared scene/depth permission, currently `horizonos.permission.USE_SCENE` on applicable Horizon profiles |
+| Selected camera profile requiring both checks | `android.permission.CAMERA` and `horizonos.permission.HEADSET_CAMERA` |
+| Environment depth | The actual declared scene/depth permission; an observed Horizon profile uses `horizonos.permission.USE_SCENE` |
 | Identity/key inspection only | Do not activate camera or depth merely to inspect identity |
 
-For a camera-plus-environment-depth profile, all three required grants must
-be established. Do not add depth permissions to a profile that does not select
-depth. Older SDK documentation may use `com.oculus.permission.USE_SCENE`;
+When the selected profile requires both camera checks plus environment depth,
+all three grants must be established. This is not a platform-wide requirement:
+Meta's [Passthrough Camera API overview](https://developers.meta.com/vr/documentation/native/android/pca-native-overview/)
+permits either camera permission for that API. Follow the actual selected
+dependency rather than broadening its grant set. Do not add depth permissions
+to a profile that does not select depth. Older SDK documentation may use `com.oculus.permission.USE_SCENE`;
 observe the actual manifest/platform name, not both names as interchangeable
 grants. Meta's [Depth API troubleshooting](https://developers.meta.com/vr/documentation/unity/unity-depthapi-troubleshooting-faq/)
 requires `USE_SCENE` before depth access. OpenXR permits
