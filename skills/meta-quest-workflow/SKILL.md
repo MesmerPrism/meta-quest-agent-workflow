@@ -28,6 +28,15 @@ device procedure or authorize an effect. If absent, use the repository identifie
 by the user or ask for its location; never guess a machine path.
 See `docs/local-playbook-resolution.md` for resolution failures.
 
+For keep-awake/proximity supervision, an installed skill may also provide
+`references/local-quest-awake-helper.json`. It locates QFM's existing standalone
+helper. Before use, validate its expected QFM repository, exact HEAD/tree,
+clean status and pinned README/wrapper/upstream-notice hashes as described in
+`docs/long-running-watchdogs.md`. Otherwise use an explicitly selected QFM
+checkout or an immutable published helper source; never guess a machine path.
+This optional local data is not checked by `Resolve-PlaybookSource.ps1` and
+grants no execution authority.
+
 Read only the playbook needed for the current operation. The source index
 routes specialized cases; `docs/skill-operation-contracts.md` retains detailed
 conditional contracts and examples formerly included here. Neither is a
@@ -42,6 +51,7 @@ requirement to load every procedure before ordinary work.
 | Fresh UID and selected camera/depth permission preflight | `docs/permissions-and-distribution-boundary.md` |
 | Capture, streaming or OpenXR integration | `docs/capture-source-taxonomy.md`; `docs/quest-streaming-and-direct-link-gates.md`; `docs/openxr-tracking-boundary.md` |
 | Baseline selection, applicable immutable proof reuse, retained state and cleanup | `docs/artifact-and-evidence-discipline.md` |
+| Keep awake, ignore wear/proximity drift, or supervise a long lab run | `docs/long-running-watchdogs.md` first; use QFM's existing `helpers/quest-proximity-watchdog`, then its start/status/stop contract |
 | Boot Wireless ADB, protected trust and helper updates | `docs/boot-wireless-adb-qualification.md` |
 | Memory growth or native allocation profiling | `docs/quest-memory-profiling.md` |
 | Meta diagnostic tooling or simulated hands/controllers | `docs/meta-vr-cli-evidence-profiles.md`; `docs/meta-xr-operator-input-automation.md` |
@@ -65,6 +75,13 @@ use `raw_fallback_allowed=false`; before raw serial-scoped ADB, record the
 provider gap, bounded goal, stop condition, cleanup and owner improvement.
 Preserve exact provider/APK copies across a composed deployment, typed failures
 and installed-byte readback before launch. A cache is not acceptance evidence.
+
+For an authorized keep-awake/proximity watchdog, select the existing QFM
+standalone helper through `docs/long-running-watchdogs.md` before writing code.
+Its supervisor renews finite holds proactively; a one-shot awake setting or
+reactive wake loop is insufficient. Preserve a healthy existing helper and
+manual policy. Inspect status without starting or pushing a helper. Stopping
+supervision does not restore proximity/power policy or clear physical SensorLock.
 
 Coordinate exclusive headset work and disruptive ADB daemon/transport changes.
 Normal serial-scoped discovery/readback uses the shared daemon. Preserve

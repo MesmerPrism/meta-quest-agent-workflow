@@ -54,6 +54,13 @@ compositor investigation.
 The integration guide maps reusable Quest components to Hostess adapters and
 Kiosk/product consumers; it does not expand a provider's execution authority.
 
+For authorized keep-awake/proximity supervision, read
+[long-running watchdogs](docs/long-running-watchdogs.md) first and use QFM's
+existing `helpers/quest-proximity-watchdog`. A one-shot awake command or custom
+reactive wake loop does not supply proactive finite-hold renewal. Inspect before
+starting, preserve a healthy existing helper/manual policy, and keep stop,
+restore, virtual proximity and physical SensorLock as separate claims.
+
 Use [the playbook index](docs/playbook-index.md) to select the task's procedure.
 For bounded documentation edits, read the relevant playbook and existing checks;
 for device/provider policy changes, also read the affected section of
