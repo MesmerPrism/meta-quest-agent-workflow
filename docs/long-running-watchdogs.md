@@ -21,13 +21,15 @@ locator exists. Bind the source commit, helper JAR SHA-256 and script version
 before effects. Do not guess a machine path or use a historical worktree as
 the canonical helper.
 
-The intended public source location is
-[QFM standalone proximity watchdog](https://github.com/MesmerPrism/QuestIonAble-File-Manager/tree/main/helpers/quest-proximity-watchdog).
-This helper is prepared locally and unpublished at this documentation revision;
-the URL is a publication destination, not evidence of availability. Use the
-qualified local source until published, then bind an immutable published commit
-for reproduction. If the helper is unavailable, report that source-resolution
-gap; do not silently substitute a minimal watchdog.
+The reviewed source is publicly available at the immutable
+[QFM helper revision](https://github.com/MesmerPrism/QuestIonAble-File-Manager/tree/2b27d8bc4de62228336e7a62df020ec00ab7f07c/helpers/quest-proximity-watchdog),
+with its [dated live validation record](https://github.com/MesmerPrism/QuestIonAble-File-Manager/blob/2b27d8bc4de62228336e7a62df020ec00ab7f07c/helpers/quest-proximity-watchdog/LIVE_VALIDATION.md).
+[Draft PR 112](https://github.com/MesmerPrism/QuestIonAble-File-Manager/pull/112)
+is open; merge to the intended
+[main source location](https://github.com/MesmerPrism/QuestIonAble-File-Manager/tree/main/helpers/quest-proximity-watchdog)
+is pending. Use the pinned revision or a separately qualified local source;
+the main URL does not establish availability. If the helper is unavailable,
+report that source-resolution gap; do not silently substitute a minimal watchdog.
 
 QFM's ordinary `device keep-awake` operation is a one-shot policy command, not
 a renewing supervisor. Fleet's managed awake-control contract applies only to
@@ -47,9 +49,13 @@ content-addressed JAR before executing its read-only status entrypoint; do not
 build or push a replacement merely to observe or stop an existing owner.
 `stop` verifies the current boot/PID/birth/command-line/lock owner before
 writing its fixed marker and waiting for process absence. It never builds,
-pushes, starts another helper or restores policy. The standalone adapter has
-host verification; it has not been deployed or live validated by that
-verification.
+pushes, starts another helper or restores policy. Host verification remains
+separate from the linked live record: two Quest headsets each completed normal
+policy restoration, default startup, two accelerated finite-hold renewals,
+owned stop without restoration, and final default startup. Those checks did
+not establish six-hour default renewal, eight-hour endurance, host-disconnect
+survival, reboot persistence or app/media readiness. Current owner, artifact,
+process and effective state still require fresh readback.
 
 ## Validate The Optional Local Helper Locator
 
