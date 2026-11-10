@@ -44,3 +44,12 @@ $source.playbook_index
 Canonical repository checkouts already contain `README.md` and `docs/` beside
 the skill source. Use those files directly while working in such a clean,
 explicitly selected checkout.
+## Separate Optional QFM Helper Locator
+
+For the standard keep-awake/proximity supervisor, an installed skill may also
+contain `references/local-quest-awake-helper.json`. This is separate local data:
+`Resolve-PlaybookSource.ps1` validates MQW playbooks only. Follow
+[long-running watchdogs](long-running-watchdogs.md#validate-the-optional-local-helper-locator)
+to check the QFM origin, exact commit/tree, clean status, paths and file hashes
+before using that helper. The file is never canonical source or an execution
+grant. A managed-skill verification result does not validate the helper locator.
