@@ -39,6 +39,15 @@ start, replace or renew a helper merely to observe it. Preserve a healthy
 existing helper and any deliberate manual awake/proximity policy. Start or
 replace only within the requested scope, using the owner's exact operation.
 
+The source entrypoint is `helpers/quest-proximity-watchdog/tools/Invoke-Watchdog.ps1`
+with `-Action start|status|stop`, selected `-Adb` and exact `-Serial`. Read the
+owner README for build prerequisites and start confirmation. `status` requires
+the retained local built JAR to verify the installed JAR before executing its
+read-only status entrypoint; do not build or push a replacement merely to
+obtain status. `stop` needs no JAR and uses only its fixed marker plus process
+absence readback. The standalone adapter has host verification; it has not
+been deployed or live validated by that verification.
+
 ## Validate The Optional Local Helper Locator
 
 `references/local-quest-awake-helper.json` is installation data, outside the
@@ -156,7 +165,9 @@ request or an unconfirmed command does not establish its owned coverage.
 Renew before owned coverage expires even while the display is awake and the
 virtual proximity value remains `CLOSE`. If owned coverage is absent or
 uncertain, report that condition and follow the owner contract instead of
-claiming a protected run.
+claiming a protected run. Its success timestamp records successful bounded
+command dispatch, not an authenticated native remaining-time timer; require
+current virtual proximity and power readback independently.
 
 Keep these observations separate:
 
