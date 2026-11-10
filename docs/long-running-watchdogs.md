@@ -41,12 +41,15 @@ replace only within the requested scope, using the owner's exact operation.
 
 The source entrypoint is `helpers/quest-proximity-watchdog/tools/Invoke-Watchdog.ps1`
 with `-Action start|status|stop`, selected `-Adb` and exact `-Serial`. Read the
-owner README for build prerequisites and start confirmation. `status` requires
-the retained local built JAR to verify the installed JAR before executing its
-read-only status entrypoint; do not build or push a replacement merely to
-obtain status. `stop` needs no JAR and uses only its fixed marker plus process
-absence readback. The standalone adapter has host verification; it has not
-been deployed or live validated by that verification.
+owner README for build prerequisites and start confirmation. Both `status`
+and `stop` require the retained local built JAR to verify the installed
+content-addressed JAR before executing its read-only status entrypoint; do not
+build or push a replacement merely to observe or stop an existing owner.
+`stop` verifies the current boot/PID/birth/command-line/lock owner before
+writing its fixed marker and waiting for process absence. It never builds,
+pushes, starts another helper or restores policy. The standalone adapter has
+host verification; it has not been deployed or live validated by that
+verification.
 
 ## Validate The Optional Local Helper Locator
 
