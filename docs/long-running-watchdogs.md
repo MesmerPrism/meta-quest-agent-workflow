@@ -50,12 +50,20 @@ build or push a replacement merely to observe or stop an existing owner.
 `stop` verifies the current boot/PID/birth/command-line/lock owner before
 writing its fixed marker and waiting for process absence. It never builds,
 pushes, starts another helper or restores policy. Host verification remains
-separate from the linked live record: two Quest headsets each completed normal
+separate from live observations: the initial two-headset record covers normal
 policy restoration, default startup, two accelerated finite-hold renewals,
-owned stop without restoration, and final default startup. Those checks did
-not establish six-hour default renewal, eight-hour endurance, host-disconnect
-survival, reboot persistence or app/media readiness. Current owner, artifact,
-process and effective state still require fresh readback.
+owned stop without restoration and final default startup. A separate
+10 November 2026 observation on two Quest 3S headsets running v209.0.0.174.430
+observed one actual default six-hour renewal per headset, with an eight-hour
+hold, five-second polling and zero hold failures. Successful issuance intervals
+were 21,600,678ms and 21,601,668ms; sampled readback remained Awake, physical
+INTERNAL display ON and virtual proximity CLOSE. See the validation update in
+the existing [QFM review](https://github.com/MesmerPrism/QuestIonAble-File-Manager/pull/112/files).
+Status observations changed no power policy and did not establish physical
+SensorLock, camera or XR readiness. The system update interrupted the earlier
+long session; no complete eight-hour/overnight soak, host-disconnect survival,
+reboot persistence or wearer-approval bypass is established. Current owner,
+artifact, process and effective state still require fresh readback.
 
 ## Validate The Optional Local Helper Locator
 
