@@ -54,8 +54,16 @@ separate from the linked live record: two Quest headsets each completed normal
 policy restoration, default startup, two accelerated finite-hold renewals,
 owned stop without restoration, and final default startup. Those checks did
 not establish six-hour default renewal, eight-hour endurance, host-disconnect
-survival, reboot persistence or app/media readiness. Current owner, artifact,
-process and effective state still require fresh readback.
+survival, reboot persistence or app/media readiness.
+
+A separate [11 November default-cadence follow-up](https://github.com/MesmerPrism/QuestIonAble-File-Manager/blob/0d6165ba4081939ff56e63340dd6720e96aa820e/helpers/quest-proximity-watchdog/LIVE_VALIDATION.md#default-cadence-follow-up--11-november-2026)
+records four actual six-hour renewals per headset and more than 24 hours of
+sampled operation by the same standard helpers, with zero recorded hold
+failures. Incomplete status observations remain unknown. This is sampled
+helper/hold evidence; continuous display readiness, protected-wearer readiness,
+OpenXR, camera delivery and wearer comfort remain separate claims.
+
+Current owner, artifact, process and effective state still require fresh readback.
 
 ## Validate The Optional Local Helper Locator
 
