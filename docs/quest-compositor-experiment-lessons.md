@@ -39,6 +39,34 @@ Historical `ImageReader`/`AHardwareBuffer`/fence consumer proof remains qualifie
 to its firmware, caller, producer and lifecycle; it does not automatically
 transfer to newer firmware or an ordinary APK.
 
+## Separate native caller contexts
+
+A bounded v209 diagnostic used an ordinary Shell native executable to load the
+manager library by basename and resolve `createRuntimeIpcManager`. Public
+`dladdr` attributed the resolved address to `libripcmanager.oculus.so` and that
+symbol, at object-relative offset `0x3110` for the selected file. The helper
+returned without invoking the factory. Genuine client exit/reap, complete raw
+EOF, independent original-process birth absence and owned-stage removal were
+observed; post-probe app NoMedia and preservation checks also passed.
+
+Keep that result separate from an earlier JNI caller's `clns-2` load refusal
+and a different client's initialization abort. Caller executable, class-loader
+and linker context can change the result; Shell UID alone does not establish
+equivalence. Bind the exact firmware, executable, library bytes, symbol and
+caller for each observation. Host fake-loader tests qualify their own contracts,
+not device loadability. These observations are research evidence, not a
+published helper procedure or a portable private-API recipe.
+
+An address-owner query identifies the object containing the address; handle
+symbol lookup may resolve through dependencies. It does not establish the
+top-level handle's object identity or hash the mapped bytes. Preserve the
+original loader error before another loader query and copy borrowed metadata
+immediately. See the dated Bionic [address-owner implementation](https://android.googlesource.com/platform/bionic/+/android-14.0.0_r1/linker/linker.cpp#2228).
+No factory, VM, client initialization/connection, camera or pool call was made
+in this diagnostic. Constructor and remote effects remain unknown. Local
+retirement proves neither normal MR-client shutdown, image access, namespace
+equivalence nor the cause of either earlier failure.
+
 ## Own resources and feedback
 
 A returned opaque native `jlong` may be a valid nonzero negative value. Do not

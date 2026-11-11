@@ -81,6 +81,15 @@ through those stages. Successful image decoding and visual inspection are also
 separate from PNG signature/dimension checks. Captures remain evidence of their
 named route; they do not replace through-lens or wearer observations.
 
+For a bilateral test, inspect start and later images from each headset and
+retain the corresponding source/receiver progress and normal cleanup receipts.
+A bounded run can establish visible camera imagery and advancing peer-source
+context on both captures without identifying the exact frame displayed in each
+image. Keep that limitation explicit. Normal Whole/ACK completion is lifecycle
+evidence; it does not add motion, stereo-correctness or wearer validation to
+the captured pixels. Source checks, host tests, device behavior and inspected
+pixels remain separate evidence levels.
+
 For live localhost streams, prefer pulling a direct frame or status endpoint
 over screenshotting a visible browser or cast window. Window captures are useful
 human-observer evidence, but they depend on host foreground, window geometry,

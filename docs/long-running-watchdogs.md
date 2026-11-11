@@ -50,11 +50,17 @@ build or push a replacement merely to observe or stop an existing owner.
 `stop` verifies the current boot/PID/birth/command-line/lock owner before
 writing its fixed marker and waiting for process absence. It never builds,
 pushes, starts another helper or restores policy. Host verification remains
-separate from the linked live record: two Quest headsets each completed normal
+separate from live observations: the initial two-headset record covers normal
 policy restoration, default startup, two accelerated finite-hold renewals,
-owned stop without restoration, and final default startup. Those checks did
-not establish six-hour default renewal, eight-hour endurance, host-disconnect
-survival, reboot persistence or app/media readiness.
+owned stop without restoration and final default startup. A separate
+10 November 2026 observation on two Quest 3S headsets running v209.0.0.174.430
+observed one actual default six-hour renewal per headset, with an eight-hour
+hold, five-second polling and zero hold failures. Successful issuance intervals
+were 21,600,678ms and 21,601,668ms; sampled readback remained Awake, physical
+INTERNAL display ON and virtual proximity CLOSE. See the validation update in
+the existing [QFM review](https://github.com/MesmerPrism/QuestIonAble-File-Manager/pull/112/files).
+The system update interrupted the earlier long session; do not join operation
+across that reboot or infer host-disconnect survival or reboot persistence.
 
 A separate [11 November default-cadence follow-up](https://github.com/MesmerPrism/QuestIonAble-File-Manager/blob/0d6165ba4081939ff56e63340dd6720e96aa820e/helpers/quest-proximity-watchdog/LIVE_VALIDATION.md#default-cadence-follow-up--11-november-2026)
 records four actual six-hour renewals per headset and more than 24 hours of
@@ -62,6 +68,16 @@ sampled operation by the same standard helpers, with zero recorded hold
 failures. Incomplete status observations remain unknown. This is sampled
 helper/hold evidence; continuous display readiness, protected-wearer readiness,
 OpenXR, camera delivery and wearer comfort remain separate claims.
+
+Later 11 November samples extended that same-helper record to six successful
+holds per headset: startup plus five default six-hour renewals, with zero
+recorded failures and more than 30 hours of sampled operation. Retained raw
+status chronology matched the same boot, process birth, helper bytes and
+unchanged hold/renewal configuration. A separately validated camera run later
+delivered visible imagery on both headsets in that boot. This establishes
+bounded camera use after the long hold, not continuous camera, sensor or XR
+readiness throughout it. No helper or power-policy replacement was needed for
+that observation.
 
 Current owner, artifact, process and effective state still require fresh readback.
 
