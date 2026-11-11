@@ -50,6 +50,35 @@ first frame timestamp and size
 For headset camera work, record both ordinary Android camera permission and the
 headset-camera permission state.
 
+## Public PCA Resolution and Coverage
+
+Meta's [PCA overview](https://developers.meta.com/vr/documentation/unity/unity-pca-overview/)
+(updated 2026-11-10) documents 1728 × 1728 on Horizon OS v209 for Quest 3/3S
+and describes its field of view as wider. The [MRUK 209 release](https://developers.meta.com/vr/downloads/package/meta-xr-mr-utility-kit-upm/209.0/?view=full_width)
+(dated 2026-11-09) lists the added resolution. Neither establishes full
+compositor coverage, numerical FOV, or distortion/stabilization parity.
+
+The [Unity PCA guide](https://developers.meta.com/vr/documentation/unity/unity-pca-documentation/)
+(updated 2026-11-10) distinguishes supported, requested and current resolution;
+unsupported requests can fall back. It explicitly requires OS v209 and MRUK
+v209 for `GetFrameMetadata(imageTimestamp)`. That per-image metadata requirement
+is not proof of a universal MRUK v209 requirement for direct Camera2 resolution
+availability. Static intrinsics and dynamic capture metadata remain distinct.
+
+Compare the selected camera ID and format's advertised output sizes with the
+actual delivered image dimensions, image timestamps and corresponding
+calibration/pose. Pixel-array dimensions alone do not prove an output stream.
+Android's [`getHighResolutionOutputSizes`](https://developer.android.com/reference/android/hardware/camera2/params/StreamConfigurationMap#getHighResolutionOutputSizes(int))
+is a specific slower-output API contract, not a synonym for an announcement's
+“high resolution”; keep ordinary, slower high-resolution and maximum-resolution
+mode maps distinct. No mode-specific permission, target-SDK increase or hidden
+opt-in follows from the resolution announcement.
+
+Keep deliberate corner rounding and head-motion stabilization margins separate
+from source coverage. Do not presume they explain the public-camera versus
+compositor view difference. Validate the actual image and geometric relationship
+before attributing that difference or changing intentional presentation margins.
+
 ## Target-Local Raster Versus Homography
 
 A camera stream can be interpreted in at least two useful ways:
