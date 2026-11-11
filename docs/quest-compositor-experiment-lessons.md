@@ -22,6 +22,23 @@ non-null session identifier; a null identity caused a runtime failure. Closed
 adapters should encode the actual validated request, not expose a general
 private method/argument pass-through.
 
+A selected shipped capture-service trace connected a caller's `Surface` through
+`ANativeWindow` to the compositor capture output. That identifies a destination,
+not the sampled image. Static GL/Vulkan pipeline construction and program-stage
+realization do not establish per-frame image bindings, draw submission, GPU
+completion or direct access to the original MR camera source. Keep each of
+those joins separate from runtime observations and output-pixel comparisons.
+
+An existing-service peek with typed version reads can be a bounded admission
+probe when its exact installed-APK code-only AIDL loading, genuine Shell context
+and actual permission checks are preserved, without starting/binding the service
+or creating capture. A successful host compile does not prove runtime access.
+Inspect the full helper entrypoint: a producer that reads the version and then
+selects modes or starts capture is not a read-only probe.
+Historical `ImageReader`/`AHardwareBuffer`/fence consumer proof remains qualified
+to its firmware, caller, producer and lifecycle; it does not automatically
+transfer to newer firmware or an ordinary APK.
+
 ## Own resources and feedback
 
 A returned opaque native `jlong` may be a valid nonzero negative value. Do not
@@ -48,6 +65,14 @@ leave the worker alive. Preserve held/unknown state and reconcile the original
 worker rather than allowing another overlapping start. Avoid global capture
 stop operations unless their real ownership contract permits the effect.
 
+In one inspected capture-service route, Stop queues a global command through a
+void lower interface. Its submission/error reply does not acknowledge later
+server consumption or GPU/Surface retirement. Client EOF, joined workers, a
+post-return grace period and local `Surface`/`ANativeWindow` release each prove
+only their own lifecycle step. Retain server retirement as unknown until the
+selected route supplies request-correlated post-consumption completion evidence;
+this finding does not rule out a different API providing such a contract.
+
 ## Native effects and wearer evidence
 
 Selected native compositor shader paths produced visible binocular effects on
@@ -57,6 +82,14 @@ needed separate handling: writing a new shader file did not prove a cached
 program recompiled. Normal compositor suspend/resume appeared to recreate
 programs in the tested path; that is a qualified lifecycle lead, not permission
 for arbitrary service resets or a general hot-reload guarantee.
+
+For black shader output, isolate the sampled RGB with a finite opaque-output
+control before changing layer routing. Zero alpha need not mean unusable RGB;
+an effect's alpha gate can discard room color already present in its input.
+Qualify alpha and premultiplication against the selected input contract. A
+composed packed side-by-side input containing room RGB can support a visible
+effect without establishing raw sensor access, calibrated stereo/FOV, an
+app-exportable texture or the identity of upstream YUV resources.
 
 Screenshots missed a wearer-visible right-eye edge artifact. Disabling timing
 collection and an earlier slice briefly stabilized a single-pass experiment;

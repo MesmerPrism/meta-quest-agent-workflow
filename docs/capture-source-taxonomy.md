@@ -73,6 +73,14 @@ substantial-content count
 Byte-identical screenshots may be fine for static UI. They are suspicious for
 live camera evidence unless the scene is intentionally frozen.
 
+For a live source-to-renderer test, pair visually inspected start and later
+captures with the same run's source/receiver frame identifiers and timestamps,
+decoder progress, renderer adoption and GPU retirement evidence where applicable.
+Changing screenshot bytes alone do not show that the selected source advanced
+through those stages. Successful image decoding and visual inspection are also
+separate from PNG signature/dimension checks. Captures remain evidence of their
+named route; they do not replace through-lens or wearer observations.
+
 For live localhost streams, prefer pulling a direct frame or status endpoint
 over screenshotting a visible browser or cast window. Window captures are useful
 human-observer evidence, but they depend on host foreground, window geometry,
