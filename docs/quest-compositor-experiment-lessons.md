@@ -110,6 +110,28 @@ returns, local retirement and inspected pixels are separate evidence. This is
 a bounded research observation, not a supported private-helper procedure or a
 capture capability.
 
+## Metadata interfaces are research boundaries
+
+Source-only analysis of selected shipped firmware identified a named RIPC
+metadata lookup and C Begin/End read-lease route as a research lead. Its opaque
+32-bit state identifier is neither a client handle nor an operating-system file
+descriptor. Group-zero metadata and image-pool permission are separate gates;
+an image identifier in metadata is not an acquired image buffer.
+
+The observed Begin path can publish an opaque context even when its data return
+is null. A false End result can follow release of the read pin. Interface
+release is a different operation and does not replace ending a read lease.
+Return-value guesses can therefore omit required cleanup or repeat it. The
+selected interface ABI version was 1, distinct from reflection cap 2; never
+substitute an assumed interface ABI 2. These findings do not qualify a new
+caller, its failure cleanup or a decoder, and provide no executable procedure.
+
+Server admission, the generated image-response codec and unclaimed broker-FD
+cleanup remain unresolved. Source and host qualification of a connection-only
+candidate do not establish an actual connection, metadata delivery or images.
+The separate initialization-only observation above remains its own evidence
+boundary, and earlier unknown outcomes remain unknown.
+
 ## Own resources and feedback
 
 A returned opaque native `jlong` may be a valid nonzero negative value. Do not

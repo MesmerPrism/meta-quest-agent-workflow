@@ -82,6 +82,9 @@ consumer conformance do not establish an on-headset recenter result.
    after real frame ownership, release and output evidence; retain unsupported
    paths and wearer limitations. See
    [compositor lessons](quest-compositor-experiment-lessons.md).
+   Keep metadata-identifier and read-lease research separate from image-buffer
+   capability until the actual caller ABI, decoder and complete cleanup are
+   qualified; see the [research boundary](quest-compositor-experiment-lessons.md#metadata-interfaces-are-research-boundaries).
 5. **Lifecycle/performance evidence:** provide reusable counters, process-birth
    and lifecycle attribution, exact-symbol allocation analysis, and compatible
    baseline/candidate comparisons. Keep product meaning and acceptance in its
