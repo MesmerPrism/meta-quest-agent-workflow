@@ -110,6 +110,21 @@ returns, local retirement and inspected pixels are separate evidence. This is
 a bounded research observation, not a supported private-helper procedure or a
 capture capability.
 
+A later connection-only case on the selected v209 firmware used an ordinary
+Shell native executable with the same null-VM initialization contract. Init
+returned success; one client registration returned a nonzero handle and one
+connected-status query returned true. The normal disconnect export returned,
+and the paired shutdown returned the vendor runtime-stop boolean as true.
+Genuine original-process exit, full raw EOF/reap, independent kernel-birth
+absence and owned-stage removal were verified with preservation checks.
+
+This establishes bounded native registration and status without a Java VM for
+that caller. It does not establish metadata delivery, group permission, an
+image-pool grant, camera/image access, ordinary APK admission, namespace
+identity, remote acknowledgment or a global-worker join. Earlier unknown
+outcomes remain unknown; normal export returns and local retirement are
+separate from service completion.
+
 ## Metadata interfaces are research boundaries
 
 Source-only analysis of selected shipped firmware identified a named RIPC
@@ -126,11 +141,15 @@ selected interface ABI version was 1, distinct from reflection cap 2; never
 substitute an assumed interface ABI 2. These findings do not qualify a new
 caller, its failure cleanup or a decoder, and provide no executable procedure.
 
-Server admission, the generated image-response codec and unclaimed broker-FD
-cleanup remain unresolved. Source and host qualification of a connection-only
-candidate do not establish an actual connection, metadata delivery or images.
-The separate initialization-only observation above remains its own evidence
-boundary, and earlier unknown outcomes remain unknown.
+The actual connection-only observation above does not close metadata delivery
+or image-method admission. Source-only tracing also identified a real getter
+that writes eight metadata-group booleans after checking a connected client.
+Those sequential observations are not an atomic grant snapshot or the separate
+MR image-method permission. No runtime getter result is established here.
+
+The metadata failure-cleanup/decoder contract, generated image-response codec
+and unclaimed broker-FD cleanup remain unresolved. Keep these source findings
+separate from actual registration, inspected pixels and earlier unknowns.
 
 ## Own resources and feedback
 

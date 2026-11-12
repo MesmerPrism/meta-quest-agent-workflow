@@ -74,6 +74,26 @@ is a specific slower-output API contract, not a synonym for an announcement's
 mode maps distinct. No mode-specific permission, target-SDK increase or hidden
 opt-in follows from the resolution announcement.
 
+A bounded ordinary Camera2 diagnostic on selected v209 firmware subsequently
+delivered 150 images at 1280 × 1280 and 150 at 1728 × 1728 from camera 50 on one
+headset, with matching image/result timestamps and normal session/device
+closure. Original preview screenshots and native luma samples showed scene
+content at both sizes. The preview template and requested controls matched
+apart from dimensions; effective automatic exposure/noise could differ. No
+controlled resolution target established improved optical resolving power.
+An inherited no-capture summary flag was explicitly corrected while preserving
+the original receipts and their separate preservation predicates.
+
+The ordinary DEFAULT catalogs exposed 1728 for cameras 50/51; the inspected
+camera-50 catalog on a second headset was byte-identical, which proves neither
+delivery nor preview there. Slower high-resolution and maximum-resolution
+queries reported null/unsupported in this selected context. The larger stream
+therefore did not require those maps. Earlier 1280-only observations in another
+app context remain unexplained; do not infer a universal availability rule or
+attribute the difference to a permission, SDK, reboot or manifest change.
+Delivered dimensions and preview content do not establish wider numerical FOV,
+stereo/calibration parity, full compositor coverage or internal image access.
+
 Keep deliberate corner rounding and head-motion stabilization margins separate
 from source coverage. Do not presume they explain the public-camera versus
 compositor view difference. Validate the actual image and geometric relationship
