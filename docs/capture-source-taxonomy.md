@@ -90,6 +90,12 @@ evidence; it does not add motion, stereo-correctness or wearer validation to
 the captured pixels. Source checks, host tests, device behavior and inspected
 pixels remain separate evidence levels.
 
+Native factory creation and a paired destroy-export return are also separate
+from image access and resource retirement. Caller-source argument consistency,
+local child exit and preserved app state do not establish remote completion,
+camera capability or captured pixels; see the bounded
+[native caller-context observations](quest-compositor-experiment-lessons.md#separate-native-caller-contexts).
+
 For live localhost streams, prefer pulling a direct frame or status endpoint
 over screenshotting a visible browser or cast window. Window captures are useful
 human-observer evidence, but they depend on host foreground, window geometry,

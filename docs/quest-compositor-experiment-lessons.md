@@ -67,6 +67,25 @@ in this diagnostic. Constructor and remote effects remain unknown. Local
 retirement proves neither normal MR-client shutdown, image access, namespace
 equivalence nor the cause of either earlier failure.
 
+A later single-case Shell-native diagnostic went one step further: a factory
+call requesting version 8 returned a non-null opaque object, and the paired
+destroy export returned. The selected caller source passed that returned object
+to the destroy export; this is source-consistent caller evidence, not an
+independent observation of callee arguments or an acknowledgment of object
+destruction. Both the manager and retained lazy-module file metadata and hashes
+were stable across the case. That file evidence does not hash mapped bytes or
+establish the identity behind a top-level loader handle.
+
+The original child genuinely exited with complete raw EOF and reap; independent
+kernel birth absence and owned-stage removal were observed. Post-case app
+NoMedia, identity, route and unrelated-helper preservation checks passed. No VM,
+client initialization/connection, pool, Surface, camera or image operation was
+requested. Constructor and remote effects remain unknown, as do remote
+retirement, namespace equivalence and the earlier client's failure cause. A
+returned destroy export is a distinct evidence level from server completion or
+normal client shutdown. This bounded research result supplies no supported
+private-API procedure or capture capability.
+
 ## Own resources and feedback
 
 A returned opaque native `jlong` may be a valid nonzero negative value. Do not
