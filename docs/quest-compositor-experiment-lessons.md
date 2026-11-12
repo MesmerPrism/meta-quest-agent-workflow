@@ -86,6 +86,30 @@ returned destroy export is a distinct evidence level from server completion or
 normal client shutdown. This bounded research result supplies no supported
 private-API procedure or capture capability.
 
+A subsequent single-case Shell-native diagnostic on the selected v209 firmware
+called `ipc_Initialize` with the source-bound 88-byte initialization structure
+and a null Java VM. It returned `0`; exactly one paired `ipc_Shutdown` call then
+returned the vendor runtime-stop boolean as true. This establishes that a Java
+VM was not required for this observed initialization-only path. It does not
+establish a VM-free client, connection, Surface or camera API contract.
+
+The original native child genuinely exited with full raw EOF and reap;
+independent kernel-birth absence and owned-stage removal were observed. The
+selected RIPC, manager and retained lazy-module files had stable stat/hash
+bookends. Both application SDK actors remained absent, and installed bytes,
+UIDs, identity/enrollment data, grants, routes and unrelated helper state were
+preserved. No explicit client registration, client-info request, group-zero
+observation, pool, Surface, camera or image operation was requested; no identity
+spoofing or namespace override was used.
+
+The returned vendor boolean is not evidence that every global or Binder worker
+joined, or that a remote service acknowledged shutdown. Mapped-byte identity,
+remote effects, the earlier client's failure cause and equivalence to a JNI
+caller remain unproved. Source/ABI analysis, host fake tests, actual export
+returns, local retirement and inspected pixels are separate evidence. This is
+a bounded research observation, not a supported private-helper procedure or a
+capture capability.
+
 ## Own resources and feedback
 
 A returned opaque native `jlong` may be a valid nonzero negative value. Do not

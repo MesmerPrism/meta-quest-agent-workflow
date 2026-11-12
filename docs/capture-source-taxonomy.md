@@ -96,6 +96,13 @@ local child exit and preserved app state do not establish remote completion,
 camera capability or captured pixels; see the bounded
 [native caller-context observations](quest-compositor-experiment-lessons.md#separate-native-caller-contexts).
 
+A successful native initialization-only call with a null Java VM, followed by
+a paired shutdown-export return, is another bounded capability level. It can
+show that this caller/firmware path does not require a VM for initialization;
+it supplies no client-admission, Surface, camera or image-delivery proof. Keep
+the vendor return value separate from original-child retirement, all-worker
+completion and remote acknowledgment.
+
 For live localhost streams, prefer pulling a direct frame or status endpoint
 over screenshotting a visible browser or cast window. Window captures are useful
 human-observer evidence, but they depend on host foreground, window geometry,
