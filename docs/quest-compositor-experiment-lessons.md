@@ -145,11 +145,74 @@ The actual connection-only observation above does not close metadata delivery
 or image-method admission. Source-only tracing also identified a real getter
 that writes eight metadata-group booleans after checking a connected client.
 Those sequential observations are not an atomic grant snapshot or the separate
-MR image-method permission. No runtime getter result is established here.
+MR image-method permission. A later bounded standalone native observation returned
+true from that getter with the first flag true and the remaining seven false.
+The original process completed with genuine EOF and reap; Disconnect returned normally;
+Shutdown returned true. Independent readback established local process retirement,
+run-owned stage removal and preservation of both participating device/app states.
+The owned experiment window was closed afterward. These are local completion and
+preservation results, not remote acknowledgement or proof that all global workers
+joined. No metadata payload or image was requested or demonstrated by the getter.
 
-The metadata failure-cleanup/decoder contract, generated image-response codec
-and unclaimed broker-FD cleanup remain unresolved. Keep these source findings
-separate from actual registration, inspected pixels and earlier unknowns.
+Selected primitive/member decoding and the local shared-response receiver and
+FD postprocessing paths have since been source-joined, with the limits below.
+Complete generated ABI/wire/failure ownership and unclaimed broker-FD cleanup
+remain unresolved. Keep source findings separate from runtime delivery, inspected
+pixels and earlier unknowns.
+
+## Preserve receiver, member and resource contracts
+
+A virtual slot is meaningful only with its actual receiver and vtable address
+point. Source tracing recovered a factory-returned MR interface and its distinct
+adjusting thunks; offsets from another interface or the primary object cannot be
+substituted. An available getter entry does not establish a real caller, request
+key, default value or schema. Those caller inputs remain unresolved.
+
+Treat response status, member presence and decoded value as separate evidence.
+The inspected generated member codec can accept a missing member without writing
+its destination, and its boolean primitive accepts noncanonical nonzero bytes.
+A successful parse therefore does not alone prove that a required boolean was
+present or canonically encoded. Tagged and ordered modes have different member
+boundaries. Mode-dependent string lengths, truncated or malformed lengths and
+reference-position postprocessing must be checked against the selected codec;
+native object sizes are not wire lengths. The reflected-schema mode and complete
+transport/failure ownership remain outside this qualified source result.
+
+The eight metadata-group flags, the separate MR image-method mask and actual
+metadata or pixels are three different claims. A true flag is not a delivered
+payload, and the observed flag vector does not establish image-method admission.
+Neither enumeration nor a scalar return substitutes for inspecting delivered
+content and its lifecycle.
+
+A method named for shared memory is not an inert permission probe. The inspected
+response path can produce sockets, file descriptors and hardware-buffer handles.
+Known success-path ownership does not close partial failure, lost return or
+unclaimed broker resources. A nearby method on a different receiver can instead
+change capability state. Do not invoke either from a guessed slot or infer frame
+readiness, camera identity or pixels from a returned pool or handle. Complete failure/transport retirement remains open.
+
+A separate owned facade has now been traced through allocation, unique-owner
+transfer and actual fetch dispatch to the same generated shared-memory method
+body reached by the factory-returned MR interface. Each method context has its
+own constructor-established client backpointer. This closes that concrete local
+receiver seam; it does not make the objects interchangeable or turn an opaque
+transport handle into either C++ object.
+
+On the actual client response path, successful decode reaches deferred FD
+materialization: a broker token is resolved into a destination field, then a
+separate clear request is made. A zero token writes an invalid-FD sentinel.
+The loop does not check Get validity or clear success and provides no complete
+rollback for entries already materialized. Local duplicate ownership, broker
+clear requests and eventual local close remain distinct obligations.
+
+Typed-decode or additional-metadata failure can skip materialization. Normal
+and exception reader cleanup free bookkeeping containers rather than resolve
+queued tokens, close resulting descriptors or release hardware buffers. For
+entries not yet materialized this helper has not acquired its local duplicate;
+that does not prove zero remote resources or zero resources in other fields.
+Partial failure, exception, lost reply, unclaimed broker ownership and complete
+transport-worker retirement remain unqualified. These source joins supply no
+new invocation procedure or runtime qualification.
 
 ## Own resources and feedback
 
