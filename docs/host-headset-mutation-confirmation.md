@@ -74,6 +74,28 @@ confirmation point.
 
 ## Quest-Specific Recovery Details
 
+### Physical USB moves are a checkpoint
+
+Before the operator moves or reconnects a headset, pause new device work and
+resolve or retain every in-flight positive operation. Do not disconnect merely
+to escape an unknown result. Record the current owned processes, transport and
+mapping state; keep the move checkpoint active while the operator handles USB.
+Hold new mutations and intrusive polling during that handoff. Use only bounded
+read-only discovery already allowed by the operator's selected move plan.
+
+Resume after the operator explicitly reports the move complete, then obtain
+fresh canonical serial/transport, boot, app PID/UID/process birth, installed APK
+identity and effective grants. Recheck awake/display and focused surfaces,
+existing helper identity, and complete forward/reverse tables before the next
+selected operation. Reconnection alone does not renew those observations or
+prove XR readiness.
+
+If the old app actor is absent, its old live binding is invalid even when the
+boot and installed APK are unchanged. Use the supported ordinary cold launch
+when authorized, verify the actual new actor, and produce a fresh selection.
+Preserve app data, enrollment and unresolved operation journals; do not replay
+install, enrollment or a prior startup transaction to repair a missing actor.
+
 ### Reboot is an attended boundary
 
 Before rebooting a Quest, tell the operator that continued XR work will require

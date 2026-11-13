@@ -212,7 +212,25 @@ Quest app to host service:
 adb -s <serial> reverse tcp:<device-port> tcp:<host-port>
 ```
 
-Record forwards in run evidence and remove them when no longer needed:
+For a newly owned mapping, inspect the full tables and selected local endpoint
+first, then use `--no-rebind` with the chosen forward or reverse operation.
+Retain intent and issuance before each change. An empty table may contain a
+CRLF or whitespace-only lines; ignore those lines while refusing malformed
+nonempty rows and duplicate rows. Preserve the serial column in a forward
+listing and the exact selected device scope for each reverse listing.
+
+Some ADB versions return the selected local port on successful creation, with
+a line ending, rather than empty stdout. Validate that reply against the exact
+selected port; do not require every successful create to return no bytes. The
+returned port is command output, not proof of mapping ownership or a listening
+application socket. Read back the affected full table after each change and
+all selected tables at the end, requiring exactly the intended additions and
+preservation of every unrelated row, including opaque non-TCP endpoints.
+
+Record exact owned tuples in run evidence. Before removal, require the current
+tuple still equals that saved ownership; refuse a foreign replacement instead
+of removing by local port alone. Remove only owned mappings when their selected
+lifetime and application cleanup requirements permit:
 
 ```powershell
 adb -s <serial> forward --remove tcp:<host-port>

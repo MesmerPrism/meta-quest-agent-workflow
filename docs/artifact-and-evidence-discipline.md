@@ -256,6 +256,19 @@ does not imply a new device pass, reduced whole-route cost or complete capture.
 Repeat the affected check when source/input/caller/meaning changes, while
 preserving all mandatory immediate live guards.
 
+Fresh device facts may share a lossless, boot-bookended read batch when the
+owner preserves every required serial, UID, process birth, installed-byte,
+permission, helper and route check. Retain field status and raw bytes, including
+NUL-containing command lines; validate the actual observations through the same
+owner. Batching is not permission to replace live facts with declarations or
+reuse an old actor after a process disappears.
+
+Measure provider work and the complete guarded run separately. Include required
+input checks, capture completion, EOF/reap and preservation in end-to-end timing.
+A short native invocation does not establish a short workflow. Reuse applicable
+immutable proof under its owner contract; report a speed improvement only after
+measuring the changed path.
+
 ## Re-run After Code Changes
 
 A device pass belongs to the exact app, manifest, scripts, properties, and

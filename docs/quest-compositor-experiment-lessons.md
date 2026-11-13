@@ -160,6 +160,36 @@ Complete generated ABI/wire/failure ownership and unclaimed broker-FD cleanup
 remain unresolved. Keep source findings separate from runtime delivery, inspected
 pixels and earlier unknowns.
 
+## Closed image-method permission result
+
+A subsequent bounded case on the selected v209 firmware made one image-method
+request from its genuine Shell-native client context. Transport succeeded, but
+the complete canonical reply reported `method_permission_denied`. This is an
+operation-level permission result, distinct from an unissued call, transport
+failure, successful image response or missing output file. No file descriptor,
+hardware buffer, CPU image or camera pixels were delivered by that request.
+
+Disconnect returned, the vendor shutdown boolean returned true, and the
+original client completed with full raw EOF and reap. Independent process-birth
+absence, owned-stage removal and final bilateral application/data/grant/route/
+helper preservation were observed. These close the local experiment. They do
+not establish remote acknowledgment or that every global worker joined.
+Keep earlier unknown outcomes and denied acquisitions unchanged.
+
+Source tracing identifies a pool/export/import seam before final sampling,
+separate from an already composed stereo shader input. That ordering does not
+establish the producer's ISP stage, crop, camera identity, frame readiness,
+full-sensor data or wider FOV. A permission-denied reply cannot supply those
+missing image observations.
+
+The selected Shell image-access route is closed; retain its result without
+replaying the request. Ordinary APK image admission remains unproved. Camera
+permission, client connection and metadata-group flags do not establish that
+grant. A supported app-side route would need its independently established API,
+genuine caller context and actual permission contract before selection; this
+experiment supplies none. Do not substitute a different principal, namespace,
+guessed method or protected-file acquisition as a workaround for denial.
+
 ## Preserve receiver, member and resource contracts
 
 A virtual slot is meaningful only with its actual receiver and vtable address
