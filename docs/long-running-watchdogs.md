@@ -59,11 +59,27 @@ hold, five-second polling and zero hold failures. Successful issuance intervals
 were 21,600,678ms and 21,601,668ms; sampled readback remained Awake, physical
 INTERNAL display ON and virtual proximity CLOSE. See the validation update in
 the existing [QFM review](https://github.com/MesmerPrism/QuestIonAble-File-Manager/pull/112/files).
-Status observations changed no power policy and did not establish physical
-SensorLock, camera or XR readiness. The system update interrupted the earlier
-long session; no complete eight-hour/overnight soak, host-disconnect survival,
-reboot persistence or wearer-approval bypass is established. Current owner,
-artifact, process and effective state still require fresh readback.
+The system update interrupted the earlier long session; do not join operation
+across that reboot or infer host-disconnect survival or reboot persistence.
+
+A separate [11 November default-cadence follow-up](https://github.com/MesmerPrism/QuestIonAble-File-Manager/blob/0d6165ba4081939ff56e63340dd6720e96aa820e/helpers/quest-proximity-watchdog/LIVE_VALIDATION.md#default-cadence-follow-up--11-november-2026)
+records four actual six-hour renewals per headset and more than 24 hours of
+sampled operation by the same standard helpers, with zero recorded hold
+failures. Incomplete status observations remain unknown. This is sampled
+helper/hold evidence; continuous display readiness, protected-wearer readiness,
+OpenXR, camera delivery and wearer comfort remain separate claims.
+
+Later 11 November samples extended that same-helper record to six successful
+holds per headset: startup plus five default six-hour renewals, with zero
+recorded failures and more than 30 hours of sampled operation. Retained raw
+status chronology matched the same boot, process birth, helper bytes and
+unchanged hold/renewal configuration. A separately validated camera run later
+delivered visible imagery on both headsets in that boot. This establishes
+bounded camera use after the long hold, not continuous camera, sensor or XR
+readiness throughout it. No helper or power-policy replacement was needed for
+that observation.
+
+Current owner, artifact, process and effective state still require fresh readback.
 
 ## Validate The Optional Local Helper Locator
 
@@ -207,6 +223,16 @@ broadcasts or shell launch. Bind exact serial/transport, boot ID, JAR digest,
 main class and argv, PID and process birth identity. A PID alone, process name,
 old status file or prior boot's receipt cannot authorize replacement or stop.
 A boot or process-identity mismatch invalidates the old live-helper claim.
+
+Identify an existing helper from its qualified status plus actual PID, UID,
+process birth and complete command line. A standard device-side watchdog may
+be a standalone Java `app_process` worker, not an installed app-package
+process. An empty package-name search is not proof that the helper is absent.
+Read and match the actual owner before considering any start or replacement;
+preserve a healthy existing process and its deliberate policy across a USB
+move when fresh identity and status still match. Its awake/display or virtual
+proximity readback remains separate from protected wearer, focus and target
+XR readiness.
 
 After start, require fresh helper status and effective virtual proximity and
 power readback; a host exit code proves dispatch only. If the display drifts,

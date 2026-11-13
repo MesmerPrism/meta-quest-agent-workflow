@@ -73,6 +73,36 @@ substantial-content count
 Byte-identical screenshots may be fine for static UI. They are suspicious for
 live camera evidence unless the scene is intentionally frozen.
 
+For a live source-to-renderer test, pair visually inspected start and later
+captures with the same run's source/receiver frame identifiers and timestamps,
+decoder progress, renderer adoption and GPU retirement evidence where applicable.
+Changing screenshot bytes alone do not show that the selected source advanced
+through those stages. Successful image decoding and visual inspection are also
+separate from PNG signature/dimension checks. Captures remain evidence of their
+named route; they do not replace through-lens or wearer observations.
+
+For a bilateral test, inspect start and later images from each headset and
+retain the corresponding source/receiver progress and normal cleanup receipts.
+A bounded run can establish visible camera imagery and advancing peer-source
+context on both captures without identifying the exact frame displayed in each
+image. Keep that limitation explicit. Normal Whole/ACK completion is lifecycle
+evidence; it does not add motion, stereo-correctness or wearer validation to
+the captured pixels. Source checks, host tests, device behavior and inspected
+pixels remain separate evidence levels.
+
+Native factory creation and a paired destroy-export return are also separate
+from image access and resource retirement. Caller-source argument consistency,
+local child exit and preserved app state do not establish remote completion,
+camera capability or captured pixels; see the bounded
+[native caller-context observations](quest-compositor-experiment-lessons.md#separate-native-caller-contexts).
+
+A successful native initialization-only call with a null Java VM, followed by
+a paired shutdown-export return, is another bounded capability level. It can
+show that this caller/firmware path does not require a VM for initialization;
+it supplies no client-admission, Surface, camera or image-delivery proof. Keep
+the vendor return value separate from original-child retirement, all-worker
+completion and remote acknowledgment.
+
 For live localhost streams, prefer pulling a direct frame or status endpoint
 over screenshotting a visible browser or cast window. Window captures are useful
 human-observer evidence, but they depend on host foreground, window geometry,
