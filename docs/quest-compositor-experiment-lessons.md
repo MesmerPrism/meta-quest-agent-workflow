@@ -278,6 +278,44 @@ only their own lifecycle step. Retain server retirement as unknown until the
 selected route supplies request-correlated post-consumption completion evidence;
 this finding does not rule out a different API providing such a contract.
 
+## Finite app-owned stereo GPU comparison
+
+A separate stationary app-owned test demonstrated distinct two-eye input and
+GPU-processed output during a finite window of about nine seconds. Preserve
+that source classification: success on app-owned input is not private MR
+compositor image admission and does not reopen the closed permission denial
+above or authorize a different principal.
+
+For a comparable bounded test:
+
+- Retain ordinary raw observations before and after active processing, then
+  compare raw and processed output from the exact same acquired `AImage`.
+  Bind both outputs to that acquisition and its actual buffer lifetime; nearby
+  timestamps or two independently acquired images are not the same-image join.
+- Check both input halves and their output eyes separately. Require distinct
+  eye content and correspondence through processing; a duplicated eye or merely nonblack
+  packed frame does not establish stereo processing. Record stream-half labels
+  separately from physically verified left/right routing.
+- Keep source acquisition, viewing coverage, resource ownership and effective
+  render readiness as separate claims. A delivered source does not establish
+  full visual coverage; a configured processor does not establish applied or
+  displayed output. Preserve actual processing and output evidence.
+- Describe manual calibration and observed bounds only for the tested view.
+  A stationary comparison does not qualify pose alignment, motion behavior,
+  temporal stability, optical equivalence or general stereo calibration.
+- Check that the owned processed output is not reintroduced as the selected
+  input during that window. A finite no-feedback observation is not a guarantee
+  for longer runs, another source, layout, lifecycle or output topology.
+- Finish through the selected owner's normal finite cleanup and retain its
+  actual resource/process observations. Local completion does not establish a
+  server acknowledgment or resolve earlier unknown outcomes.
+
+Keep comparison, assessment and cleanup evidence distinct. This result is a
+finite processing method, not long-run qualification or a universal no-feedback
+claim. It does not establish raw-sensor identity or protected-layer access from
+pixels alone. Product-specific processing, profiles and calibration remain in
+the application owner; reusable procedure belongs in this focused playbook.
+
 ## Native effects and wearer evidence
 
 Selected native compositor shader paths produced visible binocular effects on
