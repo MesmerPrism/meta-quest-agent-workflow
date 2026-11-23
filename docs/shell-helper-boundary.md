@@ -5,6 +5,11 @@ A shell helper is an ADB-launched device-side process, often started from
 not a normal installed app permission, and a public APK cannot start it by
 itself without an authorized ADB host.
 
+For keep-awake/proximity supervision, use the existing QFM standalone helper
+selected by [long-running watchdogs](long-running-watchdogs.md) first. The generic
+launch shape below is for other authorized helper development; it is not a
+reason to recreate that supervisor.
+
 ## Typical Launch Shape
 
 This is a template, not a universal command:
@@ -37,12 +42,17 @@ developer state by:
 
 ```text
 observing virtual proximity state
-reapplying the desired virtual proximity state only if drift is observed
+renewing finite virtual proximity holds proactively from owned successful coverage
+repairing observed virtual proximity drift without treating another hold as ownership
 observing wakefulness and display power state
 reapplying KEYCODE_WAKEUP or stay-awake only if drift is observed
 reporting reapply counts through a status endpoint
 stopping through an explicit stop marker or operator command
 ```
+
+The standard supervisor's default is a finite eight-hour hold renewed every
+six hours with five-second polling. `UntilStopped` describes supervisor lifetime,
+not an infinite hold. Read its owner README for exact timing and evidence rules.
 
 The helper should be idempotent with an external host-side watchdog. If either
 one repairs the state first, the other should observe success and avoid extra

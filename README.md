@@ -45,8 +45,11 @@ installed provenance commit rather than floating `main`. See
   workflows.
 - Quest camera metadata collection through ADB and optional broker-style
   localhost probes.
-- Long-running watchdog guidance for ADB-launched device-side helpers that keep
-  a development headset awake without pretending to be an APK permission.
+- A default [keep-awake/proximity supervisor route](docs/long-running-watchdogs.md)
+  to QFM's existing `helpers/quest-proximity-watchdog`, with proactive finite-hold
+  renewal, identity-bound status/stop, and separate physical sensor-lock readback.
+  Use that helper before creating a custom watchdog; it is an ADB-launched
+  developer tool, not an APK permission.
 - Privacy-minimized Accessibility foreground-watchdog guidance for observing
   top-level window transitions, grouping Meta Home event bursts, restoring an
   exported target activity, and preserving a deliberate escape route without

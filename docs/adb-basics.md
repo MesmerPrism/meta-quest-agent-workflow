@@ -49,7 +49,9 @@ to its actual canonical serial and boot identity before effects, and retain
 that transport in the run inputs. Moving administration to USB can preserve the
 media network, but it does not silently migrate an already reviewed Wi-Fi run.
 
-For an authorized awake watchdog, preserve the user's polling cadence and end
+For an authorized awake/proximity watchdog, use the existing QFM standalone
+helper through [long-running watchdogs](long-running-watchdogs.md) first; do not
+recreate a minimal host wake loop. Preserve the user's polling cadence and end
 condition. Supervise only the task-owned worker, identified by executable,
 arguments and birth observation; refresh a bounded hold before it expires.
 During topology changes, pause that worker without releasing its device hold,
