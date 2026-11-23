@@ -21,15 +21,11 @@ locator exists. Bind the source commit, helper JAR SHA-256 and script version
 before effects. Do not guess a machine path or use a historical worktree as
 the canonical helper.
 
-The reviewed source is publicly available at the immutable
-[QFM helper revision](https://github.com/MesmerPrism/QuestIonAble-File-Manager/tree/2b27d8bc4de62228336e7a62df020ec00ab7f07c/helpers/quest-proximity-watchdog),
-with its [dated live validation record](https://github.com/MesmerPrism/QuestIonAble-File-Manager/blob/2b27d8bc4de62228336e7a62df020ec00ab7f07c/helpers/quest-proximity-watchdog/LIVE_VALIDATION.md).
-[Draft PR 112](https://github.com/MesmerPrism/QuestIonAble-File-Manager/pull/112)
-is open; merge to the intended
-[main source location](https://github.com/MesmerPrism/QuestIonAble-File-Manager/tree/main/helpers/quest-proximity-watchdog)
-is pending. Use the pinned revision or a separately qualified local source;
-the main URL does not establish availability. If the helper is unavailable,
-report that source-resolution gap; do not silently substitute a minimal watchdog.
+Start with the immutable [QFM helper revision](https://github.com/MesmerPrism/QuestIonAble-File-Manager/tree/8e644878f3712e99c9492121782093d6d2308a74/helpers/quest-proximity-watchdog)
+from [QFM PR 112](https://github.com/MesmerPrism/QuestIonAble-File-Manager/pull/112)
+or a separately qualified local source. The revision is a source-buildable
+standalone helper. If the helper is unavailable, record the source-resolution
+gap before selecting an alternative procedure.
 
 QFM's ordinary `device keep-awake` operation is a one-shot policy command, not
 a renewing supervisor. Fleet's managed awake-control contract applies only to
@@ -47,23 +43,29 @@ owner README for build prerequisites and start confirmation. Both `status`
 and `stop` require the retained local built JAR to verify the installed
 content-addressed JAR before executing its read-only status entrypoint; do not
 build or push a replacement merely to observe or stop an existing owner.
-`stop` verifies the current boot/PID/birth/command-line/lock owner before
-writing its fixed marker and waiting for process absence. It never builds,
-pushes, starts another helper or restores policy. Host verification remains
-separate from live observations: the initial two-headset record covers normal
-policy restoration, default startup, two accelerated finite-hold renewals,
-owned stop without restoration and final default startup. A separate
-10 November 2026 observation on two Quest 3S headsets running v209.0.0.174.430
-observed one actual default six-hour renewal per headset, with an eight-hour
-hold, five-second polling and zero hold failures. Successful issuance intervals
-were 21,600,678ms and 21,601,668ms; sampled readback remained Awake, physical
-INTERNAL display ON and virtual proximity CLOSE. See the validation update in
-the existing [QFM review](https://github.com/MesmerPrism/QuestIonAble-File-Manager/pull/112/files).
-Status observations changed no power policy and did not establish physical
-SensorLock, camera or XR readiness. The system update interrupted the earlier
-long session; no complete eight-hour/overnight soak, host-disconnect survival,
-reboot persistence or wearer-approval bypass is established. Current owner,
-artifact, process and effective state still require fresh readback.
+`start` verifies that the requested invocation became the active owner on the
+selected boot. `stop` revalidates that owner's boot, process and JAR identity,
+signals only that invocation, and checks for retirement on the original boot.
+After a matching Stop receipt, unavailable or changed retirement readback leaves
+Stop pending. Retirement and power-policy restoration are separate actions. Use
+the matching artifact and owner procedure for an already running helper. The
+new wrapper rejects Stop when the older
+owner has no invocation identity.
+
+The invocation-specific revision has host regression coverage. The
+[dated live validation](https://github.com/MesmerPrism/QuestIonAble-File-Manager/blob/0d6165ba4081939ff56e63340dd6720e96aa820e/helpers/quest-proximity-watchdog/LIVE_VALIDATION.md)
+observed the earlier implementation on two headsets. It covers normal-policy
+restoration, default startup, accelerated renewals, owned stop without
+restoration, and four default six-hour renewals per headset over more than 24
+hours of sampled operation.
+Sampled readback remained Awake with the physical INTERNAL display ON and
+virtual proximity CLOSE. The corrected invocation-specific Stop still needs
+its own physical validation.
+An OS update interrupted the earlier long session. The later record consists
+of sampled operation with incomplete samples retained as unknown. Continuous
+display, physical SensorLock, camera and XR readiness, host-disconnect survival,
+and reboot persistence need separate verification. Current owner, artifact,
+process and effective state still require fresh readback.
 
 ## Validate The Optional Local Helper Locator
 
