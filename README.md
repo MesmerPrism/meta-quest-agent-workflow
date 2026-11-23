@@ -29,6 +29,8 @@ installed provenance commit rather than floating `main`. See
   with an [integration map](docs/quest-learning-integration.md) for Hostess,
   Quest components and Kiosk/product consumers. Experimental access is kept
   separate from ordinary app capabilities and distribution eligibility.
+  The compositor notes include a closed image-method permission denial and the
+  remaining app-side/source limits; metadata access is not image admission.
 - The canonical Codex-style skill and agent manifest under
   `skills/meta-quest-workflow/`. Downstream installers may add local locator
   metadata, but do not own a competing tracked copy.
@@ -228,6 +230,10 @@ pwsh -NoProfile -ExecutionPolicy Bypass `
     stable awake/display state, no lock or Guardian placement blocker, valid
     advancing Shell vsync, and target-owned requested-rate OpenXR readiness
     before resuming a run.
+21. After a physical USB move, revalidate actual boot/process identity and full
+    mapping tables. Preserve an absent actor's old binding; use an authorized
+    ordinary launch and fresh selection instead of rewriting its history. See
+    [mutation confirmation](docs/host-headset-mutation-confirmation.md).
 
 ## Provider Model
 

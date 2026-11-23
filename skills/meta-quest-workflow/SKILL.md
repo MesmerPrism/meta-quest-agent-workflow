@@ -88,6 +88,10 @@ Normal serial-scoped discovery/readback uses the shared daemon. Preserve
 unrelated device/app state. Record mutation intent before dispatch; advance
 `sent -> pending -> confirmed` only after fresh route-specific effective
 readback. Exit zero, admission and permission prompts prove dispatch alone.
+After a physical USB change, freshly select actual actors and full route tables;
+reconnection does not prove process continuity. Preserve a canonical permission
+denial as the result of its selected operation; metadata access does not grant
+image access. Use the focused confirmation and compositor playbooks for limits.
 
 Keep local File Manager and managed Fleet contracts disjoint. Discovery is
 inert description, never backend health, target selection, approval or an

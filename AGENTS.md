@@ -72,6 +72,9 @@ intent is missing or an action expands scope; prior authorization remains valid.
 Provider dispatch needs operation-specific effective readback before confirmation.
 Preserve owner evidence byte-for-byte and keep validation, transport, app/runtime
 acceptance and publication as separate claims.
+Refresh actor and full mapping observations after physical USB changes. Preserve
+operation-level permission denials without converting metadata access into image
+admission; keep supported-caller questions distinct from replaying a denied case.
 
 - Prefer app-owned typed providers for supported operations; use raw ADB only
   for the documented bootstrap, provider-gap, diagnostic or recovery fallback.

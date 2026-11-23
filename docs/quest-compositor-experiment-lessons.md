@@ -22,6 +22,228 @@ non-null session identifier; a null identity caused a runtime failure. Closed
 adapters should encode the actual validated request, not expose a general
 private method/argument pass-through.
 
+A selected shipped capture-service trace connected a caller's `Surface` through
+`ANativeWindow` to the compositor capture output. That identifies a destination,
+not the sampled image. Static GL/Vulkan pipeline construction and program-stage
+realization do not establish per-frame image bindings, draw submission, GPU
+completion or direct access to the original MR camera source. Keep each of
+those joins separate from runtime observations and output-pixel comparisons.
+
+An existing-service peek with typed version reads can be a bounded admission
+probe when its exact installed-APK code-only AIDL loading, genuine Shell context
+and actual permission checks are preserved, without starting/binding the service
+or creating capture. A successful host compile does not prove runtime access.
+Inspect the full helper entrypoint: a producer that reads the version and then
+selects modes or starts capture is not a read-only probe.
+Historical `ImageReader`/`AHardwareBuffer`/fence consumer proof remains qualified
+to its firmware, caller, producer and lifecycle; it does not automatically
+transfer to newer firmware or an ordinary APK.
+
+## Separate native caller contexts
+
+A bounded v209 diagnostic used an ordinary Shell native executable to load the
+manager library by basename and resolve `createRuntimeIpcManager`. Public
+`dladdr` attributed the resolved address to `libripcmanager.oculus.so` and that
+symbol, at object-relative offset `0x3110` for the selected file. The helper
+returned without invoking the factory. Genuine client exit/reap, complete raw
+EOF, independent original-process birth absence and owned-stage removal were
+observed; post-probe app NoMedia and preservation checks also passed.
+
+Keep that result separate from an earlier JNI caller's `clns-2` load refusal
+and a different client's initialization abort. Caller executable, class-loader
+and linker context can change the result; Shell UID alone does not establish
+equivalence. Bind the exact firmware, executable, library bytes, symbol and
+caller for each observation. Host fake-loader tests qualify their own contracts,
+not device loadability. These observations are research evidence, not a
+published helper procedure or a portable private-API recipe.
+
+An address-owner query identifies the object containing the address; handle
+symbol lookup may resolve through dependencies. It does not establish the
+top-level handle's object identity or hash the mapped bytes. Preserve the
+original loader error before another loader query and copy borrowed metadata
+immediately. See the dated Bionic [address-owner implementation](https://android.googlesource.com/platform/bionic/+/android-14.0.0_r1/linker/linker.cpp#2228).
+No factory, VM, client initialization/connection, camera or pool call was made
+in this diagnostic. Constructor and remote effects remain unknown. Local
+retirement proves neither normal MR-client shutdown, image access, namespace
+equivalence nor the cause of either earlier failure.
+
+A later single-case Shell-native diagnostic went one step further: a factory
+call requesting version 8 returned a non-null opaque object, and the paired
+destroy export returned. The selected caller source passed that returned object
+to the destroy export; this is source-consistent caller evidence, not an
+independent observation of callee arguments or an acknowledgment of object
+destruction. Both the manager and retained lazy-module file metadata and hashes
+were stable across the case. That file evidence does not hash mapped bytes or
+establish the identity behind a top-level loader handle.
+
+The original child genuinely exited with complete raw EOF and reap; independent
+kernel birth absence and owned-stage removal were observed. Post-case app
+NoMedia, identity, route and unrelated-helper preservation checks passed. No VM,
+client initialization/connection, pool, Surface, camera or image operation was
+requested. Constructor and remote effects remain unknown, as do remote
+retirement, namespace equivalence and the earlier client's failure cause. A
+returned destroy export is a distinct evidence level from server completion or
+normal client shutdown. This bounded research result supplies no supported
+private-API procedure or capture capability.
+
+A subsequent single-case Shell-native diagnostic on the selected v209 firmware
+called `ipc_Initialize` with the source-bound 88-byte initialization structure
+and a null Java VM. It returned `0`; exactly one paired `ipc_Shutdown` call then
+returned the vendor runtime-stop boolean as true. This establishes that a Java
+VM was not required for this observed initialization-only path. It does not
+establish a VM-free client, connection, Surface or camera API contract.
+
+The original native child genuinely exited with full raw EOF and reap;
+independent kernel-birth absence and owned-stage removal were observed. The
+selected RIPC, manager and retained lazy-module files had stable stat/hash
+bookends. Both application SDK actors remained absent, and installed bytes,
+UIDs, identity/enrollment data, grants, routes and unrelated helper state were
+preserved. No explicit client registration, client-info request, group-zero
+observation, pool, Surface, camera or image operation was requested; no identity
+spoofing or namespace override was used.
+
+The returned vendor boolean is not evidence that every global or Binder worker
+joined, or that a remote service acknowledged shutdown. Mapped-byte identity,
+remote effects, the earlier client's failure cause and equivalence to a JNI
+caller remain unproved. Source/ABI analysis, host fake tests, actual export
+returns, local retirement and inspected pixels are separate evidence. This is
+a bounded research observation, not a supported private-helper procedure or a
+capture capability.
+
+A later connection-only case on the selected v209 firmware used an ordinary
+Shell native executable with the same null-VM initialization contract. Init
+returned success; one client registration returned a nonzero handle and one
+connected-status query returned true. The normal disconnect export returned,
+and the paired shutdown returned the vendor runtime-stop boolean as true.
+Genuine original-process exit, full raw EOF/reap, independent kernel-birth
+absence and owned-stage removal were verified with preservation checks.
+
+This establishes bounded native registration and status without a Java VM for
+that caller. It does not establish metadata delivery, group permission, an
+image-pool grant, camera/image access, ordinary APK admission, namespace
+identity, remote acknowledgment or a global-worker join. Earlier unknown
+outcomes remain unknown; normal export returns and local retirement are
+separate from service completion.
+
+## Metadata interfaces are research boundaries
+
+Source-only analysis of selected shipped firmware identified a named RIPC
+metadata lookup and C Begin/End read-lease route as a research lead. Its opaque
+32-bit state identifier is neither a client handle nor an operating-system file
+descriptor. Group-zero metadata and image-pool permission are separate gates;
+an image identifier in metadata is not an acquired image buffer.
+
+The observed Begin path can publish an opaque context even when its data return
+is null. A false End result can follow release of the read pin. Interface
+release is a different operation and does not replace ending a read lease.
+Return-value guesses can therefore omit required cleanup or repeat it. The
+selected interface ABI version was 1, distinct from reflection cap 2; never
+substitute an assumed interface ABI 2. These findings do not qualify a new
+caller, its failure cleanup or a decoder, and provide no executable procedure.
+
+The actual connection-only observation above does not close metadata delivery
+or image-method admission. Source-only tracing also identified a real getter
+that writes eight metadata-group booleans after checking a connected client.
+Those sequential observations are not an atomic grant snapshot or the separate
+MR image-method permission. A later bounded standalone native observation returned
+true from that getter with the first flag true and the remaining seven false.
+The original process completed with genuine EOF and reap; Disconnect returned normally;
+Shutdown returned true. Independent readback established local process retirement,
+run-owned stage removal and preservation of both participating device/app states.
+The owned experiment window was closed afterward. These are local completion and
+preservation results, not remote acknowledgement or proof that all global workers
+joined. No metadata payload or image was requested or demonstrated by the getter.
+
+Selected primitive/member decoding and the local shared-response receiver and
+FD postprocessing paths have since been source-joined, with the limits below.
+Complete generated ABI/wire/failure ownership and unclaimed broker-FD cleanup
+remain unresolved. Keep source findings separate from runtime delivery, inspected
+pixels and earlier unknowns.
+
+## Closed image-method permission result
+
+A subsequent bounded case on the selected v209 firmware made one image-method
+request from its genuine Shell-native client context. Transport succeeded, but
+the complete canonical reply reported `method_permission_denied`. This is an
+operation-level permission result, distinct from an unissued call, transport
+failure, successful image response or missing output file. No file descriptor,
+hardware buffer, CPU image or camera pixels were delivered by that request.
+
+Disconnect returned, the vendor shutdown boolean returned true, and the
+original client completed with full raw EOF and reap. Independent process-birth
+absence, owned-stage removal and final bilateral application/data/grant/route/
+helper preservation were observed. These close the local experiment. They do
+not establish remote acknowledgment or that every global worker joined.
+Keep earlier unknown outcomes and denied acquisitions unchanged.
+
+Source tracing identifies a pool/export/import seam before final sampling,
+separate from an already composed stereo shader input. That ordering does not
+establish the producer's ISP stage, crop, camera identity, frame readiness,
+full-sensor data or wider FOV. A permission-denied reply cannot supply those
+missing image observations.
+
+The selected Shell image-access route is closed; retain its result without
+replaying the request. Ordinary APK image admission remains unproved. Camera
+permission, client connection and metadata-group flags do not establish that
+grant. A supported app-side route would need its independently established API,
+genuine caller context and actual permission contract before selection; this
+experiment supplies none. Do not substitute a different principal, namespace,
+guessed method or protected-file acquisition as a workaround for denial.
+
+## Preserve receiver, member and resource contracts
+
+A virtual slot is meaningful only with its actual receiver and vtable address
+point. Source tracing recovered a factory-returned MR interface and its distinct
+adjusting thunks; offsets from another interface or the primary object cannot be
+substituted. An available getter entry does not establish a real caller, request
+key, default value or schema. Those caller inputs remain unresolved.
+
+Treat response status, member presence and decoded value as separate evidence.
+The inspected generated member codec can accept a missing member without writing
+its destination, and its boolean primitive accepts noncanonical nonzero bytes.
+A successful parse therefore does not alone prove that a required boolean was
+present or canonically encoded. Tagged and ordered modes have different member
+boundaries. Mode-dependent string lengths, truncated or malformed lengths and
+reference-position postprocessing must be checked against the selected codec;
+native object sizes are not wire lengths. The reflected-schema mode and complete
+transport/failure ownership remain outside this qualified source result.
+
+The eight metadata-group flags, the separate MR image-method mask and actual
+metadata or pixels are three different claims. A true flag is not a delivered
+payload, and the observed flag vector does not establish image-method admission.
+Neither enumeration nor a scalar return substitutes for inspecting delivered
+content and its lifecycle.
+
+A method named for shared memory is not an inert permission probe. The inspected
+response path can produce sockets, file descriptors and hardware-buffer handles.
+Known success-path ownership does not close partial failure, lost return or
+unclaimed broker resources. A nearby method on a different receiver can instead
+change capability state. Do not invoke either from a guessed slot or infer frame
+readiness, camera identity or pixels from a returned pool or handle. Complete failure/transport retirement remains open.
+
+A separate owned facade has now been traced through allocation, unique-owner
+transfer and actual fetch dispatch to the same generated shared-memory method
+body reached by the factory-returned MR interface. Each method context has its
+own constructor-established client backpointer. This closes that concrete local
+receiver seam; it does not make the objects interchangeable or turn an opaque
+transport handle into either C++ object.
+
+On the actual client response path, successful decode reaches deferred FD
+materialization: a broker token is resolved into a destination field, then a
+separate clear request is made. A zero token writes an invalid-FD sentinel.
+The loop does not check Get validity or clear success and provides no complete
+rollback for entries already materialized. Local duplicate ownership, broker
+clear requests and eventual local close remain distinct obligations.
+
+Typed-decode or additional-metadata failure can skip materialization. Normal
+and exception reader cleanup free bookkeeping containers rather than resolve
+queued tokens, close resulting descriptors or release hardware buffers. For
+entries not yet materialized this helper has not acquired its local duplicate;
+that does not prove zero remote resources or zero resources in other fields.
+Partial failure, exception, lost reply, unclaimed broker ownership and complete
+transport-worker retirement remain unqualified. These source joins supply no
+new invocation procedure or runtime qualification.
+
 ## Own resources and feedback
 
 A returned opaque native `jlong` may be a valid nonzero negative value. Do not
@@ -48,6 +270,52 @@ leave the worker alive. Preserve held/unknown state and reconcile the original
 worker rather than allowing another overlapping start. Avoid global capture
 stop operations unless their real ownership contract permits the effect.
 
+In one inspected capture-service route, Stop queues a global command through a
+void lower interface. Its submission/error reply does not acknowledge later
+server consumption or GPU/Surface retirement. Client EOF, joined workers, a
+post-return grace period and local `Surface`/`ANativeWindow` release each prove
+only their own lifecycle step. Retain server retirement as unknown until the
+selected route supplies request-correlated post-consumption completion evidence;
+this finding does not rule out a different API providing such a contract.
+
+## Finite app-owned stereo GPU comparison
+
+A separate stationary app-owned test demonstrated distinct two-eye input and
+GPU-processed output during a finite window of about nine seconds. Preserve
+that source classification: success on app-owned input is not private MR
+compositor image admission and does not reopen the closed permission denial
+above or authorize a different principal.
+
+For a comparable bounded test:
+
+- Retain ordinary raw observations before and after active processing, then
+  compare raw and processed output from the exact same acquired `AImage`.
+  Bind both outputs to that acquisition and its actual buffer lifetime; nearby
+  timestamps or two independently acquired images are not the same-image join.
+- Check both input halves and their output eyes separately. Require distinct
+  eye content and correspondence through processing; a duplicated eye or merely nonblack
+  packed frame does not establish stereo processing. Record stream-half labels
+  separately from physically verified left/right routing.
+- Keep source acquisition, viewing coverage, resource ownership and effective
+  render readiness as separate claims. A delivered source does not establish
+  full visual coverage; a configured processor does not establish applied or
+  displayed output. Preserve actual processing and output evidence.
+- Describe manual calibration and observed bounds only for the tested view.
+  A stationary comparison does not qualify pose alignment, motion behavior,
+  temporal stability, optical equivalence or general stereo calibration.
+- Check that the owned processed output is not reintroduced as the selected
+  input during that window. A finite no-feedback observation is not a guarantee
+  for longer runs, another source, layout, lifecycle or output topology.
+- Finish through the selected owner's normal finite cleanup and retain its
+  actual resource/process observations. Local completion does not establish a
+  server acknowledgment or resolve earlier unknown outcomes.
+
+Keep comparison, assessment and cleanup evidence distinct. This result is a
+finite processing method, not long-run qualification or a universal no-feedback
+claim. It does not establish raw-sensor identity or protected-layer access from
+pixels alone. Product-specific processing, profiles and calibration remain in
+the application owner; reusable procedure belongs in this focused playbook.
+
 ## Native effects and wearer evidence
 
 Selected native compositor shader paths produced visible binocular effects on
@@ -57,6 +325,14 @@ needed separate handling: writing a new shader file did not prove a cached
 program recompiled. Normal compositor suspend/resume appeared to recreate
 programs in the tested path; that is a qualified lifecycle lead, not permission
 for arbitrary service resets or a general hot-reload guarantee.
+
+For black shader output, isolate the sampled RGB with a finite opaque-output
+control before changing layer routing. Zero alpha need not mean unusable RGB;
+an effect's alpha gate can discard room color already present in its input.
+Qualify alpha and premultiplication against the selected input contract. A
+composed packed side-by-side input containing room RGB can support a visible
+effect without establishing raw sensor access, calibrated stereo/FOV, an
+app-exportable texture or the identity of upstream YUV resources.
 
 Screenshots missed a wearer-visible right-eye edge artifact. Disabling timing
 collection and an earlier slice briefly stabilized a single-pass experiment;

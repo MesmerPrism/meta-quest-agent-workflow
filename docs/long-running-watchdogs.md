@@ -61,6 +61,17 @@ hours of sampled operation.
 Sampled readback remained Awake with the physical INTERNAL display ON and
 virtual proximity CLOSE. The corrected invocation-specific Stop still needs
 its own physical validation.
+
+Later 11 November samples extended that same-helper record to six successful
+holds per headset: startup plus five default six-hour renewals, with zero
+recorded failures and more than 30 hours of sampled operation. Retained raw
+status chronology matched the same boot, process birth, helper bytes and
+unchanged hold/renewal configuration. A separately validated camera run later
+delivered visible imagery on both headsets in that boot. This establishes
+bounded camera use after the long hold, not continuous camera, sensor or XR
+readiness throughout it. No helper or power-policy replacement was needed for
+that observation.
+
 An OS update interrupted the earlier long session. The later record consists
 of sampled operation with incomplete samples retained as unknown. Continuous
 display, physical SensorLock, camera and XR readiness, host-disconnect survival,
@@ -209,6 +220,16 @@ broadcasts or shell launch. Bind exact serial/transport, boot ID, JAR digest,
 main class and argv, PID and process birth identity. A PID alone, process name,
 old status file or prior boot's receipt cannot authorize replacement or stop.
 A boot or process-identity mismatch invalidates the old live-helper claim.
+
+Identify an existing helper from its qualified status plus actual PID, UID,
+process birth and complete command line. A standard device-side watchdog may
+be a standalone Java `app_process` worker, not an installed app-package
+process. An empty package-name search is not proof that the helper is absent.
+Read and match the actual owner before considering any start or replacement;
+preserve a healthy existing process and its deliberate policy across a USB
+move when fresh identity and status still match. Its awake/display or virtual
+proximity readback remains separate from protected wearer, focus and target
+XR readiness.
 
 After start, require fresh helper status and effective virtual proximity and
 power readback; a host exit code proves dispatch only. If the display drifts,

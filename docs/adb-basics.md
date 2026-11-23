@@ -128,6 +128,26 @@ adb -s <serial> exec-out screencap -p > <out-dir>\screenshot.png
 
 This is a final display witness, not raw camera access. Record it separately
 from MediaProjection, casting, screenrecord, and app-private camera frames.
+Preserve native stdout bytes when collecting PNGs; a text decoding/re-encoding
+pipeline can corrupt them. A PNG signature or header check is structural
+validation, not successful image decoding or visual inspection. Use an existing
+image viewer/decoder and retain an inspection-pending result until it succeeds.
+
+## Remote Command Status
+
+Use `exec-out` for byte-oriented output, not as proof of a remote command's
+exit status. A failed remote `cat` can return host exit zero with its diagnostic
+in stdout and empty stderr. For diagnostic reads whose result depends on
+success or failure, use negotiated shell-v2 with `adb -s <serial> shell -T ...`
+and retain exit status, stdout and stderr separately. `-T` disables the PTY;
+`-x` disables remote exit codes and stream separation, so omit it here. See the
+[ADB shell options](https://android.googlesource.com/platform/packages/modules/adb/+/refs/heads/main/docs/user/adb.1.md#SHELL).
+
+If shell-v2 is unavailable, use the owner's explicit remote-status framing
+rather than inferring success from the host exit code. For process/file probes,
+distinguish absent, denied and transport-failed results; validate the successful
+payload shape before parsing it. Diagnostic text in stdout is not process data
+or sufficient absence evidence.
 
 ## Files
 
@@ -192,7 +212,25 @@ Quest app to host service:
 adb -s <serial> reverse tcp:<device-port> tcp:<host-port>
 ```
 
-Record forwards in run evidence and remove them when no longer needed:
+For a newly owned mapping, inspect the full tables and selected local endpoint
+first, then use `--no-rebind` with the chosen forward or reverse operation.
+Retain intent and issuance before each change. An empty table may contain a
+CRLF or whitespace-only lines; ignore those lines while refusing malformed
+nonempty rows and duplicate rows. Preserve the serial column in a forward
+listing and the exact selected device scope for each reverse listing.
+
+Some ADB versions return the selected local port on successful creation, with
+a line ending, rather than empty stdout. Validate that reply against the exact
+selected port; do not require every successful create to return no bytes. The
+returned port is command output, not proof of mapping ownership or a listening
+application socket. Read back the affected full table after each change and
+all selected tables at the end, requiring exactly the intended additions and
+preservation of every unrelated row, including opaque non-TCP endpoints.
+
+Record exact owned tuples in run evidence. Before removal, require the current
+tuple still equals that saved ownership; refuse a foreign replacement instead
+of removing by local port alone. Remove only owned mappings when their selected
+lifetime and application cleanup requirements permit:
 
 ```powershell
 adb -s <serial> forward --remove tcp:<host-port>
